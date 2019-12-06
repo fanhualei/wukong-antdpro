@@ -1,13 +1,13 @@
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
+import { ShopLevelListParams } from './data.d';
 
-export async function queryShopLevel(params: TableListParams) {
+export async function queryShopLevel(params: ShopLevelListParams) {
   return request('/api/shop/shopLevel', {
     params,
   });
 }
 
-export async function removeShopLevel(params: TableListParams) {
+export async function removeShopLevel(params: ShopLevelListParams) {
   return request('/api/shop/shopLevel', {
     method: 'POST',
     data: {
@@ -17,7 +17,7 @@ export async function removeShopLevel(params: TableListParams) {
   });
 }
 
-export async function addShopLevel(params: TableListParams) {
+export async function addShopLevel(params: ShopLevelListParams) {
   return request('/api/shop/shopLevel', {
     method: 'POST',
     data: {
@@ -27,7 +27,7 @@ export async function addShopLevel(params: TableListParams) {
   });
 }
 
-export async function updateShopLevel(params: TableListParams) {
+export async function updateShopLevel(params: ShopLevelListParams) {
   return request('/api/shop/shopLevel', {
     method: 'POST',
     data: {

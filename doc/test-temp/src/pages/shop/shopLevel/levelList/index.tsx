@@ -16,7 +16,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { SorterResult, ColumnProps } from 'antd/es/table';
 import { connect } from 'dva';
 import { StateType } from './model';
-import { TableListItem, TableListPagination, TableListParams } from './data.d';
+import { ShopLevelItem, Pagination, ShopLevelListParams } from './data.d';
 
 import styles from './style.less';
 
@@ -27,7 +27,7 @@ const getValue = (obj: { [x: string]: string[] }) =>
     .join(',');
 
 
-interface TableListProps extends FormComponentProps {
+interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
     Action<
       | 'shopLevelList/add'
@@ -40,7 +40,7 @@ interface TableListProps extends FormComponentProps {
   shopLevelList: StateType;
 }
 
-interface TableListState {
+interface PageState {
   formValues: { [key: string]: string };
 }
 
@@ -61,12 +61,12 @@ interface TableListState {
     loading: loading.models.shopLevelList,
   }),
 )
-class TableList extends Component<TableListProps, TableListState> {
-  state: TableListState = {
+class ShopLevelListPage extends Component<PageProps, PageState> {
+  state: PageState = {
     formValues: {},
   };
 
-  columns: ColumnProps<TableListItem>[] = [
+  columns: ColumnProps<ShopLevelItem>[] = [
     {
       title: '级别',
       dataIndex: 'sgSort',
@@ -140,9 +140,9 @@ class TableList extends Component<TableListProps, TableListState> {
    * @param sorter     排序
    */
   handleStandardTableChange = (
-    pagination: Partial<TableListPagination>,
-    filtersArg: Record<keyof TableListItem, string[]>,
-    sorter: SorterResult<TableListItem>,
+    pagination: Partial<Pagination>,
+    filtersArg: Record<keyof ShopLevelItem, string[]>,
+    sorter: SorterResult<ShopLevelItem>,
   ) => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
@@ -154,7 +154,7 @@ class TableList extends Component<TableListProps, TableListState> {
     }, {});
 
 
-    const params: Partial<TableListParams> = {
+    const params: Partial<ShopLevelListParams> = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
@@ -166,7 +166,7 @@ class TableList extends Component<TableListProps, TableListState> {
     console.log('===========================')
     console.log(params)
     dispatch({
-      type: 'shopLevelList/fetch',
+      type: 'shopLevelList1/fetch',
       payload: params,
     });
   };
@@ -250,10 +250,6 @@ class TableList extends Component<TableListProps, TableListState> {
       loading,
     } = this.props;
 
-    console.log('data---------------------')
-    console.log(data)
-    console.log(this.props)
-
     // 优化了分页，显示总记录数、可跳转、可变分页。
     const paginationProps = data.pagination
       ? {
@@ -278,6 +274,7 @@ class TableList extends Component<TableListProps, TableListState> {
             </div>
             {/* 表格控件 */}
             <Table
+              rowKey="sgId"
               loading={loading}
               dataSource={data.list}
               pagination={paginationProps}
@@ -291,4 +288,4 @@ class TableList extends Component<TableListProps, TableListState> {
   }
 }
 
-export default Form.create<TableListProps>()(TableList);
+export default Form.create<PageProps>()(ShopLevelListPage);

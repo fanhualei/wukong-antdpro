@@ -7,7 +7,7 @@
  * 3：自动添加？,?号表示可选属性 其他表示必选属性
  * 4：只读属性 => " readonly " 对象的字段只在创建的时候赋值
  */
-export interface TableListItem {
+export interface ShopLevelItem {
   sgId: number;// 索引 ID
   sgName:string;// 等级名称
   sgGoodsLimit:number;// 允许发布的商品数量
@@ -24,21 +24,21 @@ export interface TableListItem {
 /**
  * TableListPagination与TableListData不用改，今后通用
  */
-export interface TableListPagination {
+export interface Pagination {
   total: number;
   pageSize: number;
   current: number;
 }
 
-export interface TableListData {
-  list: TableListItem[];
-  pagination: Partial<TableListPagination>;
+export interface ShopLevelListData {
+  list: ShopLevelItem[];
+  pagination: Partial<Pagination>;
 }
 
 /**
  * 查询条件。
  */
-export interface TableListParams {
+export interface ShopLevelListParams {
   // 这些跟业务有关系
   sgName: string;
   // 下面三个不用改，今后通用

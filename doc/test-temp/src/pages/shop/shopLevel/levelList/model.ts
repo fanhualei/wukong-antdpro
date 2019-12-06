@@ -2,10 +2,10 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { addShopLevel, queryShopLevel, removeShopLevel, updateShopLevel } from './service';
 
-import { TableListData } from './data.d';
+import { ShopLevelListData } from './data.d';
 
 export interface StateType {
-  data: TableListData;
+  data: ShopLevelListData;
 }
 
 export type Effect = (

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
-import { TableListItem, TableListParams } from './data.d';
+import { ShopLevelItem, ShopLevelListParams } from './data.d';
 
 // mock tableListDataSource
-let tableListDataSource: TableListItem[] = [];
+let tableListDataSource: ShopLevelItem[] = [];
 
 for (let i = 0; i < 80; i += 1) {
   tableListDataSource.push({
@@ -25,7 +25,7 @@ function getShopLevel(req: Request, res: Response, u: string) {
     url = req.url;
   }
 
-  const params = (parse(url, true).query as unknown) as TableListParams;
+  const params = (parse(url, true).query as unknown) as ShopLevelListParams;
 
   let dataSource = tableListDataSource;
 
