@@ -143,6 +143,12 @@ export default {
               component: './ListBasicList',
             },
             {
+              name: 'list.table-list',
+              icon: 'smile',
+              path: '/listtablelist',
+              component: './ListTableList',
+            },
+            {
               component: './404',
             },
           ],

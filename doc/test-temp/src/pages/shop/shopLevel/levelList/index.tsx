@@ -21,11 +21,6 @@ import { ShopLevelItem, Pagination, ShopLevelListParams } from './data.d';
 import styles from './style.less';
 
 const FormItem = Form.Item;
-const getValue = (obj: { [x: string]: string[] }) =>
-  Object.keys(obj)
-    .map(key => obj[key])
-    .join(',');
-
 
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
@@ -102,17 +97,15 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     },
     {
       title: '操作',
-      render: (text: any, record: any) => {
-        // console.log(text)
-        // console.log(record)
-        return (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      render: (text: any, record: any) => (
         <Fragment>
           <a href="">编辑</a>
           <Divider type="vertical" />
           <a href="">删除</a>
         </Fragment>
       )
-      },
+      ,
     },
   ];
 
@@ -136,7 +129,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
      updatedAt: undefined
    }
    * @param pagination 当前分页信息
-   * @param filtersArg 过滤信息的参数
+   * @param filtersArg 过滤信息的参数,可以在表头做筛选，这里用不上。
    * @param sorter     排序
    */
   handleStandardTableChange = (
@@ -147,26 +140,17 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-
     const params: Partial<ShopLevelListParams> = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
-      ...filters,
     };
+    // 每次只能按一个字段排序
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-    console.log('===========================')
-    console.log(params)
     dispatch({
-      type: 'shopLevelList1/fetch',
+      type: 'shopLevelList/fetch',
       payload: params,
     });
   };
@@ -255,8 +239,8 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
       ? {
         showSizeChanger: true,
         showQuickJumper: true,
-        ...data.pagination,
         showTotal: (total: number) => `共有 ${total} 记录`,
+        ...data.pagination,
       }
       : false;
 
