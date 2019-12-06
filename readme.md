@@ -16,7 +16,7 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
 
 * [开发工具](doc/env.md)
 
-* 前期知识
+* 预备知识
 
   * TS
 
@@ -32,13 +32,13 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
 
     * [redux快速入门](doc/redux-first.md)
     * [redux详解](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/redux.md)
-
-* [了解dva](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/dva.md)
+    
+  * [了解dva](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/dva.md)
 
 * AntDesign
 
   * [设计规范](doc/design-spec.md)
-  * [新建项目](doc/antd-start.md)
+  * [快速上手](doc/antd-start.md)
   
 * AntDesignPro
 

@@ -211,19 +211,15 @@ export default {
 
 | 名称       | 说明               | 备注                                                         |
 | ---------- | ------------------ | ------------------------------------------------------------ |
-| data.d.ts  | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
-| _mock.ts   | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
-| service.ts | service层          | 定义了添加、删除、修改、查询4个函数。                        |
-| model.ts   | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
-| index.tsx  | 展示层             | 包含了页面中的代码                                           |
-| style.less | 样式文件           |                                                              |
-| components | 组件目录           | table组件与增加和删除组件窗口。                              |
+| [data.d.ts](test-temp/src/pages/shop/shopLevel/levelList/data.d.ts)  | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
+| [_mock.ts](test-temp/src/pages/shop/shopLevel/levelList/_mock.ts)  | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
+| [service.ts](test-temp/src/pages/shop/shopLevel/levelList/service.ts) | service层          | 定义了添加、删除、修改、查询4个函数。                        |
+| [model.ts](test-temp/src/pages/shop/shopLevel/levelList/model.ts)   | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
+| [index.tsx](test-temp/src/pages/shop/shopLevel/levelList/index.tsx)  | 展示层             | 包含了页面中的代码                                           |
+| [style.less](test-temp/src/pages/shop/shopLevel/levelList/style.less) | 样式文件           |                                                              |
+| [components](test-temp/src/pages/shop/shopLevel/levelList/components) | 组件目录           | table组件与增加和删除组件窗口。                              |
 
 是否引入typescript一直有疑问，原先写js时，刚觉很奔放，突然加了这么多代码与约束，刚开始接收不了，只能先适应适应了。
-
-
-
-
 
 
 
