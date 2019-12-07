@@ -1,17 +1,15 @@
 import {
   Button,
   Card,
-  DatePicker,
   Form,
   Icon,
   Input,
   InputNumber,
-  Radio,
-  Select,
-  Tooltip,
+  Checkbox,
 } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
+
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -20,8 +18,6 @@ import { connect } from 'dva';
 import styles from './style.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 interface EditLevelProps extends FormComponentProps {
@@ -45,10 +41,12 @@ class EditLevel extends Component<EditLevelProps> {
 
   render() {
     const { submitting } = this.props;
+    console.log(this.props)
+
     const {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
-
+    console.log(getFieldValue)
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -67,171 +65,88 @@ class EditLevel extends Component<EditLevelProps> {
         sm: { span: 10, offset: 7 },
       },
     };
+    // @ts-ignore
     return (
-      <PageHeaderWrapper content={<FormattedMessage id="shoplevelandeditlevel.basic.description" />}>
+      <PageHeaderWrapper title="新增店铺等级" backIcon={<Icon type="arrow-left" />} onBack={() => window.history.back()} >
         <Card bordered={false}>
-          <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="shoplevelandeditlevel.title.label" />}>
-              {getFieldDecorator('title', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'shoplevelandeditlevel.title.required' }),
-                  },
-                ],
-              })(<Input placeholder={formatMessage({ id: 'shoplevelandeditlevel.title.placeholder' })} />)}
-            </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="shoplevelandeditlevel.date.label" />}>
-              {getFieldDecorator('date', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'shoplevelandeditlevel.date.required' }),
-                  },
-                ],
-              })(
-                <RangePicker
-                  style={{ width: '100%' }}
-                  placeholder={[
-                    formatMessage({ id: 'shoplevelandeditlevel.placeholder.start' }),
-                    formatMessage({ id: 'shoplevelandeditlevel.placeholder.end' }),
-                  ]}
-                />,
-              )}
-            </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="shoplevelandeditlevel.goal.label" />}>
-              {getFieldDecorator('goal', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'shoplevelandeditlevel.goal.required' }),
-                  },
-                ],
-              })(
-                <TextArea
-                  style={{ minHeight: 32 }}
-                  placeholder={formatMessage({ id: 'shoplevelandeditlevel.goal.placeholder' })}
-                  rows={4}
-                />,
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={<FormattedMessage id="shoplevelandeditlevel.standard.label" />}
-            >
-              {getFieldDecorator('standard', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'shoplevelandeditlevel.standard.required' }),
-                  },
-                ],
-              })(
-                <TextArea
-                  style={{ minHeight: 32 }}
-                  placeholder={formatMessage({ id: 'shoplevelandeditlevel.standard.placeholder' })}
-                  rows={4}
-                />,
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={
-                <span>
-                  <FormattedMessage id="shoplevelandeditlevel.client.label" />
-                  <em className={styles.optional}>
-                    <FormattedMessage id="shoplevelandeditlevel.form.optional" />
-                    <Tooltip title={<FormattedMessage id="shoplevelandeditlevel.label.tooltip" />}>
-                      <Icon type="info-circle-o" style={{ marginRight: 4 }} />
-                    </Tooltip>
-                  </em>
-                </span>
-              }
-            >
-              {getFieldDecorator('client')(
-                <Input placeholder={formatMessage({ id: 'shoplevelandeditlevel.client.placeholder' })} />,
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={
-                <span>
-                  <FormattedMessage id="shoplevelandeditlevel.invites.label" />
-                  <em className={styles.optional}>
-                    <FormattedMessage id="shoplevelandeditlevel.form.optional" />
-                  </em>
-                </span>
-              }
-            >
-              {getFieldDecorator('invites')(
-                <Input placeholder={formatMessage({ id: 'shoplevelandeditlevel.invites.placeholder' })} />,
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={
-                <span>
-                  <FormattedMessage id="shoplevelandeditlevel.weight.label" />
-                  <em className={styles.optional}>
-                    <FormattedMessage id="shoplevelandeditlevel.form.optional" />
-                  </em>
-                </span>
-              }
-            >
-              {getFieldDecorator('weight')(
+          <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
+
+            <FormItem {...formItemLayout} label="等级名称" >
+            {getFieldDecorator('title', {
+              rules: [
+                {
+                  required: true,
+                  message: '等级名称必须输入',
+                },
+              ],
+            })(<Input placeholder="请输入等级名称" />)}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="可发布商品数">
+            {getFieldDecorator('weight1', { initialValue: 100 })(
+              <InputNumber
+                style={{ width: 110 }}
+                min={0}
+                max={10000}
+                precision={0}
+              />,
+            )}
+            <span className={styles.inputHelp}>0表示没有限制</span>
+          </FormItem>
+
+            <FormItem {...formItemLayout} label="可上传图片数">
+              {getFieldDecorator('weight2', { initialValue: 500 })(
                 <InputNumber
-                  placeholder={formatMessage({ id: 'shoplevelandeditlevel.weight.placeholder' })}
+                  style={{ width: 110 }}
+                  min={0}
+                  max={10000}
+                  precision={0}
+                />,
+              )}
+              <span className={styles.inputHelp}>0表示没有限制</span>
+            </FormItem>
+            <FormItem {...formItemLayout} label="级别">
+              {getFieldDecorator('weight3', { initialValue: 0 })(
+                <InputNumber
+                  style={{ width: 110 }}
                   min={0}
                   max={100}
+                  precision={0}
                 />,
               )}
-              <span className="ant-form-text">%</span>
+              <span className={styles.inputHelp}>数值越大表明级别越高</span>
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={<FormattedMessage id="shoplevelandeditlevel.public.label" />}
-              help={<FormattedMessage id="shoplevelandeditlevel.label.help" />}
-            >
-              <div>
-                {getFieldDecorator('public', {
-                  initialValue: '1',
-                })(
-                  <Radio.Group>
-                    <Radio value="1">
-                      <FormattedMessage id="shoplevelandeditlevel.radio.public" />
-                    </Radio>
-                    <Radio value="2">
-                      <FormattedMessage id="shoplevelandeditlevel.radio.partially-public" />
-                    </Radio>
-                    <Radio value="3">
-                      <FormattedMessage id="shoplevelandeditlevel.radio.private" />
-                    </Radio>
-                  </Radio.Group>,
-                )}
-                <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('publicUsers')(
-                    <Select
-                      mode="multiple"
-                      placeholder={formatMessage({ id: 'shoplevelandeditlevel.publicUsers.placeholder' })}
-                      style={{
-                        margin: '8px 0',
-                        display: getFieldValue('public') === '2' ? 'block' : 'none',
-                      }}
-                    >
-                      <Option value="1">
-                        <FormattedMessage id="shoplevelandeditlevel.option.A" />
-                      </Option>
-                      <Option value="2">
-                        <FormattedMessage id="shoplevelandeditlevel.option.B" />
-                      </Option>
-                      <Option value="3">
-                        <FormattedMessage id="shoplevelandeditlevel.option.C" />
-                      </Option>
-                    </Select>,
-                  )}
-                </FormItem>
-              </div>
+            <FormItem {...formItemLayout} label="收费标准">
+              {getFieldDecorator('weight4', { initialValue: 0 })(
+                <InputNumber
+                  style={{ width: 110 }}
+                  min={0}
+                  max={900000}
+                  precision={0}
+                  formatter={value => `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={value => (value ? value.replace(/￥\s?|(,*)/g, '') : '')}
+                />,
+              )}
+              <span className={styles.inputHelp}>元/年，在会员开通或升级店铺时将显示在前台</span>
             </FormItem>
+            <FormItem {...formItemLayout} label="可用附加功能">
+              {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
+                <Checkbox.Group style={{ width: '100%' }}>
+                      <Checkbox value="A">编辑器多媒体功能</Checkbox>
+                </Checkbox.Group>,
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="申请说明">
+              {getFieldDecorator('goal')(
+                <TextArea
+                  style={{ minHeight: 32 }}
+                  placeholder="用户选择“普通店铺”，可以立即开通。"
+                  rows={4}
+                />,
+              )}
+              <span className={styles.inputHelp}>申请说明，在会员开通或升级店铺时将显示在前台</span>
+            </FormItem>
+
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>
                 <FormattedMessage id="shoplevelandeditlevel.form.submit" />

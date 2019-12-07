@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   Row,
+  Popconfirm,
 } from 'antd';
 import React, { Component, Fragment } from 'react';
 
@@ -19,6 +20,7 @@ import { StateType } from './model';
 import { ShopLevelItem, Pagination, ShopLevelListParams } from './data.d';
 
 import styles from './style.less';
+import {router, Link} from 'umi';
 
 const FormItem = Form.Item;
 
@@ -97,15 +99,18 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     },
     {
       title: '操作',
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      render: (text: any, record: any) => (
+      render: (text: any, record: any) => {
+        const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
+        return (
         <Fragment>
-          <a href="">编辑</a>
+          <Link to={goUrl}>编辑</Link>
           <Divider type="vertical" />
-          <a href="">删除</a>
+          <Popconfirm title="是否要删除此记录？" onConfirm={() => this.remove(record.sgId)}>
+            <a>删除</a>
+          </Popconfirm>
         </Fragment>
       )
-      ,
+      },
     },
   ];
 
@@ -118,6 +123,18 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
       type: 'shopLevelList/fetch',
     });
   }
+
+  remove=(sgId: number) => {
+    console.log(sgId)
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'shopLevelList/remove',
+      payload: {
+        key: sgId,
+      },
+    });
+  }
+
 
   /**
    * 表格事件被触发：例如 点击表头排序，点击表头筛选，点击分页控件，变更每页的数量
@@ -198,6 +215,10 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     });
   };
 
+  addNew=() => {
+    router.push('/shop/shoplevel/editLevel?sgId=0');
+  };
+
   /**
    * 检索窗口的html
    */
@@ -252,7 +273,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             {/* 新建按钮 */}
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary">
+              <Button icon="plus" type="primary" onClick={this.addNew}>
                 新建
               </Button>
             </div>

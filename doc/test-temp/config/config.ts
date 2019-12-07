@@ -116,23 +116,24 @@ export default {
               icon: 'crown',
               name: 'shop',
               routes: [
+                //商品总览页面
                 {
                   name: 'shopoverall',
                   path: '/shop/shopoverall/',
                   component: './shop/shopOverall/shopList',
                 },
+                // 等级列表页面
                 {
                   name: 'shoplevel',
-                  path: '/shop/shoplevel',
+                  path: '/shop/shoplevel/',
                   component: './shop/shopLevel/levelList',
-                  hideChildrenInMenu: true,
-                  routes: [
-                    {
-                      name: 'editlevel',
-                      path: '/shop/shoplevel/editlevel',
-                      component: './shop/shopLevel/editLevel',
-                    },
-                  ],
+                },
+                // 编辑商品等级页面
+                {
+                  hideInMenu: true,
+                  // name: 'editlevel',
+                  path: '/shop/shoplevel/editlevel',
+                  component: './shop/shopLevel/editLevel',
                 },
               ],
             },

@@ -221,7 +221,119 @@ type person5 = Pick<Person, "name">;
 
 
 
-## getValue
+## 3.1 系统函数
+
+
+
+### 3.1.1 map、filter与reduce
+
+```typescript
+# 下面是antdpro常见的例子
+const filters = Object.keys(filtersArg).reduce((obj, key) => {
+    const newObj = { ...obj };
+    newObj[key] = getValue(filtersArg[key]);
+    return newObj;
+}, {});
+
+const getValue = (obj: { [x: string]: string[] }) =>
+  Object.keys(obj)
+    .map(key => obj[key])
+    .join(',');
+
+tableListDataSource = tableListDataSource.filter(item => key.indexOf(item.key) === -1);
+```
+
+
+
+> map 
+
+是用来循环一个数组，并把每次循环的值取出来。
+
+
+
+> reduce
+
+
+
+是用来循环一个数组，把一个值取出来，并放入到一个函数中计算。然后把下一个值取出来与上个函数的结果进行计算。
+
+```
+reduce() 方法接收一个函数作为累加器（accumulator），数组中的每个值（从左到右）开始缩减，最终为一个值。
+arr.reduce(callback,[initialValue])
+
+* callback （执行数组中每个值的函数，包含四个参数）
+    previousValue （上一次调用回调返回的值，或者是提供的初始值（initialValue））
+    currentValue （数组中当前被处理的元素）
+    index （当前元素在数组中的索引）
+    array （调用 reduce 的数组）
+initialValue （作为第一次调用 callback 的第一个参数。）
+```
+
+```js
+//例子
+var items = [10, 120, 1000];
+// our reducer function
+var reducer = function add(sumSoFar, item) { return sumSoFar + item; };
+// do the job
+var total = items.reduce(reducer, 0);
+console.log(total); // 1130
+
+//--------------使用reduce做的----------------------------
+var total items.reduce((previousValue,currentValue)=>previousValue+currentValue,0)
+
+```
+
+
+
+### 3.1.2 concat 连接
+
+连接多个数组的函数
+
+
+
+### 3.1.3 parseInt 解析
+
+```
+其实parseInt有两个参数，第二个参数可选，第二个参数就是指定进制；
+
+ie8 下 parseInt()会把'0'开头的数字以8进制来解析，而大于7开头的数字时候才会用10进制。
+
+故使用parseInt()函数的时候，最好指定进制参数；
+
+即 parseInt('520', 10);
+```
+
+
+
+### 3.1.4 数学函数
+
+```js
+    callNo: Math.floor(Math.random() * 1000),
+    status: Math.floor(Math.random() * 10) % 4,
+    updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+    createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+    progress: Math.ceil(Math.random() * 100),
+```
+
+Math.floor : 下四舍五入 1.6 =1
+
+Math.ceil：向上四舍五入 5.1=6
+
+Math.random()：随机数，方法可返回介于 0 ~ 1 之间的一个随机数
+
+
+
+
+
+
+
+## 3.2 antdpro函数
+
+
+
+
+
+### 3.2.1 getValue
 
 遍历一个集合，并且把这个集合中的值用`,`来拼接出来。
 

@@ -153,23 +153,24 @@ tyarn start
               icon: 'crown',
               name: 'shop',
               routes: [
+                //商品总览页面
                 {
                   name: 'shopoverall',
                   path: '/shop/shopoverall/',
                   component: './shop/shopOverall/shopList',
                 },
+                // 等级列表页面
                 {
                   name: 'shoplevel',
-                  path: '/shop/shoplevel',
+                  path: '/shop/shoplevel/',
                   component: './shop/shopLevel/levelList',
-                  hideChildrenInMenu: true,
-                  routes: [
-                    {
-                      name: 'editlevel',
-                      path: '/shop/shoplevel/editlevel',
-                      component: './shop/shopLevel/editLevel',
-                    },
-                  ],
+                },
+                // 编辑商品等级页面
+                {
+                  hideInMenu: true,
+                  // name: 'editlevel',
+                  path: '/shop/shoplevel/editlevel',
+                  component: './shop/shopLevel/editLevel',
                 },
               ],
             },
@@ -473,14 +474,179 @@ export function connect(
 
 10：调用了`Form.create`函数。
 
-
-
-
-
-
+11：跳转到编辑页面
 
 
 
 ## 2.4 撰写等级编辑
 
-①②③④⑤⑥⑦⑧
+点击等级列表页的新增或者编辑后，会显示这个页面。
+
+![alt](imgs/antdpro-equ2.png)
+
+
+
+### 2.4.1 页面跳转
+
+由于编辑页不在菜单上，所以需要跳转到新的页面中，这里要要解决下面的问题：
+
+1：左侧的菜单不变。
+
+2：从列表页向编辑页传递参数。
+
+3：编辑页返回功能。（见那个向左的箭头）
+
+
+
+> 问题1的解决方法
+
+* 放在同一级别
+* 不显示
+* 不设定name
+
+```typescript
+// 等级列表页面
+{
+  name: 'shoplevel',
+  path: '/shop/shoplevel/',
+  component: './shop/shopLevel/levelList',
+},
+// 编辑商品等级页面
+{
+  hideInMenu: true,
+  // name: 'editlevel',
+  path: '/shop/shoplevel/editlevel',
+  component: './shop/shopLevel/editLevel',
+},
+```
+
+
+
+> 问题2的解决办法
+
+可以使用`router.push`或`Link`
+
+```typescript
+router.push('/shop/shoplevel/editLevel?sgId=0');
+
+const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
+<Link to={goUrl}>编辑</Link>
+```
+
+
+
+> 问题2的解决方法
+
+设置返回图标与返回的事件，如果少设置一个就不显示返回图标
+
+```typescript
+<PageHeaderWrapper title="新增店铺等级" backIcon={<Icon type="arrow-left" />} onBack={() => window.history.back()} >
+```
+
+
+
+### 2.4.2 表单显示
+
+
+
+#### ① 只能输入整数
+
+
+
+设定数值精度(**推荐这种方法**)
+
+```typescript
+<FormItem {...formItemLayout} label="可发布商品数">
+  {getFieldDecorator('weight1', { initialValue: 100 })(
+    <InputNumber
+      min={0}
+      max={1000}
+      step={0}
+      precision={0}
+    />,
+  )}
+  <span className={styles.inputHelp}>0表示没有限制</span>
+</FormItem>
+```
+
+
+
+或者通过`parser`过滤掉非数字类型的字符串
+
+```typescript
+<FormItem {...formItemLayout} label="可发布商品数">
+  {getFieldDecorator('weight1', { initialValue: 100 })(
+    <InputNumber
+      min={0}
+      max={1000}
+      step={0}
+      parser={displayValue => (displayValue ? displayValue.replace(/[^0-9]/ig, '') : '')}
+    />,
+  )}
+  <span className={styles.inputHelp}>0表示没有限制</span>
+</FormItem>
+```
+
+
+
+#### ② 输入人民币分割
+
+使用了`formatter`与`parser`
+
+```typescript
+<FormItem {...formItemLayout} label="收费标准">
+  {getFieldDecorator('weight4', { initialValue: 0 })(
+    <InputNumber
+      style={{ width: 110 }}
+      min={0}
+      max={900000}
+      precision={0}
+      formatter={value => `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+      parser={value => (value ? value.replace(/￥\s?|(,*)/g, '') : '')}
+    />,
+  )}
+  <span className={styles.inputHelp}>元/年，在会员开通或升级店铺时将显示在前台</span>
+</FormItem>
+```
+
+
+
+#### ③ checkbox
+
+如果>3个，那么就3个一行。
+
+```typescript
+<FormItem {...formItemLayout} label="可用附加功能">
+  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
+    <Checkbox.Group style={{ width: '100%' }}>
+      <Row>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+      </Row>
+    </Checkbox.Group>,
+  )}
+</FormItem>
+```
+
+< 3 个就不用添加 Row与Col了
+
+```typescript
+<FormItem {...formItemLayout} label="可用附加功能">
+  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
+    <Checkbox.Group style={{ width: '100%' }}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+    </Checkbox.Group>,
+  )}
+</FormItem>
+```
+

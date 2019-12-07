@@ -5,7 +5,7 @@ import { ShopLevelItem, ShopLevelListParams } from './data.d';
 // mock tableListDataSource
 let tableListDataSource: ShopLevelItem[] = [];
 
-for (let i = 0; i < 80; i += 1) {
+for (let i = 1; i < 85; i += 1) {
   tableListDataSource.push({
     sgId: i,
     sgName: `店铺${i + 1}`,
@@ -74,7 +74,7 @@ function postShopLevel(req: Request, res: Response, u: string, b: Request) {
   switch (method) {
     /* eslint no-case-declarations:0 */
     case 'delete':
-      tableListDataSource = tableListDataSource.filter(item => key.indexOf(item.sgId) === -1);
+      tableListDataSource = tableListDataSource.filter(item => key !== item.sgId);
       break;
     case 'post':
       const i = Math.ceil(Math.random() * 10000);
