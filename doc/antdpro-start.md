@@ -80,7 +80,7 @@ tyarn start
 
 假设要开发一个下面的后台系统，编写店铺管理下的：`等级列表`与`等级编辑`。
 
-![alt](imgs/antdpro-equ.png)
+![alt](imgs/antdpro-equ.png?raw=true)
 
 
 
@@ -119,7 +119,7 @@ tyarn start
 
 > 选择查询表格
 
-![alt](imgs/antdpro-umi-page1-01.png)
+![alt](imgs/antdpro-umi-page1-01.png?raw=true)
 
 
 
