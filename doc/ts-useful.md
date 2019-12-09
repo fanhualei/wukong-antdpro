@@ -203,6 +203,23 @@ type person5 = Pick<Person, "name">;
 
 
 
+## 1.3 类型判断与转换
+
+```typescript
+# 类型判断 与转换
+const sgId:number = Number(req.query.sgId) //这个是OK的。
+const sgId:number = <number>(req.query.sgId) //这个是错误的。
+console.log(typeof sgId)
+```
+
+
+
+
+
+
+
+
+
 # 2. 函数定义
 
 
@@ -377,7 +394,7 @@ Object.keys(person) // ["name", "age", "address","getName"]
 
 
 
-## Table
+## 4.1 Table
 
 * showTotal 用来显示总记录数
 * rowKey 指定key，不然浏览器console报错。
@@ -406,6 +423,138 @@ const paginationProps = data.pagination
 ```
 
 
+
+## 4.2 Checkbox.Group
+
+
+
+### ① 赋值与得到数值
+
+例如数据库里面存储的是：'A,B' ，表示选中的内容，需要把这个转换成数组。
+
+```typescript
+<FormItem {...formItemLayout} label="可用附加功能">
+  {getFieldDecorator('sgFunction', { initialValue: 'A,B'.split(',') })(
+    <Checkbox.Group style={{ width: '100%' }}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+          <Checkbox value="C">媒体功能</Checkbox>
+    </Checkbox.Group>,
+  )}
+</FormItem>
+```
+
+提交后的代码需要转成：
+
+```typescript
+const s:string = values.sgFunction.join(',');
+```
+
+
+
+### ③ 多个check的显示
+
+如果>3个，那么就3个一行。
+
+```typescript
+<FormItem {...formItemLayout} label="可用附加功能">
+  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
+    <Checkbox.Group style={{ width: '100%' }}>
+      <Row>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+        <Col span={8}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+        </Col>
+      </Row>
+    </Checkbox.Group>,
+  )}
+</FormItem>
+```
+
+< 3 个就不用添加 Row与Col了
+
+```typescript
+<FormItem {...formItemLayout} label="可用附加功能">
+  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
+    <Checkbox.Group style={{ width: '100%' }}>
+          <Checkbox value="A">编辑器多媒体功能</Checkbox>
+    </Checkbox.Group>,
+  )}
+</FormItem>
+```
+
+
+
+
+
+## 4.3 数值框
+
+### ① 只能输入整数
+
+
+
+设定数值精度(**推荐这种方法**)
+
+```typescript
+<FormItem {...formItemLayout} label="可发布商品数">
+  {getFieldDecorator('weight1', { initialValue: 100 })(
+    <InputNumber
+      min={0}
+      max={1000}
+      step={0}
+      precision={0}
+    />,
+  )}
+  <span className={styles.inputHelp}>0表示没有限制</span>
+</FormItem>
+```
+
+
+
+或者通过`parser`过滤掉非数字类型的字符串
+
+```typescript
+<FormItem {...formItemLayout} label="可发布商品数">
+  {getFieldDecorator('weight1', { initialValue: 100 })(
+    <InputNumber
+      min={0}
+      max={1000}
+      step={0}
+      parser={displayValue => (displayValue ? displayValue.replace(/[^0-9]/ig, '') : '')}
+    />,
+  )}
+  <span className={styles.inputHelp}>0表示没有限制</span>
+</FormItem>
+```
+
+
+
+### ② 输入人民币分割
+
+使用了`formatter`与`parser`
+
+```typescript
+<FormItem {...formItemLayout} label="收费标准">
+  {getFieldDecorator('weight4', { initialValue: 0 })(
+    <InputNumber
+      style={{ width: 110 }}
+      min={0}
+      max={900000}
+      precision={0}
+      formatter={value => `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+      parser={value => (value ? value.replace(/￥\s?|(,*)/g, '') : '')}
+    />,
+  )}
+  <span className={styles.inputHelp}>元/年，在会员开通或升级店铺时将显示在前台</span>
+</FormItem>
+```
 
 
 

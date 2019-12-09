@@ -1,4 +1,4 @@
-# 开始使用
+# s开始使用
 
 https://pro.ant.design/docs/getting-started-cn
 
@@ -222,13 +222,13 @@ export default {
 
 看这个代码也是有技巧的，需要按照顺序来看：
 
-| 名称       | 说明               | 备注                                                         |
-| ---------- | ------------------ | ------------------------------------------------------------ |
-| [data.d.ts](test-temp/src/pages/shop/shopLevel/levelList/data.d.ts)  | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
-| [_mock.ts](test-temp/src/pages/shop/shopLevel/levelList/_mock.ts)  | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
-| [service.ts](test-temp/src/pages/shop/shopLevel/levelList/service.ts) | service层          | 定义了添加、删除、修改、查询4个函数。                        |
-| [model.ts](test-temp/src/pages/shop/shopLevel/levelList/model.ts)   | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
-| [index.tsx](test-temp/src/pages/shop/shopLevel/levelList/index.tsx)  | 展示层             | 包含了页面中的代码                                           |
+| 名称                                                         | 说明               | 备注                                                         |
+| ------------------------------------------------------------ | ------------------ | ------------------------------------------------------------ |
+| [data.d.ts](test-temp/src/pages/shop/shopLevel/data.d.ts)    | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
+| [_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)      | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
+| [service.ts](test-temp/src/pages/shop/shopLevel/service.ts)  | service层          | 定义了添加、删除、修改、查询4个函数。                        |
+| [model.ts](test-temp/src/pages/shop/shopLevel/levelList/model.ts) | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
+| [index.tsx](test-temp/src/pages/shop/shopLevel/levelList/index.tsx) | 展示层             | 包含了页面中的代码                                           |
 | [style.less](test-temp/src/pages/shop/shopLevel/levelList/style.less) | 样式文件           |                                                              |
 | [components](test-temp/src/pages/shop/shopLevel/levelList/components) | 组件目录           | table组件与增加和删除组件窗口。                              |
 
@@ -280,7 +280,7 @@ export default {
 
 ### 2.3.3 编写mock
 
-修改[_mock.ts](test-temp/src/pages/shop/shopLevel/levelList/_mock.ts)文件，并做连个函数，分别是查询与保存。
+修改[_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)文件，并做连个函数，分别是查询与保存。
 
 如果这么模拟数据会被其他模块引用，可以放置到不同目录中。
 
@@ -295,11 +295,11 @@ export default {
 
 当然，按照模块来进行编码时，可以先放到自己的模块中，最后汇总在一起后，统一管理。
 
-这里模拟的4个函数：
+这里模拟的4个函数，在列表页，只用到了前两个函数。
 
 * queryShopLevel
-* removeShopLevel
-* addShopLevel
+* queryShopLevelById
+* deleteShopLevel
 * updateShopLevel
 
 
@@ -486,19 +486,33 @@ export function connect(
 
 
 
+撰写这个页面，要完成这几步：
+
+1：确定怎么从父窗口跳转过来。
+
+2：确定用到的服务器端接口函数，或者模拟mock
+
+3：编写service
+
+4：编写model
+
+5：编写UI
+
+
+
+另外发现 mock  、 service 、data会被公用，所以把这些文件提到上一级目录。 model建议与每个页面放在一起
+
+
+
+
+
 ### 2.4.1 页面跳转
+
+[prolayout的帮助说明](https://github.com/ant-design/ant-design-pro-layout/blob/master/README.zh-CN.md)
 
 由于编辑页不在菜单上，所以需要跳转到新的页面中，这里要要解决下面的问题：
 
-1：左侧的菜单不变。
-
-2：从列表页向编辑页传递参数。
-
-3：编辑页返回功能。（见那个向左的箭头）
-
-
-
-> 问题1的解决方法
+#### ① 左侧菜单不变
 
 * 放在同一级别
 * 不显示
@@ -522,7 +536,7 @@ export function connect(
 
 
 
-> 问题2的解决办法
+#### ② 向编辑页传参数
 
 可以使用`router.push`或`Link`
 
@@ -535,7 +549,7 @@ const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
 
 
 
-> 问题2的解决方法
+#### ③ 编辑页返回功能
 
 设置返回图标与返回的事件，如果少设置一个就不显示返回图标
 
@@ -545,108 +559,100 @@ const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
 
 
 
-### 2.4.2 表单显示
-
-
-
-#### ① 只能输入整数
-
-
-
-设定数值精度(**推荐这种方法**)
+#### ④ 设定页面Title
 
 ```typescript
-<FormItem {...formItemLayout} label="可发布商品数">
-  {getFieldDecorator('weight1', { initialValue: 100 })(
-    <InputNumber
-      min={0}
-      max={1000}
-      step={0}
-      precision={0}
-    />,
-  )}
-  <span className={styles.inputHelp}>0表示没有限制</span>
-</FormItem>
+      <Helmet>
+        <title>新增店铺等级</title>
+        <meta name="description" content="新增店铺等级" />
+      </Helmet>
 ```
 
 
 
-或者通过`parser`过滤掉非数字类型的字符串
+
+
+### 2.4.2 撰写mock
+
+在编辑页面，会用到两个函数，`getById` 与`update`函数。 
+
+* 变更时，需要通过`getById`得到要变更的数据。
+* `update`既包含了`insert`与`update`
+
+详细代码见：[_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)
 
 ```typescript
-<FormItem {...formItemLayout} label="可发布商品数">
-  {getFieldDecorator('weight1', { initialValue: 100 })(
-    <InputNumber
-      min={0}
-      max={1000}
-      step={0}
-      parser={displayValue => (displayValue ? displayValue.replace(/[^0-9]/ig, '') : '')}
-    />,
-  )}
-  <span className={styles.inputHelp}>0表示没有限制</span>
-</FormItem>
+  'GET /api/shop/queryShopLevelById': queryShopLevelById,
+  'POST /api/shop/updateShopLevel': updateShopLevel,
 ```
 
 
 
-#### ② 输入人民币分割
+### 2.4.3 编写service
 
-使用了`formatter`与`parser`
+编辑页面需要查询与更新函数
+
+- queryShopLevelById
+- updateShopLevel
+
+
+
+### 2.4.4 编写model
+
+建议一个页面一个model，这样便于维护。详细代码见：[_mock.ts](test-temp/src/pages/shop/shopLevel/editLevel/model.ts)
+
+#### ① 定义Effect接口
+
+在使用effect文件时用到了。
+
+#### ②  定义StateType
+
+定义这个页面用到的从服务器得到的state
 
 ```typescript
-<FormItem {...formItemLayout} label="收费标准">
-  {getFieldDecorator('weight4', { initialValue: 0 })(
-    <InputNumber
-      style={{ width: 110 }}
-      min={0}
-      max={900000}
-      precision={0}
-      formatter={value => `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-      parser={value => (value ? value.replace(/￥\s?|(,*)/g, '') : '')}
-    />,
-  )}
-  <span className={styles.inputHelp}>元/年，在会员开通或升级店铺时将显示在前台</span>
-</FormItem>
+export interface StateType {
+  currentItem: ShopLevelItem;
+}
 ```
 
 
 
-#### ③ checkbox
-
-如果>3个，那么就3个一行。
+#### ③ 定义model接口
 
 ```typescript
-<FormItem {...formItemLayout} label="可用附加功能">
-  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
-    <Checkbox.Group style={{ width: '100%' }}>
-      <Row>
-        <Col span={8}>
-          <Checkbox value="A">编辑器多媒体功能</Checkbox>
-        </Col>
-        <Col span={8}>
-          <Checkbox value="A">编辑器多媒体功能</Checkbox>
-        </Col>
-        <Col span={8}>
-          <Checkbox value="A">编辑器多媒体功能</Checkbox>
-        </Col>
-        <Col span={8}>
-          <Checkbox value="A">编辑器多媒体功能</Checkbox>
-        </Col>
-      </Row>
-    </Checkbox.Group>,
-  )}
-</FormItem>
+export interface ModelType {
+  namespace: string;
+  state: StateType;
+  effects: {
+    queryShopLevelById: Effect;
+    updateShopLevel: Effect;
+    initState: Effect;
+  };
+  reducers: {
+    save: Reducer<StateType>;
+  };
+}
 ```
 
-< 3 个就不用添加 Row与Col了
 
-```typescript
-<FormItem {...formItemLayout} label="可用附加功能">
-  {getFieldDecorator('weight5', { initialValue: ['A', 'B'] })(
-    <Checkbox.Group style={{ width: '100%' }}>
-          <Checkbox value="A">编辑器多媒体功能</Checkbox>
-    </Checkbox.Group>,
-  )}
-</FormItem>
-```
+
+#### ④ 实现model
+
+有两个业务逻辑。
+
+一、显示要编辑的数据，或者从数据库中得到，或者给一个初始化数据。
+
+二、进行保存。 首先要提交到数据库。 后有两个结果。
+
+​        正确的情况下：显示正确页面。
+
+​		错误的情况下：显示错误页面。
+
+
+
+
+
+### 2.4.3 连接数据
+
+如果传入的id是0表示新加数据，否则表示编辑数据，如果是编辑数据，那么就需要从数据库中得到数据。
 

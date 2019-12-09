@@ -18,6 +18,50 @@ for (let i = 1; i < 85; i += 1) {
   });
 }
 
+/**
+ * 通过ID得到一个等级
+ * @param req
+ * @param res
+ */
+function queryShopLevelById(req: Request, res: Response) {
+  const sgId:number = Number(req.query.sgId)
+  const result:ShopLevelItem = tableListDataSource.filter(item => item.sgId === sgId)[0]
+  return res.json(result);
+}
+
+/**
+ * 保存等级
+ * @param req
+ * @param res
+ */
+function updateShopLevel(req: Request, res: Response) {
+  const newItem:ShopLevelItem = <ShopLevelItem>req.body;
+  if (!newItem.sgId || newItem.sgId === 0) {
+    let maxSgId:number = 0;
+    tableListDataSource.forEach(v => {
+      if (v.sgId > maxSgId) {
+        maxSgId = v.sgId;
+      }
+    });
+    newItem.sgId = maxSgId + 1;
+    tableListDataSource.push(newItem);
+  } else {
+    for (let i:number = 0; i < tableListDataSource.length; i += 1) {
+        if (tableListDataSource[i].sgId === newItem.sgId) {
+          tableListDataSource[i] = newItem;
+          break;
+        }
+    }
+  }
+  return res.json(1);
+}
+
+/**
+ * 查询等级列表
+ * @param req
+ * @param res
+ * @param u
+ */
 function getShopLevel(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
@@ -61,57 +105,27 @@ function getShopLevel(req: Request, res: Response, u: string) {
   return res.json(result);
 }
 
-function postShopLevel(req: Request, res: Response, u: string, b: Request) {
-  let url = u;
-  if (!url || Object.prototype.toString.call(url) !== '[object String]') {
-    // eslint-disable-next-line prefer-destructuring
-    url = req.url;
-  }
-
-  const body = (b && b.body) || req.body;
-  const { method, name, desc, key } = body;
-
-  switch (method) {
-    /* eslint no-case-declarations:0 */
-    case 'delete':
-      tableListDataSource = tableListDataSource.filter(item => key !== item.sgId);
-      break;
-    case 'post':
-      const i = Math.ceil(Math.random() * 10000);
-      tableListDataSource.unshift({
-        sgId: i,
-        sgName: `店铺${i}`,
-        sgGoodsLimit: 10,
-        sgAlbumLimit: 10,
-        sgSpaceLimit: 10,
-        sgTemplateNumber: 10,
-        sgPrice: 1000,
-        sgSort: 0,
-      });
-      break;
-    case 'update':
-      tableListDataSource = tableListDataSource.map(item => {
-        if (item.sgId === key) {
-          return { ...item, desc, name };
-        }
-        return item;
-      });
-      break;
-    default:
-      break;
-  }
-
+/**
+ * 删除等级
+ * @param req
+ * @param res
+ */
+function deleteShopLevel(req: Request, res: Response) {
+  const { sgId } = req.body;
+  tableListDataSource = tableListDataSource.filter(item => sgId !== item.sgId);
   const result = {
     list: tableListDataSource,
     pagination: {
       total: tableListDataSource.length,
     },
   };
-
   return res.json(result);
 }
 
+
 export default {
-  'GET /api/shop/shopLevel': getShopLevel,
-  'POST /api/shop/shopLevel': postShopLevel,
+  'GET /api/shop/getShopLevel': getShopLevel,
+  'GET /api/shop/queryShopLevelById': queryShopLevelById,
+  'POST /api/shop/deleteShopLevel': deleteShopLevel,
+  'POST /api/shop/updateShopLevel': updateShopLevel,
 };

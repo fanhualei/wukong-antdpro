@@ -20,7 +20,6 @@ export interface ShopLevelItem {
   sgFunction?:string| null | undefined;// 附加功能
   sgSort:number;// 级别，数目越大级别越 高
 }
-
 /**
  * TableListPagination与TableListData不用改，今后通用
  */

@@ -1,8 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addShopLevel, queryShopLevel, removeShopLevel, updateShopLevel } from './service';
+import { queryShopLevel, deleteShopLevel } from '../service';
 
-import { ShopLevelListData } from './data.d';
+import { ShopLevelListData } from '../data.d';
 
 export interface StateType {
   data: ShopLevelListData;
@@ -18,9 +18,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    add: Effect;
     remove: Effect;
-    update: Effect;
   };
   reducers: {
     save: Reducer<StateType>;
@@ -45,24 +43,8 @@ const Model: ModelType = {
         payload: response,
       });
     },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(addShopLevel, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
-    },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeShopLevel, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
-    },
-    *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateShopLevel, payload);
+      const response = yield call(deleteShopLevel, payload);
       yield put({
         type: 'save',
         payload: response,

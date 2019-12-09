@@ -17,20 +17,18 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { SorterResult, ColumnProps } from 'antd/es/table';
 import { connect } from 'dva';
 import { StateType } from './model';
-import { ShopLevelItem, Pagination, ShopLevelListParams } from './data.d';
+import { ShopLevelItem, Pagination, ShopLevelListParams } from '../data.d';
 
 import styles from './style.less';
-import {router, Link} from 'umi';
+import { router, Link } from 'umi';
 
 const FormItem = Form.Item;
 
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
     Action<
-      | 'shopLevelList/add'
       | 'shopLevelList/fetch'
       | 'shopLevelList/remove'
-      | 'shopLevelList/update'
       >
     >;
   loading: boolean;
@@ -130,7 +128,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     dispatch({
       type: 'shopLevelList/remove',
       payload: {
-        key: sgId,
+        sgId,
       },
     });
   }

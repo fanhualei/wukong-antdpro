@@ -121,14 +121,12 @@ export default {
                   name: 'shopoverall',
                   path: '/shop/shopoverall/',
                   component: './shop/shopOverall/shopList',
-                },
-                // 等级列表页面
+                }, // 等级列表页面
                 {
                   name: 'shoplevel',
                   path: '/shop/shoplevel/',
                   component: './shop/shopLevel/levelList',
-                },
-                // 编辑商品等级页面
+                }, // 编辑商品等级页面
                 {
                   hideInMenu: true,
                   // name: 'editlevel',
@@ -148,6 +146,12 @@ export default {
               icon: 'smile',
               path: '/listtablelist',
               component: './ListTableList',
+            },
+            {
+              name: '成功页',
+              hideInMenu: true,
+              path: '/resultsuccess',
+              component: './result/resultSuccess',
             },
             {
               component: './404',
