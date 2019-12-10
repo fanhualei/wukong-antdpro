@@ -1,4 +1,4 @@
-import { Button, Card,Result,  } from 'antd';
+import { Button, Card, Result } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Fragment } from 'react';
 import { GridContent } from '@ant-design/pro-layout';

@@ -6,9 +6,13 @@ import { ShopLevelItem, ShopLevelListParams } from './data.d';
 let tableListDataSource: ShopLevelItem[] = [];
 
 for (let i = 1; i < 85; i += 1) {
+  let sgName:string = `店铺${i + 1}`;
+  if (i === 3) {
+    sgName = '修改这个会模拟错误';
+  }
   tableListDataSource.push({
     sgId: i,
-    sgName: `店铺${i + 1}`,
+    sgName,
     sgGoodsLimit: 10 + i,
     sgAlbumLimit: 10 + i,
     sgSpaceLimit: 10 + i,
@@ -26,7 +30,7 @@ for (let i = 1; i < 85; i += 1) {
 function queryShopLevelById(req: Request, res: Response) {
   const sgId:number = Number(req.query.sgId)
   const result:ShopLevelItem = tableListDataSource.filter(item => item.sgId === sgId)[0]
-  return res.json(result);
+  setTimeout(() => res.json(result), 1000);
 }
 
 /**
@@ -52,6 +56,21 @@ function updateShopLevel(req: Request, res: Response) {
           break;
         }
     }
+  }
+  if (newItem.sgId === 3) {
+    return res.status(500).json({
+      status: 500,
+      error: 'Bad Request',
+      message: '参数无效',
+      code: 30101,
+      path: '/result/exception',
+      exception: 'com.wukong.core.exceptions.BusinessException',
+      errors: {
+        name: '长度需要在6和50之间',
+        email: '不是一个合法的电子邮件地址',
+      },
+      timestamp: '2018-05-31T09:41:16.461+0000',
+    });
   }
   return res.json(1);
 }

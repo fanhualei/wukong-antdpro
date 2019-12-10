@@ -6,13 +6,15 @@ import {
   Input,
   InputNumber,
   Checkbox, Result,
+  Alert,
+  Spin,
 } from 'antd';
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
-import {GridContent, PageHeaderWrapper} from '@ant-design/pro-layout';
+import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import styles from './style.less';
 import { StateType } from './model';
@@ -20,11 +22,20 @@ import { StateType } from './model';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
+
+/**
+ * 定义了页面props的数据结构
+ */
 interface EditLevelProps extends FormComponentProps {
+  // 定义了数据加载的状态
+  loading: boolean;
+  // 定义了提交数据加载的状态
   submitting: boolean;
+  // 定义了分发的函数
   dispatch: Dispatch<any>;
-  sgId: number;
+  // 从model类中得到的类型
   shopLevelEdit: StateType;
+  // 从url中需要得到的类型
   location: {
     query: {
       sgId: number;
@@ -38,19 +49,29 @@ class EditLevel extends Component<EditLevelProps> {
    */
   componentDidMount() {
     const { dispatch, location } = this.props;
-    const sgId:number = location.query && location.query.sgId
-    if (Number(sgId) !== 0) {
-      dispatch({
-        type: 'shopLevelEdit/queryShopLevelById',
-        payload: { sgId },
-      });
-    } else {
-      dispatch({
-        type: 'shopLevelEdit/initState',
-      });
-    }
+    const sgId:number = location.query && Number(location.query.sgId)
+    dispatch({
+      type: 'shopLevelEdit/queryShopLevelById',
+      payload: { sgId },
+    });
   }
 
+  /**
+   * 点击返回按钮
+   */
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'shopLevelEdit/cleanCommitState',
+    });
+  }
+
+
+  /**
+   * 点击提交按钮的事件
+   * @param e
+   */
+  // eslint-disable-next-line react/sort-comp
   handleSubmit = (e: React.FormEvent) => {
     // 得到currentItem,也就是最原始的数据,这里有只取到主键与更新的字段。
     const { dispatch, form, shopLevelEdit: { currentItem } } = this.props;
@@ -70,7 +91,10 @@ class EditLevel extends Component<EditLevelProps> {
     });
   };
 
-  getTitle():string{
+  /**
+   * 根据id得到页面的title,新增或者编辑
+   */
+  getTitle():string {
     const { shopLevelEdit: { currentItem } } = this.props;
     let title:string = '编辑店铺等级';
     if (currentItem.sgId && currentItem.sgId === 0) {
@@ -79,6 +103,9 @@ class EditLevel extends Component<EditLevelProps> {
     return title;
   }
 
+  /**
+   * 显示页面title
+   */
   renderTitle() {
     return (
       <Helmet>
@@ -88,9 +115,11 @@ class EditLevel extends Component<EditLevelProps> {
     )
   }
 
+  /**
+   * 显示form输入框
+   */
   renderForm() {
     const { submitting, shopLevelEdit: { currentItem } } = this.props;
-    console.log(currentItem);
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -114,7 +143,7 @@ class EditLevel extends Component<EditLevelProps> {
     };
     // @ts-ignore
     return (
-      <>
+      <Spin spinning={this.props.loading}>
         {this.renderTitle()}
         <PageHeaderWrapper title={this.getTitle()} backIcon={<Icon type="arrow-left" />} onBack={() => window.history.back()} >
           <Card bordered={false}>
@@ -203,20 +232,25 @@ class EditLevel extends Component<EditLevelProps> {
                 <Button type="primary" htmlType="submit" loading={submitting}>
                   提交
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={() => window.history.back()}>
+                <Button style={{ marginLeft: 8 }}
+                        onClick={() => window.history.back()}
+                        disabled={submitting}>
                   取消并返回
                 </Button>
               </FormItem>
             </Form>
           </Card>
         </PageHeaderWrapper>
-      </>
+      </Spin>
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * 显示提交结果
+   */
   renderResult() {
-    // const { editResult } = this.props.shopLevelEdit;
+    const { editResult } = this.props.shopLevelEdit;
+    // 返回按钮
     const extra = (
       <Fragment>
         <Button type="primary" onClick={() => window.history.back()}>
@@ -224,15 +258,35 @@ class EditLevel extends Component<EditLevelProps> {
         </Button>
       </Fragment>
     );
+    // 成功页面的显示信息
+    const subTitleOk = (
+      <Fragment>
+        您提交的信息已经保存成功
+      </Fragment>
+    );
+    // 错误页面的显示信息
+    const subTitleError = (
+      <Fragment>
+        <div style={{ marginBottom: 24 }}>您提交的信息保存失败</div>
+        <Alert
+          message=""
+          description={editResult?.errMessage}
+          type="error"
+          closable
+          className={styles.customText}
+        />
+      </Fragment>
+    );
+
     return (
       <>
         {this.renderTitle()}
         <GridContent>
           <Card bordered={false}>
             <Result
-              status="success"
-              title="保存成功"
-              subTitle="你提交的信息已经保存成功"
+              status= {editResult?.isSuccess ? 'success' : 'error' }
+              title= {editResult?.isSuccess ? '保存成功' : '保存失败' }
+              subTitle= {editResult?.isSuccess ? subTitleOk : subTitleError }
               extra={extra}
               style={{ marginBottom: 16 }}
             >
@@ -243,6 +297,9 @@ class EditLevel extends Component<EditLevelProps> {
     )
   }
 
+  /**
+   * 整个页面的显示逻辑
+   */
   render() {
     const { editResult } = this.props.shopLevelEdit;
     if (editResult && editResult.isCommit) {
@@ -252,6 +309,10 @@ class EditLevel extends Component<EditLevelProps> {
   }
 }
 
+/**
+ * 加载form与connect,其中 loading 与 submitting 的状态
+ * 分别从 queryShopLevelById 与updateShopLevel得到。
+ */
 export default Form.create<EditLevelProps>()(
   connect(
     ({
@@ -260,12 +321,13 @@ export default Form.create<EditLevelProps>()(
     }: {
       shopLevelEdit: StateType;
       loading: {
-        models: {
-          [key: string]: boolean;
-        };
+          effects: {
+            [key: string]: boolean;
+          };
       };
     }) => ({
       shopLevelEdit,
-      loading: loading.models.shopLevelEdit,
+      loading: loading.effects['shopLevelEdit/queryShopLevelById'],
+      submitting: loading.effects['shopLevelEdit/updateShopLevel'],
   }))(EditLevel),
 );
