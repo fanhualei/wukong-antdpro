@@ -24,15 +24,15 @@
 
 ```shell
 ├── pages
-│   ├── shop                       #一级模块
-│   │   ├── shopOverall            #二级模块
-│   │   │   ├── shopList           店铺一览
-│   │   │   ├── applyOpen          申请开店 
-│   │   │   ├── applyRenew         申请续费 
-│   │   │   ├── applyCategory      申请类目
-│   │   ├── shopLevel            
-│   │   │   ├── levelList          店铺等级一览
-│   │   │   ├── editLevel          编辑店铺等级
+│   ├── store                      #一级模块
+│   │   ├── store                  #二级模块
+│   │   │   ├── list               店铺一览
+│   │   │   ├── jionin             申请开店 
+│   │   │   ├── reopen             申请续费 
+│   │   │   ├── applyClass         申请类目
+│   │   ├── storeGrade            
+│   │   │   ├── list               店铺等级一览
+│   │   │   ├── edit               编辑店铺等级
 ```
 
 
@@ -53,21 +53,13 @@
 
 > 输入路径与文件名
 
-路径：/shop/shopLevel
-
-文件夹：/shop/shopLevel/levelList
-
-![alt](imgs/antdpro-umi-page1-02.png)
-
 
 
 ### ② 生成等级编辑页
 
 选择模板`基础表单页面`
 
-路径：/shop/shopLevel/editLevel
 
-文件夹：/shop/shopLevel/editLevel
 
 
 
@@ -76,32 +68,29 @@
 追加下面的菜单，其中店铺等级做为第三级菜单不显示`hideChildrenInMenu`
 
 ```tsx
-            {
-              path: '/shop',
-              icon: 'crown',
-              name: 'shop',
-              routes: [
-                //商品总览页面
-                {
-                  name: 'shopoverall',
-                  path: '/shop/shopoverall/',
-                  component: './shop/shopOverall/shopList',
-                },
-                // 等级列表页面
-                {
-                  name: 'shoplevel',
-                  path: '/shop/shoplevel/',
-                  component: './shop/shopLevel/levelList',
-                },
-                // 编辑商品等级页面
-                {
-                  hideInMenu: true,
-                  // name: 'editlevel',
-                  path: '/shop/shoplevel/editlevel',
-                  component: './shop/shopLevel/editLevel',
-                },
-              ],
-            },
+{
+  path: '/store',
+  icon: 'crown',
+  name: 'store',
+  routes: [
+    //商品总览页面
+    {
+      name: 'store',
+      path: '/store/store/',
+      component: './store/store/list',
+    }, // 等级列表页面
+    {
+      name: 'storeGrade',
+      path: '/store/storeGrade/',
+      component: './store/storeGrade/list',
+    }, // 编辑商品等级页面
+    {
+      hideInMenu: true,
+      path: '/store/storeGrade/edit',
+      component: './store/storeGrade/edit',
+    },
+  ],
+},
 ```
 
 > 由于菜单启动了多语言，所以要修改 menu.ts
@@ -109,10 +98,9 @@
 ```typescript
 export default {
   .....................  
-  'menu.shop': '店铺管理',
-  'menu.shop.shopoverall': '店铺总览',
-  'menu.shop.shoplevel': '店铺等级',
-  'menu.shop.shoplevel.editlevel': '编辑店铺等级',
+  'menu.store': '店铺管理',
+  'menu.store.store': '店铺总览',
+  'menu.store.storeGrade': '店铺等级',
 }    
 ```
 
@@ -142,23 +130,19 @@ export default {
 
 ## 3.1 代码分析
 
-下面是生成的目录，红色框的区域是列表页的内容。
-
-![alt](imgs/antdpro-first-list-dir.png)
-
 
 
 看这个代码也是有技巧的，需要按照顺序来看：
 
 | 名称                                                         | 说明               | 备注                                                         |
 | ------------------------------------------------------------ | ------------------ | ------------------------------------------------------------ |
-| [data.d.ts](test-temp/src/pages/shop/shopLevel/data.d.ts)    | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
-| [_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)      | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
-| [service.ts](test-temp/src/pages/shop/shopLevel/service.ts)  | service层          | 定义了添加、删除、修改、查询4个函数。                        |
-| [model.ts](test-temp/src/pages/shop/shopLevel/levelList/model.ts) | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
-| [index.tsx](test-temp/src/pages/shop/shopLevel/levelList/index.tsx) | 展示层             | 包含了页面中的代码                                           |
-| [style.less](test-temp/src/pages/shop/shopLevel/levelList/style.less) | 样式文件           |                                                              |
-| [components](test-temp/src/pages/shop/shopLevel/levelList/components) | 组件目录           | table组件与增加和删除组件窗口。                              |
+| [data.d.ts](test-temp/src/pages/store/storeGrade/data.d.ts)  | ts数据类型的定义。 | 定义了每行、分页、表格数据、以及表格查询的数据类型           |
+| [_mock.ts](test-temp/src/pages/store/storeGrade/_mock.ts)    | 模拟测试数据       | 定义了一个数组，模拟了数据源。定义了一个查询函数与一个提交函数 |
+| [service.ts](test-temp/src/pages/store/storeGrade/service.ts) | service层          | 定义了添加、删除、修改、查询4个函数。                        |
+| [model.ts](test-temp/src/pages/store/storeGrade/list/model.ts) | model层            | 定义了Model框架，定义了实现方式。哈哈引入了ts后，增加了很多代码。 |
+| [index.tsx](test-temp/src/pages/store/storeGrade/list/index.tsx) | 展示层             | 包含了页面中的代码                                           |
+| [style.less](test-temp/src/pages/store/storeGrade/list/style.less) | 样式文件           |                                                              |
+| [components](test-temp/src/pages/store/storeGrade/list/components) | 组件目录           | table组件与增加和删除组件窗口。                              |
 
 是否引入typescript一直有疑问，原先写js时，刚觉很奔放，突然加了这么多代码与约束，刚开始接收不了，只能先适应适应了。
 
@@ -166,7 +150,7 @@ export default {
 
 ## 3.2 编写data.d
 
-定了数据结构，这个文件，被后面所有的文件引用。详细内容见：[data.d.ts](test-temp/src/pages/shop/shopLevel/levelList/data.d.ts)
+定了数据结构，这个文件，被后面所有的文件引用。详细内容见：[data.d.ts](test-temp/src/pages/store/storeGrade/data.d.ts)
 
 ### ① 定义每行记录数据结构
 
@@ -208,7 +192,7 @@ export default {
 
 ## 3.3 编写mock
 
-修改[_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)文件，并做连个函数，分别是查询与保存。
+修改[_mock.ts](test-temp/src/pages/store/storeGrade/_mock.ts)文件，并做连个函数，分别是查询与保存。
 
 如果这么模拟数据会被其他模块引用，可以放置到不同目录中。
 
@@ -225,16 +209,16 @@ export default {
 
 这里模拟的4个函数，在列表页，只用到了前两个函数。
 
-- queryShopLevel
-- queryShopLevelById
-- deleteShopLevel
-- updateShopLevel
+- queryStoreGrade
+- queryStoreGradeById
+- deleteStoreGrade
+- updateStoreGrade
 
 
 
 ## 3.5 编写model
 
-> 编写[model.ts](test-temp/src/pages/shop/shopLevel/levelList/model.ts)要注意几个内容。
+> 编写[model.ts](test-temp/src/pages/store/storeGrade/list/model.ts)要注意几个内容。
 
 - model的`namespace`很重要
   - 因为在整个系统中，model是通用的，最终要通过`namespace`来进行区分调用。
@@ -320,14 +304,14 @@ export interface ModelType {
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
     Action<
-      | 'shopLevelList/add'
-      | 'shopLevelList/fetch'
-      | 'shopLevelList/remove'
-      | 'shopLevelList/update'
+      | 'StoreGradeList/add'
+      | 'StoreGradeList/fetch'
+      | 'StoreGradeList/remove'
+      | 'StoreGradeList/update'
       >
     >;
   loading: boolean;
-  shopLevelList: StateType;
+  StoreGradeList: StateType;
 }
 ```
 
@@ -348,18 +332,18 @@ interface PageProps extends FormComponentProps {
 ```tsx
 @connec
   ({
-     shopLevelList,
+     StoreGradeList,
      loading,
    }: {
-    shopLevelList: StateType;
+    StoreGradeList: StateType;
     loading: {
       models: {
         [key: string]: boolean;
       };
     };
   }) => ({
-    shopLevelList,
-    loading: loading.models.shopLevelList,
+    StoreGradeList,
+    loading: loading.models.StoreGradeList,
   }),
 )
 ```
@@ -449,16 +433,16 @@ export function connect(
 ```typescript
 // 等级列表页面
 {
-  name: 'shoplevel',
-  path: '/shop/shoplevel/',
-  component: './shop/shopLevel/levelList',
+  name: 'StoreGrade',
+  path: /store/storeGrade/',
+  component: '/store/storeGrade/list',
 },
 // 编辑商品等级页面
 {
   hideInMenu: true,
   // name: 'editlevel',
-  path: '/shop/shoplevel/editlevel',
-  component: './shop/shopLevel/editLevel',
+  path: /store/storeGrade/editlevel',
+  component: '/store/storeGrade/editLevel',
 },
 ```
 
@@ -469,9 +453,9 @@ export function connect(
 可以使用`router.push`或`Link`
 
 ```typescript
-router.push('/shop/shoplevel/editLevel?sgId=0');
+router.push(/store/storeGrade/edit?sgId=0');
 
-const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
+const goUrl = /store/storeGrade/edit?sgId=${record.sgId}`
 <Link to={goUrl}>编辑</Link>
 ```
 
@@ -507,11 +491,11 @@ const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
 - 变更时，需要通过`getById`得到要变更的数据。
 - `update`既包含了`insert`与`update`
 
-详细代码见：[_mock.ts](test-temp/src/pages/shop/shopLevel/_mock.ts)
+详细代码见：[_mock.ts](test-temp/src/page/store/storeGrade/_mock.ts)
 
 ```typescript
-  'GET /api/shop/queryShopLevelById': queryShopLevelById,
-  'POST /api/shop/updateShopLevel': updateShopLevel,
+  'GET /ap/store//queryStoreGradeById': queryStoreGradeById,
+  'POST /ap/store//updateStoreGrade': updateStoreGrade,
 ```
 
 
@@ -520,14 +504,14 @@ const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
 
 编辑页面需要查询与更新函数
 
-- queryShopLevelById
-- updateShopLevel
+- queryStoreGradeById
+- updateStoreGrade
 
 
 
 ## 4.4 编写model
 
-建议一个页面一个model，这样便于维护。详细代码见：[_mock.ts](test-temp/src/pages/shop/shopLevel/editLevel/model.ts)
+建议一个页面一个model，这样便于维护。详细代码见：[_mock.ts](test-temp/src/pages/store/storeGrade/edit/model.ts)
 
 ### ① 定义Effect接口
 
@@ -542,7 +526,7 @@ export interface StateType {
   // 点击提交按钮后的状态
   editResult?:EditResultType;
   // 从数据库检索出来的数据结构
-  currentItem:ShopLevelItem;
+  currentItem:StoreGradeItem;
 }
 ```
 
@@ -555,8 +539,8 @@ export interface ModelType {
   namespace: string;
   state: StateType;
   effects: {
-    queryShopLevelById: Effect;
-    updateShopLevel: Effect;
+    queryStoreGradeById: Effect;
+    updateStoreGrade: Effect;
     cleanCommitState: Effect;
   };
   reducers: {
@@ -604,8 +588,8 @@ export interface ModelType {
 如果有错误，就根据`response.clone().text();`得到服务器返回的状态。
 
 ```typescript
-    *updateShopLevel({ payload }, { call, put }) {
-      const response = yield call(updateShopLevel, payload);
+    *updateStoreGrade({ payload }, { call, put }) {
+      const response = yield call(updateStoreGrade, payload);
       let editResult:EditResultType = {
         ...defaultEditResult,
         isCommit: true,
@@ -651,7 +635,7 @@ interface EditLevelProps extends FormComponentProps {
   // 定义了分发的函数
   dispatch: Dispatch<any>;
   // 从model类中得到的类型
-  shopLevelEdit: StateType;
+  StoreGradeEdit: StateType;
   // 从url中需要得到的类型
   location: {
     query: {
@@ -678,19 +662,19 @@ interface EditLevelProps extends FormComponentProps {
 export default Form.create<EditLevelProps>()(
   connect(
     ({
-       shopLevelEdit,
+       StoreGradeEdit,
        loading,
     }: {
-      shopLevelEdit: StateType;
+      StoreGradeEdit: StateType;
       loading: {
           effects: {
             [key: string]: boolean;
           };
       };
     }) => ({
-      shopLevelEdit,
-      loading: loading.effects['shopLevelEdit/queryShopLevelById'],
-      submitting: loading.effects['shopLevelEdit/updateShopLevel'],
+      StoreGradeEdit,
+      loading: loading.effects['StoreGradeEdit/queryStoreGradeById'],
+      submitting: loading.effects['StoreGradeEdit/updateStoreGrade'],
   }))(EditLevel),
 );
 ```

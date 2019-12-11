@@ -48,9 +48,8 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  'menu.shop': '店铺管理',
-  'menu.shop.shopoverall': '店铺总览',
-  'menu.shop.shoplevel': '店铺等级',
-  'menu.shop.shoplevel.editlevel': '编辑店铺等级',
+  'menu.store': '店铺管理',
+  'menu.store.store': '店铺总览',
+  'menu.store.storeGrade': '店铺等级',
 
 };

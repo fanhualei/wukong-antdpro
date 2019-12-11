@@ -19,7 +19,7 @@ import { connect } from 'dva';
 import styles from './style.less';
 import { StateType as editStateType } from './model';
 // 下面这行代码，是为了测试一个页面可以关联多个model
-import { StateType as listStateType } from '../levelList/model';
+import { StateType as listStateType } from '../list/model';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -36,8 +36,8 @@ interface EditLevelProps extends FormComponentProps {
   // 定义了分发的函数
   dispatch: Dispatch<any>;
   // 从model类中得到的类型
-  shopLevelEdit: editStateType;
-  shopLevelList:listStateType;
+  StoreGradeEdit: editStateType;
+  StoreGradeList:listStateType;
   // 从url中需要得到的类型
   location: {
     query: {
@@ -54,7 +54,7 @@ class EditLevel extends Component<EditLevelProps> {
     const { dispatch, location } = this.props;
     const sgId:number = location.query && Number(location.query.sgId)
     dispatch({
-      type: 'shopLevelEdit/queryShopLevelById',
+      type: 'StoreGradeEdit/queryStoreGradeById',
       payload: { sgId },
     });
   }
@@ -65,7 +65,7 @@ class EditLevel extends Component<EditLevelProps> {
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'shopLevelEdit/cleanCommitState',
+      type: 'StoreGradeEdit/cleanCommitState',
     });
   }
 
@@ -77,7 +77,7 @@ class EditLevel extends Component<EditLevelProps> {
   // eslint-disable-next-line react/sort-comp
   handleSubmit = (e: React.FormEvent) => {
     // 得到currentItem,也就是最原始的数据,这里有只取到主键与更新的字段。
-    const { dispatch, form, shopLevelEdit: { currentItem } } = this.props;
+    const { dispatch, form, StoreGradeEdit: { currentItem } } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       values.sgFunction = values.sgFunction.join(',');
@@ -87,7 +87,7 @@ class EditLevel extends Component<EditLevelProps> {
       }
       if (!err) {
         dispatch({
-          type: 'shopLevelEdit/updateShopLevel',
+          type: 'StoreGradeEdit/updateStoreGrade',
           payload,
         });
       }
@@ -98,7 +98,7 @@ class EditLevel extends Component<EditLevelProps> {
    * 根据id得到页面的title,新增或者编辑
    */
   getTitle():string {
-    const { shopLevelEdit: { currentItem } } = this.props;
+    const { StoreGradeEdit: { currentItem } } = this.props;
     let title:string = '编辑店铺等级';
     if (currentItem.sgId && currentItem.sgId === 0) {
       title = '新增店铺等级';
@@ -122,7 +122,7 @@ class EditLevel extends Component<EditLevelProps> {
    * 显示form输入框
    */
   renderForm() {
-    const { submitting, shopLevelEdit: { currentItem } } = this.props;
+    const { submitting, StoreGradeEdit: { currentItem } } = this.props;
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -252,7 +252,7 @@ class EditLevel extends Component<EditLevelProps> {
    * 显示提交结果
    */
   renderResult() {
-    const { editResult } = this.props.shopLevelEdit;
+    const { editResult } = this.props.StoreGradeEdit;
     // 返回按钮
     const extra = (
       <Fragment>
@@ -304,7 +304,7 @@ class EditLevel extends Component<EditLevelProps> {
    * 整个页面的显示逻辑
    */
   render() {
-    const { editResult } = this.props.shopLevelEdit;
+    const { editResult } = this.props.StoreGradeEdit;
     console.log(this.props)
     if (editResult && editResult.isCommit) {
       return this.renderResult();
@@ -315,26 +315,26 @@ class EditLevel extends Component<EditLevelProps> {
 
 /**
  * 加载form与connect,其中 loading 与 submitting 的状态
- * 分别从 queryShopLevelById 与updateShopLevel得到。
+ * 分别从 queryStoreGradeById 与updateStoreGrade得到。
  */
 export default Form.create<EditLevelProps>()(
   connect(
     ({
-       shopLevelEdit,
+       StoreGradeEdit,
        loading,
-       shopLevelList,
+       StoreGradeList,
     }: {
-      shopLevelEdit: editStateType;
+      StoreGradeEdit: editStateType;
       loading: {
           effects: {
             [key: string]: boolean;
           };
       };
-      shopLevelList:listStateType;
+      StoreGradeList:listStateType;
     }) => ({
-      shopLevelEdit,
-      shopLevelList,
-      loading: loading.effects['shopLevelEdit/queryShopLevelById'],
-      submitting: loading.effects['shopLevelEdit/updateShopLevel'],
+      StoreGradeEdit,
+      StoreGradeList,
+      loading: loading.effects['StoreGradeEdit/queryStoreGradeById'],
+      submitting: loading.effects['StoreGradeEdit/updateStoreGrade'],
   }))(EditLevel),
 );

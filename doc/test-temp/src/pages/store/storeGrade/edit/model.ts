@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { ShopLevelItem } from '../data.d';
-import { queryShopLevelById, updateShopLevel } from '../service';
+import { StoreGradeItem } from '../data.d';
+import { queryStoreGradeById, updateStoreGrade } from '../service';
 
 /**
  * 这个好像是通用的，那个model都有
@@ -30,13 +30,13 @@ export interface StateType {
   // 点击提交按钮后的状态
   editResult?:EditResultType;
   // 从数据库检索出来的数据结构
-  currentItem:ShopLevelItem;
+  currentItem:StoreGradeItem;
 }
 
 /**
  * 默认的数据结构
  */
-const defaultShopLevelItem:ShopLevelItem = {
+const defaultStoreGradeItem:StoreGradeItem = {
   sgId: 0,
   sgName: '',
   sgGoodsLimit: 100,
@@ -63,8 +63,8 @@ export interface ModelType {
   namespace: string;
   state: StateType;
   effects: {
-    queryShopLevelById: Effect;
-    updateShopLevel: Effect;
+    queryStoreGradeById: Effect;
+    updateStoreGrade: Effect;
     cleanCommitState: Effect;
   };
   reducers: {
@@ -76,10 +76,10 @@ export interface ModelType {
  * model的实现
  */
 const Model: ModelType = {
-  namespace: 'shopLevelEdit',
+  namespace: 'StoreGradeEdit',
 
   state: {
-    currentItem: defaultShopLevelItem,
+    currentItem: defaultStoreGradeItem,
     editResult: defaultEditResult,
   },
 
@@ -94,7 +94,7 @@ const Model: ModelType = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *cleanCommitState({ payload }, { call, put }) {
       const newState:StateType = {
-        currentItem: { ...defaultShopLevelItem },
+        currentItem: { ...defaultStoreGradeItem },
         editResult: { ...defaultEditResult },
       }
       yield put({
@@ -108,15 +108,15 @@ const Model: ModelType = {
      * @param call
      * @param put
      */
-    *queryShopLevelById({ payload }, { call, put }) {
+    *queryStoreGradeById({ payload }, { call, put }) {
       let newState:StateType;
       if (payload.sgId === 0) {
         newState = {
-          currentItem: { ...defaultShopLevelItem },
+          currentItem: { ...defaultStoreGradeItem },
           editResult: { ...defaultEditResult },
         }
       } else {
-        const response = yield call(queryShopLevelById, payload.sgId);
+        const response = yield call(queryStoreGradeById, payload.sgId);
         newState = {
           currentItem: response,
           editResult: { ...defaultEditResult },
@@ -133,8 +133,8 @@ const Model: ModelType = {
      * @param call
      * @param put
      */
-    *updateShopLevel({ payload }, { call, put }) {
-      const response = yield call(updateShopLevel, payload);
+    *updateStoreGrade({ payload }, { call, put }) {
+      const response = yield call(updateStoreGrade, payload);
       let editResult:EditResultType = {
         ...defaultEditResult,
         isCommit: true,

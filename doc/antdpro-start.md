@@ -155,6 +155,6 @@ tyarn start
 
 ```js
 import { StateType as editStateType } from './model';
-import { StateType as listStateType } from '../levelList/model';
+import { StateType as listStateType } from '../list/model';
 ```
 

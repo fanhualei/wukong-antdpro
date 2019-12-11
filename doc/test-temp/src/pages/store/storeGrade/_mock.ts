@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
-import { ShopLevelItem, ShopLevelListParams } from './data.d';
+import { StoreGradeItem, StoreGradeListParams } from './data.d';
 
 // mock tableListDataSource
-let tableListDataSource: ShopLevelItem[] = [];
+let tableListDataSource: StoreGradeItem[] = [];
 
 for (let i = 1; i < 85; i += 1) {
   let sgName:string = `店铺${i + 1}`;
@@ -27,9 +27,9 @@ for (let i = 1; i < 85; i += 1) {
  * @param req
  * @param res
  */
-function queryShopLevelById(req: Request, res: Response) {
+function queryStoreGradeById(req: Request, res: Response) {
   const sgId:number = Number(req.query.sgId)
-  const result:ShopLevelItem = tableListDataSource.filter(item => item.sgId === sgId)[0]
+  const result:StoreGradeItem = tableListDataSource.filter(item => item.sgId === sgId)[0]
   setTimeout(() => res.json(result), 1000);
 }
 
@@ -38,8 +38,8 @@ function queryShopLevelById(req: Request, res: Response) {
  * @param req
  * @param res
  */
-function updateShopLevel(req: Request, res: Response) {
-  const newItem:ShopLevelItem = <ShopLevelItem>req.body;
+function updateStoreGrade(req: Request, res: Response) {
+  const newItem:StoreGradeItem = <StoreGradeItem>req.body;
   if (!newItem.sgId || newItem.sgId === 0) {
     let maxSgId:number = 0;
     tableListDataSource.forEach(v => {
@@ -81,14 +81,14 @@ function updateShopLevel(req: Request, res: Response) {
  * @param res
  * @param u
  */
-function getShopLevel(req: Request, res: Response, u: string) {
+function getStoreGrade(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     // eslint-disable-next-line prefer-destructuring
     url = req.url;
   }
 
-  const params = (parse(url, true).query as unknown) as ShopLevelListParams;
+  const params = (parse(url, true).query as unknown) as StoreGradeListParams;
 
   let dataSource = tableListDataSource;
 
@@ -129,7 +129,7 @@ function getShopLevel(req: Request, res: Response, u: string) {
  * @param req
  * @param res
  */
-function deleteShopLevel(req: Request, res: Response) {
+function deleteStoreGrade(req: Request, res: Response) {
   const { sgId } = req.body;
   tableListDataSource = tableListDataSource.filter(item => sgId !== item.sgId);
   const result = {
@@ -143,8 +143,8 @@ function deleteShopLevel(req: Request, res: Response) {
 
 
 export default {
-  'GET /api/shop/getShopLevel': getShopLevel,
-  'GET /api/shop/queryShopLevelById': queryShopLevelById,
-  'POST /api/shop/deleteShopLevel': deleteShopLevel,
-  'POST /api/shop/updateShopLevel': updateShopLevel,
+  'GET /api/shop/getStoreGrade': getStoreGrade,
+  'GET /api/shop/queryStoreGradeById': queryStoreGradeById,
+  'POST /api/shop/deleteStoreGrade': deleteStoreGrade,
+  'POST /api/shop/updateStoreGrade': updateStoreGrade,
 };

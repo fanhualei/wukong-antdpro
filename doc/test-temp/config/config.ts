@@ -112,26 +112,27 @@ export default {
               authority: ['admin'],
             },
             {
-              path: '/shop',
+              path: '/store',
               icon: 'crown',
-              name: 'shop',
+              name: 'store',
               routes: [
                 //商品总览页面
                 {
-                  name: 'shopoverall',
-                  path: '/shop/shopoverall/',
-                  component: './shop/shopOverall/shopList',
-                }, // 等级列表页面
+                  name: 'store',
+                  path: '/store/store/',
+                  component: './store/store/list',
+                },
+                // 等级列表页面
                 {
-                  name: 'shoplevel',
-                  path: '/shop/shoplevel/',
-                  component: './shop/shopLevel/levelList',
-                }, // 编辑商品等级页面
+                  name: 'storeGrade',
+                  path: '/store/storeGrade/',
+                  component: './store/storeGrade/list',
+                },
+                // 编辑商品等级页面
                 {
                   hideInMenu: true,
-                  // name: 'editlevel',
-                  path: '/shop/shoplevel/editlevel',
-                  component: './shop/shopLevel/editLevel',
+                  path: '/store/storeGrade/edit',
+                  component: './store/storeGrade/edit',
                 },
               ],
             },

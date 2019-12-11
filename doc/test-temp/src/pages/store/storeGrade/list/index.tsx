@@ -17,7 +17,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { SorterResult, ColumnProps } from 'antd/es/table';
 import { connect } from 'dva';
 import { StateType } from './model';
-import { ShopLevelItem, Pagination, ShopLevelListParams } from '../data.d';
+import { StoreGradeItem, Pagination, StoreGradeListParams } from '../data.d';
 
 import styles from './style.less';
 import { router, Link } from 'umi';
@@ -27,12 +27,12 @@ const FormItem = Form.Item;
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
     Action<
-      | 'shopLevelList/fetch'
-      | 'shopLevelList/remove'
+      | 'StoreGradeList/fetch'
+      | 'StoreGradeList/remove'
       >
     >;
   loading: boolean;
-  shopLevelList: StateType;
+  StoreGradeList: StateType;
 }
 
 interface PageState {
@@ -42,26 +42,26 @@ interface PageState {
 /* eslint react/no-multi-comp:0 */
 @connect(
   ({
-     shopLevelList,
+     StoreGradeList,
      loading,
    }: {
-    shopLevelList: StateType;
+    StoreGradeList: StateType;
     loading: {
       models: {
         [key: string]: boolean;
       };
     };
   }) => ({
-    shopLevelList,
-    loading: loading.models.shopLevelList,
+    StoreGradeList,
+    loading: loading.models.StoreGradeList,
   }),
 )
-class ShopLevelListPage extends Component<PageProps, PageState> {
+class StoreGradeListPage extends Component<PageProps, PageState> {
   state: PageState = {
     formValues: {},
   };
 
-  columns: ColumnProps<ShopLevelItem>[] = [
+  columns: ColumnProps<StoreGradeItem>[] = [
     {
       title: '级别',
       dataIndex: 'sgSort',
@@ -98,7 +98,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     {
       title: '操作',
       render: (text: any, record: any) => {
-        const goUrl = `/shop/shoplevel/editLevel?sgId=${record.sgId}`
+        const goUrl = `/store/storeGrade/edit?sgId=${record.sgId}`
         return (
         <Fragment>
           <Link to={goUrl}>编辑</Link>
@@ -118,7 +118,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'shopLevelList/fetch',
+      type: 'StoreGradeList/fetch',
     });
   }
 
@@ -126,7 +126,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
     console.log(sgId)
     const { dispatch } = this.props;
     dispatch({
-      type: 'shopLevelList/remove',
+      type: 'StoreGradeList/remove',
       payload: {
         sgId,
       },
@@ -149,13 +149,13 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
    */
   handleStandardTableChange = (
     pagination: Partial<Pagination>,
-    filtersArg: Record<keyof ShopLevelItem, string[]>,
-    sorter: SorterResult<ShopLevelItem>,
+    filtersArg: Record<keyof StoreGradeItem, string[]>,
+    sorter: SorterResult<StoreGradeItem>,
   ) => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
-    const params: Partial<ShopLevelListParams> = {
+    const params: Partial<StoreGradeListParams> = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
@@ -165,7 +165,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
     dispatch({
-      type: 'shopLevelList/fetch',
+      type: 'StoreGradeList/fetch',
       payload: params,
     });
   };
@@ -180,7 +180,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
       formValues: {},
     });
     dispatch({
-      type: 'shopLevelList/fetch',
+      type: 'StoreGradeList/fetch',
       payload: {},
     });
   };
@@ -207,14 +207,14 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
       });
 
       dispatch({
-        type: 'shopLevelList/fetch',
+        type: 'StoreGradeList/fetch',
         payload: values,
       });
     });
   };
 
   addNew=() => {
-    router.push('/shop/shoplevel/editLevel?sgId=0');
+    router.push('/store/storeGrade/edit?sgId=0');
   };
 
   /**
@@ -249,7 +249,7 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
   render() {
     // 从props中得到数据以及当前检索状态
     const {
-      shopLevelList: { data },
+      StoreGradeList: { data },
       loading,
     } = this.props;
 
@@ -291,4 +291,4 @@ class ShopLevelListPage extends Component<PageProps, PageState> {
   }
 }
 
-export default Form.create<PageProps>()(ShopLevelListPage);
+export default Form.create<PageProps>()(StoreGradeListPage);
