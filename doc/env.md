@@ -21,13 +21,18 @@
 
 
 
-| 名称        | 说明                                                         |
-| ----------- | ------------------------------------------------------------ |
-| Notepad++   | 一个轻型文本编辑器                                           |
-| Git         | 是安装小乌龟的前提条件,[下载地址](https://git-scm.com/download/win) |
-| TortoiseGit | 如果没有安装git，需要安装,[参考网址](https://www.cnblogs.com/wupenglei-5/p/8744801.html) |
-| Webstorm    | 一个收费的开发环境                                           |
-| AxureRP8    | 原型工具，安装方法可以问我。                                 |
+| 名称                                                         | 说明                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Notepad++                                                    | 一个轻型文本编辑器                                           |
+| Git                                                          | 是安装小乌龟的前提条件,[下载地址](https://git-scm.com/download/win) |
+| TortoiseGit                                                  | 如果没有安装git，需要安装,[参考网址](https://www.cnblogs.com/wupenglei-5/p/8744801.html) |
+| Webstorm                                                     | 一个收费的开发环境                                           |
+| AxureRP8                                                     | 原型工具，安装方法可以问我。                                 |
+| [redux-devtools调试工具](https://github.com/zalmoxisus/redux-devtools-extension) | 调试插件，需要翻墙才可以，可以不安装                         |
+
+*下载redux-devtools后，在工程目录中执行：cnpm install redux-devtools-extension --save-dev*
+
+
 
 
 

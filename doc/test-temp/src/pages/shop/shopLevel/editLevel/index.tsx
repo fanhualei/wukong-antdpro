@@ -17,7 +17,9 @@ import { FormComponentProps } from 'antd/es/form';
 import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import styles from './style.less';
-import { StateType } from './model';
+import { StateType as editStateType } from './model';
+// 下面这行代码，是为了测试一个页面可以关联多个model
+import { StateType as listStateType } from '../levelList/model';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -34,7 +36,8 @@ interface EditLevelProps extends FormComponentProps {
   // 定义了分发的函数
   dispatch: Dispatch<any>;
   // 从model类中得到的类型
-  shopLevelEdit: StateType;
+  shopLevelEdit: editStateType;
+  shopLevelList:listStateType;
   // 从url中需要得到的类型
   location: {
     query: {
@@ -302,6 +305,7 @@ class EditLevel extends Component<EditLevelProps> {
    */
   render() {
     const { editResult } = this.props.shopLevelEdit;
+    console.log(this.props)
     if (editResult && editResult.isCommit) {
       return this.renderResult();
     }
@@ -318,15 +322,18 @@ export default Form.create<EditLevelProps>()(
     ({
        shopLevelEdit,
        loading,
+       shopLevelList,
     }: {
-      shopLevelEdit: StateType;
+      shopLevelEdit: editStateType;
       loading: {
           effects: {
             [key: string]: boolean;
           };
       };
+      shopLevelList:listStateType;
     }) => ({
       shopLevelEdit,
+      shopLevelList,
       loading: loading.effects['shopLevelEdit/queryShopLevelById'],
       submitting: loading.effects['shopLevelEdit/updateShopLevel'],
   }))(EditLevel),

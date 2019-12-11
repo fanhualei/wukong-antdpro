@@ -2,9 +2,15 @@
 
 汇总了antdpro中常用的typeScript的语法。
 
+[TOC]
 
 
-> 从一个对象中获得属性
+
+
+
+
+
+从一个对象中获得属性
 
 # 1. 变量相关
 
@@ -383,6 +389,100 @@ Object.keys(person) // ["name", "age", "address","getName"]
 
 
 
+## 3.3 异步函数
+
+
+
+### 3.3.1 概要
+
+在处理复杂的异步请求的时候，很容易让逻辑混乱，陷入嵌套陷阱，所以 Ant Design Pro 的底层基础框架 [dva](https://github.com/dvajs/dva) 使用 `effect` 的方式来管理同步化异步请求：
+
+```js
+effects: {
+  *fetch({ payload }, { call, put }) {
+    yield put({
+      type: 'changeLoading',
+      payload: true,
+    });
+    // 异步请求 1
+    const response = yield call(queryFakeList, payload);
+    yield put({
+      type: 'save',
+      payload: response,
+    });
+    // 异步请求 2
+    const response2 = yield call(queryFakeList2, payload);
+    yield put({
+      type: 'save2',
+      payload: response2,
+    });
+    yield put({
+      type: 'changeLoading',
+      payload: false,
+    });
+  },
+},
+```
+
+在service中使用到了`async`
+
+```js
+import request from '@/utils/request';
+
+export async function queryFakeList() {
+  return request('/api/fanhl/user');
+}
+
+export async function queryFakeList2() {
+  return request('/api/fanhl/getNotice');
+}
+```
+
+
+
+通过 [generator](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/function*) 和 [yield](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/yield) 使得异步调用的逻辑处理跟同步一样，更多可参看 [dva async logic](https://github.com/dvajs/dva/blob/master/docs/GettingStarted.md#async-logic)。
+
+
+
+### 3.3.2 基本语法
+
+#### ①  function*
+
+`function*` 这种声明方式(`function`关键字后跟一个星号）会定义一个**生成器函数 (***generator function***)**，它返回一个  [`Generator`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator)  对象。
+
+```js
+#语法
+function* name([param[, param[, ... param]]]) { statements }
+```
+
+- `name`
+
+  函数名
+
+- `param`
+
+  要传递给函数的一个参数的名称，一个函数最多可以有255个参数。
+
+- `statements`
+
+  普通JS语句。
+
+  ```js
+  function *gen(){
+      yield 10;
+      x=yield 'foo';
+      yield x;
+  }
+  
+  var gen_obj=gen();
+  console.log(gen_obj.next());// 执行 yield 10，返回 10
+  console.log(gen_obj.next());// 执行 yield 'foo'，返回 'foo'
+  console.log(gen_obj.next(100));// 将 100 赋给上一条 yield 'foo' 的左值，即执行 x=100，返回 100
+  console.log(gen_obj.next());// 执行完毕，value 为 undefined，done 为 true
+  ```
+
+  
+
 
 
 
@@ -557,4 +657,67 @@ const s:string = values.sgFunction.join(',');
 ```
 
 
+
+# 5. Dva框架
+
+[官方网址](https://dvajs.com/guide/introduce-class.html#数据流图)
+
+![alt](imgs/dva.png)
+
+
+
+## 5.1 核心概念
+
+- State：一个对象，保存整个应用状态
+- View：React 组件构成的视图层
+- Action：一个对象，描述事件
+- connect 方法：一个函数，绑定 State 到 View
+- dispatch 方法：一个函数，发送 Action 到 State
+
+### State 和 View
+
+State 是储存数据的地方，收到 Action 以后，会更新数据。
+
+View 就是 React 组件构成的 UI 层，从 State 取数据后，渲染成 HTML 代码。只要 State 有变化，View 就会自动更新。
+
+### Action
+
+Action 是用来描述 UI 层事件的一个对象。
+
+```js
+{
+  type: 'click-submit-button',
+  payload: this.form.data
+}
+```
+
+### connect 方法
+
+connect 是一个函数，绑定 State 到 View。
+
+```js
+import { connect } from 'dva';
+
+function mapStateToProps(state) {
+  return { todos: state.todos };
+}
+connect(mapStateToProps)(App);
+```
+
+connect 方法返回的也是一个 React 组件，通常称为容器组件。因为它是原始 UI 组件的容器，即在外面包了一层 State。
+
+connect 方法传入的第一个参数是 mapStateToProps 函数，mapStateToProps 函数会返回一个对象，用于建立 State 到 Props 的映射关系。
+
+### dispatch 方法
+
+dispatch 是一个函数方法，用来将 Action 发送给 State。
+
+```js
+dispatch({
+  type: 'click-submit-button',
+  payload: this.form.data
+})
+```
+
+dispatch 方法从哪里来？被 connect 的 Component 会自动在 props 中拥有 dispatch 方法。
 

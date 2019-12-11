@@ -145,10 +145,16 @@ tyarn start
 
   * 难点在如何将`respone.clone().text()`这个异步函数，变成阻塞同步函数。
 
-  
 
 #### ④ UI 层
 
 * 如何有两个状态，加载状态与提交状态。
 * 如何使编译页面与结果页面在一个页中。
 * 在与列表页进行切换时，model中的state被缓存下来的问题。
+* 同时引用两个model
+
+```js
+import { StateType as editStateType } from './model';
+import { StateType as listStateType } from '../levelList/model';
+```
+
