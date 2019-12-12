@@ -134,6 +134,30 @@ export default {
                   path: '/store/storeGrade/edit',
                   component: './store/storeGrade/edit',
                 },
+                // 店铺帮助
+                {
+                  name: 'storeHelp',
+                  path: '/store/storeHelp/',
+                  component: './store/storeHelp',
+                  hideChildrenInMenu: true,
+                  routes: [
+                    {
+                      path: '/store/storeHelp/',
+                      redirect: '/store/storeHelp/list',
+                    },
+                    {
+                      path: '/store/storeHelp/list',
+                      name: 'list',
+                      component: './store/storeHelp/list',
+                    },
+                    {
+                      path: '/store/storeHelp/type',
+                      name: 'type',
+                      component: './store/storeHelp/type',
+                    },
+                  ],
+                },
+
               ],
             },
             {

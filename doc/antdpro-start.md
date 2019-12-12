@@ -158,3 +158,32 @@ import { StateType as editStateType } from './model';
 import { StateType as listStateType } from '../list/model';
 ```
 
+
+
+
+
+# 3. 案例二
+
+
+
+![alt](imgs/example2-list.png)
+
+
+
+## 3.1 难点
+
+
+
+* tab页的布局
+* 新做一个操作帮助组件
+* table中可以编辑
+* 可以弹出层，进行编辑。
+* 富文本编辑框
+* 上传文件组件
+
+
+
+
+
+
+

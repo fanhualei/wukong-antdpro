@@ -22,6 +22,7 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
 
     * [TS快速入门](doc/ts.md)
     * [TS语法说明](doc/ts-detail.md)
+    * [阮一峰TS教程](https://ts.xcatliu.com/basics)
   * React
 
     * [环境搭建](doc/react-env.md)

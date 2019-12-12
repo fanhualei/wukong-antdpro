@@ -220,9 +220,34 @@ console.log(typeof sgId)
 
 
 
+## 1.4 访问变量
+
+### ① 动态key获取值	
+
+js根据动态key获取得到某对象中相应的属性值得两个方法
+
+1,obj[key]  
+
+2.eval('obj.'+key)   
+
+```js
+var obj = {x:1,y:2,z:3};
+var a = [],i=0;
+for(i in o){
+console.log(i);
+a.push(i);
+console.log(obj[i]);//遍历对象属性值的方法 1 2 3
+console.log(eval('obj.'+key));//遍历对象属性值的方法 1 2 3
+
+```
 
 
 
+
+
+### ② 遍历key或value
+
+Object.key
 
 
 

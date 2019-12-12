@@ -51,5 +51,8 @@ export default {
   'menu.store': '店铺管理',
   'menu.store.store': '店铺总览',
   'menu.store.storeGrade': '店铺等级',
+  'menu.store.storeHelp': '店铺帮助',
+  'menu.store.storeHelp.list': '帮助内容',
+  'menu.store.storeHelp.type': '帮助类型',
 
 };

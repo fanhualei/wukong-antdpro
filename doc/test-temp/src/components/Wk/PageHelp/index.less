@@ -1,0 +1,17 @@
+@import '~antd/es/style/themes/default.less';
+//覆盖组件样式Collapse折叠面板,取消边框
+.customCollapse {
+  margin-bottom: 23px;
+  border: 0;
+  :global {
+    .ant-collapse-content {
+      color: @text-color-secondary;
+      border: 0;
+    }
+    .ant-collapse-item {
+      border: 0;
+    }
+  };
+}
+
+
