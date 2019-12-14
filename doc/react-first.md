@@ -628,6 +628,12 @@ export default C04;
 
 改变状态有三种方法，同得到状态值。 但是如果要往函数里面传递参数，还需要用到bing这一种方法。
 
+下面是最常用的方法：
+
+```
+<a onClick={() => this.goEditPage(record.helpId)}>编辑</a>
+```
+
 下面新建立一个`C04_set.js`文件。
 
 ```js
@@ -683,6 +689,7 @@ class C04_set extends React.Component {
                 {/* 绑定this */}
                 <button onClick={this.fun3.bind(this)}> 第三种方法 </button>
                 <button onClick={this.fun4.bind(this,"8888888")}> 传递参数方法 </button>
+                <a onClick={() => this.fun4("8888888"}>编辑</a>
               </div>  
 
             </div>

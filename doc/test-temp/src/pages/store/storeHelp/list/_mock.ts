@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { HelpItem, HelpListParams } from './data.d';
+import { getRandomNumber } from '@/utils/Wk/tools'
 
 const helpListDataSource: HelpItem[] = [];
 
@@ -11,9 +12,10 @@ for (let i = 1; i < 30; i += 1) {
     helpSort: 0,
     helpTitle,
     helpInfo: '',
-    updateTime: new Date(`2017-07-${Math.floor(i / 2) + 1} 12:12:12`),
+    updateTime: new Date(`2017-07-${Math.floor(i / 2) + 1} 8:10:10`),
+    // updateTime: new Date(),
     pageShow: 1,
-    typeId: 0,
+    typeId: getRandomNumber(1, 15),
   });
 }
 

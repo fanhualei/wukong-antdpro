@@ -9,15 +9,19 @@ import {
 } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import styles from './style.less';
-// import { HelpTypeItem } from '../type/data.d'
+import { HelpTypeItem } from '../type/data.d'
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
+
+interface handleFormSearchType{
+  (values:{}):void
+}
+
 export interface PageProps extends FormComponentProps{
-  header?:string;
-  children?: React.ReactNode;
-  helpTypes:[];
+  helpTypes:HelpTypeItem[];
+  handleFormSearch:handleFormSearchType;
 }
 
 
@@ -26,26 +30,34 @@ class SearchForm extends Component<PageProps> {
    * 重置查询条件，并重新查询
    */
   handleFormReset = () => {
-    const { form } = this.props;
+    const { form, handleFormSearch } = this.props;
     form.resetFields();
+    handleFormSearch({})
   };
 
+  /**
+   * 点击查询按钮
+   * @param e
+   */
   handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const { form } = this.props;
+    const { form, handleFormSearch } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const values = {
         ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
       };
-      console.log(values)
+      handleFormSearch(values)
     });
   };
 
-  getTypeOption = (list:[], id:string, name:string) => {
-    // const { helpTypes } = this.props;
-    // const list = helpTypes;
+  /**
+   * 得到一个下拉框数组
+   * @param list 下拉框内容
+   * @param id   编号
+   * @param name 名称
+   */
+  getOptions = (list: HelpTypeItem[], id: string, name: string) => {
     if (!list || list.length < 1) {
       return (
         <Option key={0} value={0}>
@@ -76,7 +88,7 @@ class SearchForm extends Component<PageProps> {
               <FormItem label="帮助类型">
                 {getFieldDecorator('typeId')(
                   <Select placeholder="请选择" >
-                    {this.getTypeOption(helpTypes, 'typeId', 'typeName')}
+                    {this.getOptions(helpTypes, 'typeId', 'typeName')}
                   </Select>,
                 )}
               </FormItem>

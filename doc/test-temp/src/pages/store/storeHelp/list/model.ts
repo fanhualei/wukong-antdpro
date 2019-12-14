@@ -35,7 +35,9 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
+      console.log('-----------------------para-----------------')
       const response = yield call(queryHelp, payload);
+      console.log(response)
       yield put({
         type: 'save',
         payload: response,
