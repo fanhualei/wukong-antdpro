@@ -16,12 +16,6 @@ export interface Pagination {
   current: number;
 }
 
-// export interface HelpListData {
-//   list: HelpItem[];
-//   pagination?: Partial<Pagination>;
-// }
-
-
 export interface HelpListParams {
   // 这些跟业务有关系
   helpTitle: string;
@@ -30,9 +24,4 @@ export interface HelpListParams {
   sorter: string;
   pageSize: number;
   currentPage: number;
-}
-
-export interface HelpDelParams {
-  helpIds: string;
-  helpId: number;
 }

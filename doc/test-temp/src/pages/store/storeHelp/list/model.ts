@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryHelp, deleteHelp } from './service';
+import { queryHelp, deleteManyHelp, deleteOneHelp } from './service';
 
 import { HelpItem, Pagination } from './data.d';
 
@@ -19,7 +19,8 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    remove: Effect;
+    deleteOne: Effect;
+    deleteMany: Effect;
   };
   reducers: {
     save: Reducer<StateType>;
@@ -35,16 +36,22 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      console.log('-----------------------para-----------------')
       const response = yield call(queryHelp, payload);
-      console.log(response)
       yield put({
         type: 'save',
         payload: response,
       });
     },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(deleteHelp, payload);
+    *deleteOne({ payload, callback }, { call, put }) {
+      const response = yield call(deleteOneHelp, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
+    },
+    *deleteMany({ payload, callback }, { call, put }) {
+      const response = yield call(deleteManyHelp, payload);
       yield put({
         type: 'save',
         payload: response,

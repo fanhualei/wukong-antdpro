@@ -42,6 +42,10 @@ class DataTable extends Component<PageProps> {
   };
 
 
+  /**
+   * 得到列的属性定义
+   * @param helpTypeList
+   */
   getColumns=(helpTypeList:HelpTypeItem[]) => {
     const columns: ColumnProps<HelpItem>[] = [
       {
@@ -72,7 +76,9 @@ class DataTable extends Component<PageProps> {
           <Fragment>
             <a onClick={() => this.goEditPage(record.helpId)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => this.delOne(record.helpId)}>删除</a>
+            <Popconfirm title="是否要删除此记录？" onConfirm={() => this.delOne(record.helpId)}>
+              <a>删除</a>
+            </Popconfirm>
           </Fragment>
         ),
       },
@@ -80,6 +86,10 @@ class DataTable extends Component<PageProps> {
     return columns;
   }
 
+  /**
+   * 跳转到编辑页面
+   * @param id
+   */
   goEditPage=(id:number = 0) => {
     const { handleTableGoEditPage } = this.props
     if (handleTableGoEditPage) {
@@ -87,6 +97,10 @@ class DataTable extends Component<PageProps> {
     }
   }
 
+  /**
+   * 删除一个记录
+   * @param id
+   */
   delOne=(id:number) => {
     const { handleTableDelOne } = this.props
     if (handleTableDelOne) {
@@ -94,6 +108,9 @@ class DataTable extends Component<PageProps> {
     }
   }
 
+  /**
+   * 删除多个记录
+   */
   delMany=() => {
     const { handleTableDelMany } = this.props
     const { selectedRowKeys } = this.state
@@ -103,17 +120,28 @@ class DataTable extends Component<PageProps> {
     this.cleanSelectedKeys();
   }
 
+  /**
+   * 点击行选择框的事件
+   * @param selectedRowKeys
+   * @param selectedRows
+   */
   handleRowSelectChange: TableRowSelection<HelpItem>['onChange'] = (
     selectedRowKeys,
     selectedRows: HelpItem[],
   ) => {
-    // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     this.setState({
       selectedRows,
       selectedRowKeys,
     })
   };
 
+  /**
+   * 点击表格分页、排序、筛选的属性
+   * @param pagination
+   * @param filtersArg
+   * @param sorter
+   * @param rest
+   */
   handleTableChange: TableProps<HelpItem>['onChange'] = (
     pagination,
     filtersArg,
@@ -136,19 +164,24 @@ class DataTable extends Component<PageProps> {
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-    console.log(params)
     const { handleTableRefresh } = this.props;
     if (handleTableRefresh) {
       handleTableRefresh(params)
     }
   };
 
+  /**
+   * 清除选中标记
+   */
   cleanSelectedKeys = () => {
     if (this.handleRowSelectChange) {
       this.handleRowSelectChange([], []);
     }
   };
 
+  /**
+   * 选中状态提示框
+   */
   renderSimpleForm() {
     const { selectedRows } = this.state;
     return (
@@ -169,6 +202,9 @@ class DataTable extends Component<PageProps> {
     )
   }
 
+  /**
+   * 刷新页面主程序
+   */
   render() {
     const { loading, helpList, pagination, helpTypeList } = this.props;
     const { selectedRowKeys } = this.state;

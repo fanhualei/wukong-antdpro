@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { HelpListParams, HelpItem, HelpDelParams } from './data.d';
+import { HelpListParams, HelpItem } from './data.d';
 
 export async function queryHelpById(helpId: number) {
   return request(`/api/shop/help/queryHelpById?helpId=${helpId}`);
@@ -13,8 +13,17 @@ export async function queryHelp(params: HelpListParams) {
 }
 
 
-export async function deleteHelp(params: HelpDelParams) {
-  return request('/api/shop/help/deleteHelp', {
+export async function deleteOneHelp(params: {helpId:number}) {
+  return request('/api/shop/help/deleteOneHelp', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function deleteManyHelp(params: {helpIds:string}) {
+  return request('/api/shop/help/deleteManyHelp', {
     method: 'POST',
     data: {
       ...params,
@@ -31,4 +40,3 @@ export async function updateHelp(params: HelpItem) {
     },
   });
 }
-

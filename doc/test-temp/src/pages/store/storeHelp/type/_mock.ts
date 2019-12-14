@@ -60,7 +60,6 @@ function updateHelpType(req: Request, res: Response) {
 }
 
 
-
 function queryHelpType(req: Request, res: Response) {
   const dataSource = helpTypeListDataSource;
   const result = {

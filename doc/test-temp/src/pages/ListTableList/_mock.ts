@@ -93,7 +93,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
 
   const body = (b && b.body) || req.body;
   const { method, name, desc, key } = body;
-
+  console.log(key)
   switch (method) {
     /* eslint no-case-declarations:0 */
     case 'delete':

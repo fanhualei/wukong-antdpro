@@ -20,7 +20,7 @@ interface handleFormSearchType{
 }
 
 export interface PageProps extends FormComponentProps{
-  helpTypes:HelpTypeItem[];
+  helpTypeList:HelpTypeItem[];
   handleFormSearch:handleFormSearchType;
 }
 
@@ -73,7 +73,7 @@ class SearchForm extends Component<PageProps> {
   };
 
   render() {
-    const { form, helpTypes } = this.props;
+    const { form, helpTypeList } = this.props;
     const { getFieldDecorator } = form;
     return (
       <div className={styles.tableListForm}>
@@ -88,7 +88,7 @@ class SearchForm extends Component<PageProps> {
               <FormItem label="帮助类型">
                 {getFieldDecorator('typeId')(
                   <Select placeholder="请选择" >
-                    {this.getOptions(helpTypes, 'typeId', 'typeName')}
+                    {this.getOptions(helpTypeList, 'typeId', 'typeName')}
                   </Select>,
                 )}
               </FormItem>

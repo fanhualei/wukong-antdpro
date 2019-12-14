@@ -17,7 +17,8 @@ interface PageProps extends FormComponentProps {
     Action<
       | 'HelpTypeList/fetch'
       | 'HelpList/fetch'
-      | 'HelpList/remove'
+      | 'HelpList/deleteOne'
+      | 'HelpList/deleteMany'
       >
     >;
   loading: boolean;
@@ -80,7 +81,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
   }
 
   /**
-   * 获得从子窗口得到的数据
+   * 获得检索条件
    * @param values
    */
   handleFormSearch = (values:{}) => {
@@ -89,7 +90,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
   };
 
   /**
-   * 表格刷新函数
+   * 回调函数-Table-刷新数据
    * @param params
    */
   handleTableRefresh=(params:Partial<HelpListParams>) => {
@@ -97,23 +98,40 @@ class StoreHelpList extends Component<PageProps, PageState> {
     this.refreshData();
   }
 
-  handleTableDelOne=(id:number) => {
-    console.log(id)
+  /**
+   * 回调函数-Table-删除一条记录
+   * @param id
+   */
+  handleTableDelOne=(helpId:number) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'HelpList/deleteOne',
+      payload: { helpId },
+    });
   }
 
-  handleTableDelMany=(ids:string) => {
-    console.log(ids)
+  /**
+   * 回调函数-Table-删除多条记录
+   * @param ids
+   */
+  handleTableDelMany=(helpIds:string) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'HelpList/deleteMany',
+      payload: { helpIds },
+    });
   }
 
+  /**
+   * 回调函数-Table-跳转到编辑框
+   * @param id
+   */
   handleTableGoEditPage=(id:number) => {
     console.log(id)
   }
 
 
   render() {
-    console.log('++++++++++++++++++++++')
-    console.log(this.props)
-
     const { HelpTypeList, HelpList } = this.props
     const helpTypeList = HelpTypeList.list
     const helpList = HelpList.list
@@ -121,10 +139,9 @@ class StoreHelpList extends Component<PageProps, PageState> {
     return (
       <Fragment>
         <PageHelp>帮助内容排序显示规则为排序小的在前，新增内容的在前</PageHelp>
-
         <div className={styles.tableList}>
           <Card bordered={false} >
-            <SearchForm helpTypes={helpTypeList} handleFormSearch={this.handleFormSearch}/>
+            <SearchForm helpTypeList={helpTypeList} handleFormSearch={this.handleFormSearch}/>
             <DataTable helpTypeList={helpTypeList}
                        helpList={helpList}
                        loading={false}
