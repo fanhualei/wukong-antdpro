@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { Card } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { Action, Dispatch } from 'redux';
+import { connect } from 'dva';
 import { PageHelp } from '@/components/Wk/PageHelp';
 import { StateType as HelpListStateType } from './model';
 import { StateType as HelpTypeListStateType } from '../type/model';
 import SearchForm from './searchForm'
 import DataTable from './dataTable'
 
-import { connect } from 'dva';
 import styles from './style.less';
 import { HelpListParams } from './data.d';
 
@@ -107,6 +107,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
     dispatch({
       type: 'HelpList/deleteOne',
       payload: { helpId },
+      callback: this.callbackChangeDb,
     });
   }
 
@@ -119,7 +120,16 @@ class StoreHelpList extends Component<PageProps, PageState> {
     dispatch({
       type: 'HelpList/deleteMany',
       payload: { helpIds },
+      callback: this.callbackChangeDb,
     });
+  }
+
+  callbackChangeDb=(resultNum:number, message?:{}) => {
+    console.log(resultNum)
+    console.log(message)
+    if (resultNum && resultNum > 0) {
+      this.refreshData();
+    }
   }
 
   /**

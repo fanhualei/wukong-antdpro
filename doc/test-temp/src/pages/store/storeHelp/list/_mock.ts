@@ -71,10 +71,11 @@ function queryHelp(req: Request, res: Response, u: string) {
     url = req.url;
   }
 
+  let dataSource = helpListDataSource;
   const params = (parse(url, true).query as unknown) as HelpListParams;
   if (params.sorter) {
     const s = params.sorter.split('_');
-    helpListDataSource = helpListDataSource.sort((prev, next) => {
+    dataSource = dataSource.sort((prev, next) => {
       if (s[1] === 'descend') {
         return next[s[0]] - prev[s[0]];
       }
@@ -84,12 +85,12 @@ function queryHelp(req: Request, res: Response, u: string) {
 
 
   if (params.helpTitle) {
-    helpListDataSource = helpListDataSource.filter(
+    dataSource = dataSource.filter(
       data => data.helpTitle.indexOf(params.helpTitle) > -1);
   }
 
   if (params.typeId) {
-    helpListDataSource = helpListDataSource.filter(
+    dataSource = dataSource.filter(
       data => data.typeId === Number(params.typeId));
   }
 
@@ -100,9 +101,9 @@ function queryHelp(req: Request, res: Response, u: string) {
   }
 
   const result = {
-    list: helpListDataSource,
+    list: dataSource,
     pagination: {
-      total: helpListDataSource.length,
+      total: dataSource.length,
       pageSize,
       current: parseInt(`${params.currentPage}`, 10) || 1,
     },
@@ -114,25 +115,13 @@ function queryHelp(req: Request, res: Response, u: string) {
 function deleteOneHelp(req: Request, res: Response) {
   const { helpId } = req.body;
   helpListDataSource = helpListDataSource.filter(item => helpId !== item.helpId);
-  const result = {
-    list: helpListDataSource,
-    pagination: {
-      total: helpListDataSource.length,
-    },
-  };
-  return res.json(result);
+  return res.json(1);
 }
 
 function deleteManyHelp(req: Request, res: Response) {
   const { helpIds } = req.body;
   helpListDataSource = helpListDataSource.filter(item => !isInNumberArray(helpIds, item.helpId));
-  const result = {
-    list: helpListDataSource,
-    pagination: {
-      total: helpListDataSource.length,
-    },
-  };
-  return res.json(result);
+  return res.json(1);
 }
 
 

@@ -112,7 +112,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ② 撰写_mock文件
 
-名字一定要是_mock，模拟了4个函数，分别是：查一个、查多个、删除一个或多个、追加或更新。
+名字一定要是_mock，模拟了4个函数，分别是：查一个、查多个、删除一个或多个、追加或更新。[mock.ts](test-temp/src/pages/store/storeHelp/list/mock.ts)
 
 有下面的规律：
 
@@ -130,7 +130,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ③ 撰写service文件
 
-有下面的规律：添加、删除、修改、查询这4中类型的函数
+有下面的规律：添加、删除、修改、查询这4中类型的函数.[service.ts](test-temp/src/pages/store/storeHelp/list/service.ts)
 
 | 分类      | 具体名称       | 说明                     |
 | --------- | -------------- | ------------------------ |
@@ -144,7 +144,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ④ 撰写model文件
 
-在子目录中的moel文件名只能是model，不然系统无法识别。很多人对model也有诟病，认为在一个简单的系统中，model也就是redux影响了执行的速度。
+在子目录中的moel文件名只能是model，不然系统无法识别。很多人对model也有诟病，认为在一个简单的系统中，model也就是redux影响了执行的速度。[model.ts](test-temp/src/pages/store/storeHelp/list/model.ts)
 
 | 名称                | 说明                                        |
 | ------------------- | ------------------------------------------- |
@@ -173,7 +173,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ①  父页面
 
-负责从model层获取数据，并将引用`操作说明`、`检索框`、`列表框`
+负责从model层获取数据，并将引用`操作说明`、`检索框`、`列表框` 。 [index.tsx](test-temp/src/pages/store/storeHelp/list/index.tsx)
 
 
 
@@ -215,7 +215,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ③ 检索区域
 
-组件使用说明：
+组件使用说明：[searchForm.tsx](test-temp/src/pages/store/storeHelp/list/searchForm.tsx)
 
 | 名称             | 说明                                       |
 | ---------------- | ------------------------------------------ |
@@ -229,7 +229,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 ### ④ 列表区域
 
-这个区域比较复杂，需要传入数据与回调函数。
+这个区域比较复杂，需要传入数据与回调函数。[dataTable.tsx](test-temp/src/pages/store/storeHelp/list/dataTable.tsx)
 
 ![alt](imgs/example2-helplist-page.png)
 

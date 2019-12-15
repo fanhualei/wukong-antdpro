@@ -42,21 +42,15 @@ const Model: ModelType = {
         payload: response,
       });
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *deleteOne({ payload, callback }, { call, put }) {
       const response = yield call(deleteOneHelp, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+      if (callback) callback(response);
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *deleteMany({ payload, callback }, { call, put }) {
       const response = yield call(deleteManyHelp, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+      if (callback) callback(response);
     },
   },
 
