@@ -6,7 +6,10 @@ import { getRandomNumber, isInNumberArray } from '@/utils/Wk/tools'
 let helpListDataSource: HelpItem[] = [];
 
 for (let i = 1; i < 30; i += 1) {
-  const helpTitle:string = `帮助文章-${i}`;
+  let helpTitle:string = `帮助文章-${i}`;
+  if (i === 3) {
+    helpTitle = '修改这个会模拟错误'
+  }
   helpListDataSource.push({
     helpId: i,
     helpSort: i,

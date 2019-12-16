@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Card } from 'antd';
+import { Card, message } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { Action, Dispatch } from 'redux';
 import { connect } from 'dva';
-import { PageHelp } from '@/components/Wk/PageHelp';
+import { PageHelp, IHandleCellOnBlur } from '@/components/Wk';
 import { StateType as HelpListStateType } from './model';
 import { StateType as HelpTypeListStateType } from '../type/model';
 import SearchForm from './searchForm'
@@ -11,7 +11,6 @@ import DataTable from './dataTable'
 
 import styles from './style.less';
 import { HelpListParams } from './data.d';
-import { IHandleCellOnBlur } from '@/components/Wk/TableInputNumber';
 
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
@@ -70,6 +69,9 @@ class StoreHelpList extends Component<PageProps, PageState> {
     });
   }
 
+  /**
+   * 刷新列表框
+   */
   refreshData=() => {
     const { dispatch } = this.props;
     const params: Partial<HelpListParams> = {
@@ -146,13 +148,14 @@ class StoreHelpList extends Component<PageProps, PageState> {
     dispatch({
       type: 'HelpList/update',
       payload: data,
-      callback: (resultNum:number, message?:{}) => {
+      callback: (resultNum:number, errorMessage?:{}) => {
         if (!resultNum || resultNum <= 0) {
           rollbackValue(false);
+          message.error('修改数据错误，数据回滚', 3)
         } else {
           rollbackValue(true);
         }
-        this.callbackChangeDb(resultNum, message)
+        this.callbackChangeDb(resultNum, errorMessage)
       },
     });
   }
@@ -163,7 +166,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
    * @param message
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  callbackChangeDb=(resultNum:number, message?:{}) => {
+  callbackChangeDb=(resultNum:number, errorMessage?:{}) => {
     if (resultNum && resultNum > 0) {
       this.refreshData();
     }

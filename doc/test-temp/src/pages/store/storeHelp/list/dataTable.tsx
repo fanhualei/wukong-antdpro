@@ -9,7 +9,7 @@ import styles from './style.less';
 import { HelpTypeItem } from '../type/data.d'
 import { HelpItem, HelpListParams, Pagination } from './data.d';
 
-import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk/TableInputNumber'
+import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk'
 import { getValue, getOptionName } from '@/utils/Wk/tools'
 
 
