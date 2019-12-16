@@ -126,28 +126,44 @@ class StoreHelpList extends Component<PageProps, PageState> {
     });
   }
 
+  /**
+   * 根基单元格的变更，更改数据库
+   * @param itemKey
+   * @param fieldName
+   * @param value
+   * @param rollbackValue
+   */
   handleTableCellChange:IHandleCellOnBlur=(itemKey,
                                            fieldName,
                                            value,
+                                           rollbackValue,
                                            ) => {
     const data: any = {
       helpId: itemKey,
     }
     data[fieldName] = value;
-    console.log(data)
-
     const { dispatch } = this.props;
     dispatch({
       type: 'HelpList/update',
       payload: data,
-      callback: this.callbackChangeDb,
+      callback: (resultNum:number, message?:{}) => {
+        if (!resultNum || resultNum <= 0) {
+          rollbackValue(false);
+        } else {
+          rollbackValue(true);
+        }
+        this.callbackChangeDb(resultNum, message)
+      },
     });
   }
 
-
+  /**
+   * 刷线数据
+   * @param resultNum
+   * @param message
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   callbackChangeDb=(resultNum:number, message?:{}) => {
-    console.log(resultNum)
-    console.log(message)
     if (resultNum && resultNum > 0) {
       this.refreshData();
     }

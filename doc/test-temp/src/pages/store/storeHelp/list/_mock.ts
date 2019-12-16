@@ -38,6 +38,21 @@ function updateHelp(req: Request, res: Response) {
     newItem.helpId = maxSgId + 1;
     helpListDataSource.push(newItem);
   } else {
+    if (newItem.helpId === 3) {
+      return res.status(500).json({
+        status: 500,
+        error: 'Bad Request',
+        message: '参数无效',
+        code: 30101,
+        path: '/result/exception',
+        exception: 'com.wukong.core.exceptions.BusinessException',
+        errors: {
+          name: '长度需要在6和50之间',
+          email: '不是一个合法的电子邮件地址',
+        },
+        timestamp: '2018-05-31T09:41:16.461+0000',
+      });
+    }
     for (let i:number = 0; i < helpListDataSource.length; i += 1) {
         if (helpListDataSource[i].helpId === newItem.helpId) {
           helpListDataSource[i] = {
@@ -48,21 +63,7 @@ function updateHelp(req: Request, res: Response) {
         }
     }
   }
-  if (newItem.helpId === 3) {
-    return res.status(500).json({
-      status: 500,
-      error: 'Bad Request',
-      message: '参数无效',
-      code: 30101,
-      path: '/result/exception',
-      exception: 'com.wukong.core.exceptions.BusinessException',
-      errors: {
-        name: '长度需要在6和50之间',
-        email: '不是一个合法的电子邮件地址',
-      },
-      timestamp: '2018-05-31T09:41:16.461+0000',
-    });
-  }
+
   return res.json(newItem.helpId);
 }
 
@@ -76,15 +77,16 @@ function queryHelp(req: Request, res: Response, u: string) {
 
   let dataSource = helpListDataSource;
   const params = (parse(url, true).query as unknown) as HelpListParams;
-  if (params.sorter) {
-    const s = params.sorter.split('_');
-    dataSource = dataSource.sort((prev, next) => {
-      if (s[1] === 'descend') {
-        return next[s[0]] - prev[s[0]];
-      }
-      return prev[s[0]] - next[s[0]];
-    });
+  if (!params.sorter) {
+    params.sorter = 'helpSort_aescend'
   }
+  const s = params.sorter.split('_');
+  dataSource = dataSource.sort((prev, next) => {
+    if (s[1] === 'descend') {
+      return next[s[0]] - prev[s[0]];
+    }
+    return prev[s[0]] - next[s[0]];
+  });
 
 
   if (params.helpTitle) {

@@ -53,7 +53,7 @@ class DataTable extends Component<PageProps> {
   handleCellOnBlur:IHandleCellOnBlur=(itemKey,
                                       fieldName,
                                       value,
-                                      callback) => {
+                                      rollbackValue) => {
     console.log(`itemKey:${itemKey} fieldName:${fieldName}  value:${value} `)
     const { handleTableCellChange } = this.props;
     if (handleTableCellChange) {
@@ -61,7 +61,7 @@ class DataTable extends Component<PageProps> {
         itemKey,
         fieldName,
         value,
-        callback,
+        rollbackValue,
         );
     }
   }

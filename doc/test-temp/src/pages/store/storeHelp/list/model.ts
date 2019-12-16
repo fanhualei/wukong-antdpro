@@ -56,6 +56,9 @@ const Model: ModelType = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *update({ payload, callback }, { call, put }) {
       const response = yield call(updateHelp, payload);
+      if (response.status && response.status !== 200) {
+        if (callback) callback(0, { ...response });
+      }
       if (callback) callback(response);
     },
   },

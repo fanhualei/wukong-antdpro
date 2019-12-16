@@ -81,13 +81,13 @@ class SearchForm extends Component<PageProps> {
           <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
             <Col md={8} sm={24}>
               <FormItem label="帮助标题">
-                {getFieldDecorator('helpTitle')(<Input placeholder="请输入" />)}
+                {getFieldDecorator('helpTitle')(<Input placeholder="请输入" allowClear />)}
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
               <FormItem label="帮助类型">
                 {getFieldDecorator('typeId')(
-                  <Select placeholder="请选择" >
+                  <Select placeholder="请选择" allowClear>
                     {this.getOptions(helpTypeList, 'typeId', 'typeName')}
                   </Select>,
                 )}

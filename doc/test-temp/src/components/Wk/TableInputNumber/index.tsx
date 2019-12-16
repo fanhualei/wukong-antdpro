@@ -6,8 +6,8 @@ import { InputNumber } from 'antd';
  * 父亲窗口放回的函数
  * ture表示成功，false表示要返回原始数值
  */
-interface ICallback {
-  (success: boolean): void;
+interface IRollbackValue {
+  (success:boolean): void;
 }
 
 /**
@@ -21,7 +21,7 @@ export interface IHandleCellOnBlur {
     itemKey: number, // 主键的值
     fieldName:string, // 要更新的字段名称
     value: number | string | undefined, // 要更新的属性
-    callback: ICallback, // 回调函数
+    rollbackValue: IRollbackValue, // 回调函数
   ): void;
 }
 
@@ -59,11 +59,16 @@ export class TableInputNumber extends Component<TableInputNumberProps, pageState
     }
   }
 
-  callbackFromParent: ICallback = (success: boolean) => {
-    if (!success) {
-      console.log('保存失败，返回原先的数值')
+  rollbackValue = (success:boolean) => {
+    console.log('被外层调用，返回上一个数值')
+    const { oldValue, value } = this.state;
+    if (success) {
       this.setState({
-        value: this.props.value,
+        oldValue: value,
+      })
+    }else {
+      this.setState({
+        value: oldValue,
       })
     }
   }
@@ -74,7 +79,6 @@ export class TableInputNumber extends Component<TableInputNumberProps, pageState
    */
   handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { itemKey, handleCellOnBlur, fieldName, value } = this.props;
-    console.log(this.state.oldValue)
     // 如果输入的为空，那么就不变
     if (!e.target.value) {
       this.setState({
@@ -86,12 +90,8 @@ export class TableInputNumber extends Component<TableInputNumberProps, pageState
     if (Number(e.target.value) === this.state.oldValue) {
       return
     }
-    this.setState({
-      oldValue: Number(e.target.value),
-    })
-
     if (handleCellOnBlur) {
-      handleCellOnBlur(itemKey, fieldName, e.target.value, this.callbackFromParent)
+      handleCellOnBlur(itemKey, fieldName, e.target.value, this.rollbackValue)
     }
   }
 
