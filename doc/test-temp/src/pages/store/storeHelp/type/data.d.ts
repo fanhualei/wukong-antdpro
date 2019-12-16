@@ -13,11 +13,6 @@ export interface Pagination {
   current: number;
 }
 
-// export interface HelpTypeListData {
-//   list: HelpTypeItem[];
-//   pagination?: Partial<Pagination>;
-// }
-
 /**
  * 如果没有查询，那么这个就用不上
  */

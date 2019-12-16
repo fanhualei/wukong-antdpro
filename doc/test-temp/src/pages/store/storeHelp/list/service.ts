@@ -32,7 +32,7 @@ export async function deleteManyHelp(params: {helpIds:string}) {
 }
 
 
-export async function updateHelp(params: HelpItem) {
+export async function updateHelp(params: Partial<HelpItem>) {
   return request('/api/shop/help/updateHelp', {
     method: 'POST',
     data: {

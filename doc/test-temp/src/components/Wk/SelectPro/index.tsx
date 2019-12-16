@@ -8,12 +8,12 @@ const { Option } = Select
  * https://ant.design/components/form-cn/#components-form-demo-customized-form-controls
  */
 export interface SelectProProps<T> {
-  dataSource:T[];
-  idField:string;
-  nameField:string;
-  placeholder?:string;
-  value?:number|string;
-  onChange?:any;
+  dataSource:T[]; // 下拉框的数据源
+  idField:string; // id的字段名
+  nameField:string; // name的字段名
+  placeholder?:string; // 没有选中时的默认值
+  value?:number|string; // 初始化value 为form表单使用
+  onChange?:any; // onChange事件 为form表单使用
 }
 
 export function SelectPro<T>(props:SelectProProps<T>) {
@@ -39,7 +39,7 @@ export function SelectPro<T>(props:SelectProProps<T>) {
   };
 
 
-  const { placeholder, dataSource, idField, nameField, value, onChange} = props;
+  const { placeholder, dataSource, idField, nameField, value, onChange } = props;
 
   /**
    * 得到当前选中的值，并且把这个传送给父亲onChange事件

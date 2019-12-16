@@ -26,7 +26,7 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
   * React
 
     * [环境搭建](doc/react-env.md)
-    * [初识React](doc/react-first.md)
+    * [React基本语法](doc/react-first.md)
     * [菜鸟网络-React笔记](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/react.md)
   * Redux（可跳过）
 
@@ -47,9 +47,16 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
 
   * [快速上手](doc/antdpro-start.md)
   * 知识点
-    * [AntdPro常用语法](doc/ts-useful.md)
+    * [AntdPro常用语法](doc/antdpro-useful.md)
     * [Dva总结的知识地图](https://dvajs.com/knowledgemap/)
-  * [Ant Design Pro官方文档笔记](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/first.md)
+    * [Ant Design Pro官方文档笔记](https://github.com/fanhualei/antDesignPro_study/blob/master/doc/first.md)
+  
+* 开发字典
+
+  * [TS语法说明](doc/ts-detail.md)
+  * [React基本语法](doc/react-first.md)
+* [AntdPro常用语法](doc/antdpro-useful.md)
+  * [自定义组件](doc/common-util.md)
   
   
 

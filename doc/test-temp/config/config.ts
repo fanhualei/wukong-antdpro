@@ -121,20 +121,17 @@ export default {
                   name: 'store',
                   path: '/store/store/',
                   component: './store/store/list',
-                },
-                // 等级列表页面
+                }, // 等级列表页面
                 {
                   name: 'storeGrade',
                   path: '/store/storeGrade/',
                   component: './store/storeGrade/list',
-                },
-                // 编辑商品等级页面
+                }, // 编辑商品等级页面
                 {
                   hideInMenu: true,
                   path: '/store/storeGrade/edit',
                   component: './store/storeGrade/edit',
-                },
-                // 店铺帮助
+                }, // 店铺帮助
                 {
                   name: 'storeHelp',
                   path: '/store/storeHelp/',
@@ -157,7 +154,6 @@ export default {
                     },
                   ],
                 },
-
               ],
             },
             {
@@ -177,6 +173,18 @@ export default {
               hideInMenu: true,
               path: '/resultsuccess',
               component: './result/resultSuccess',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/emptypage',
+              component: './EmptyPage',
+            },
+            {
+              name: '高级表单',
+              icon: 'smile',
+              path: '/formadvancedform',
+              component: './FormAdvancedForm',
             },
             {
               component: './404',

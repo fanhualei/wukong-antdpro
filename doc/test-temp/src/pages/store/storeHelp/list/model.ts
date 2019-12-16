@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryHelp, deleteManyHelp, deleteOneHelp } from './service';
+import { queryHelp, deleteManyHelp, deleteOneHelp, updateHelp } from './service';
 
 import { HelpItem, Pagination } from './data.d';
 
@@ -21,6 +21,7 @@ export interface ModelType {
     fetch: Effect;
     deleteOne: Effect;
     deleteMany: Effect;
+    update: Effect;
   };
   reducers: {
     save: Reducer<StateType>;
@@ -50,6 +51,11 @@ const Model: ModelType = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *deleteMany({ payload, callback }, { call, put }) {
       const response = yield call(deleteManyHelp, payload);
+      if (callback) callback(response);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    *update({ payload, callback }, { call, put }) {
+      const response = yield call(updateHelp, payload);
       if (callback) callback(response);
     },
   },

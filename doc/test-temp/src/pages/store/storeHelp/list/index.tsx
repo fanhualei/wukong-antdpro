@@ -11,6 +11,7 @@ import DataTable from './dataTable'
 
 import styles from './style.less';
 import { HelpListParams } from './data.d';
+import { IHandleCellOnBlur } from '@/components/Wk/TableInputNumber';
 
 interface PageProps extends FormComponentProps {
   dispatch: Dispatch<
@@ -19,6 +20,7 @@ interface PageProps extends FormComponentProps {
       | 'HelpList/fetch'
       | 'HelpList/deleteOne'
       | 'HelpList/deleteMany'
+      | 'HelpList/update'
       >
     >;
   loading: boolean;
@@ -124,6 +126,25 @@ class StoreHelpList extends Component<PageProps, PageState> {
     });
   }
 
+  handleTableCellChange:IHandleCellOnBlur=(itemKey,
+                                           fieldName,
+                                           value,
+                                           ) => {
+    const data: any = {
+      helpId: itemKey,
+    }
+    data[fieldName] = value;
+    console.log(data)
+
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'HelpList/update',
+      payload: data,
+      callback: this.callbackChangeDb,
+    });
+  }
+
+
   callbackChangeDb=(resultNum:number, message?:{}) => {
     console.log(resultNum)
     console.log(message)
@@ -160,6 +181,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
                        handleTableDelOne={this.handleTableDelOne}
                        handleTableDelMany={this.handleTableDelMany}
                        handleTableGoEditPage={this.handleTableGoEditPage}
+                       handleTableCellChange={this.handleTableCellChange}
             />
           </Card>
         </div>

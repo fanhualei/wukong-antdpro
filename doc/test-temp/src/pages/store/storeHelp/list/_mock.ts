@@ -9,7 +9,7 @@ for (let i = 1; i < 30; i += 1) {
   const helpTitle:string = `帮助文章-${i}`;
   helpListDataSource.push({
     helpId: i,
-    helpSort: 0,
+    helpSort: i,
     helpTitle,
     helpInfo: '',
     updateTime: new Date(`2017-07-${Math.floor(i / 2) + 1} 8:10:10`),
@@ -40,7 +40,10 @@ function updateHelp(req: Request, res: Response) {
   } else {
     for (let i:number = 0; i < helpListDataSource.length; i += 1) {
         if (helpListDataSource[i].helpId === newItem.helpId) {
-          helpListDataSource[i] = newItem;
+          helpListDataSource[i] = {
+            ...helpListDataSource[i],
+            ...newItem,
+          };
           break;
         }
     }

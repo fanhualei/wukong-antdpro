@@ -9,6 +9,7 @@ import styles from './style.less';
 import { HelpTypeItem } from '../type/data.d'
 import { HelpItem, HelpListParams, Pagination } from './data.d';
 
+import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk/TableInputNumber'
 import { getValue, getOptionName } from '@/utils/Wk/tools'
 
 
@@ -22,6 +23,7 @@ export interface PageProps {
   handleTableDelOne?: (id:number) => void;
   handleTableDelMany?: (ids:string) => void;
   handleTableGoEditPage?: (id:number) => void;
+  handleTableCellChange?:IHandleCellOnBlur;
 }
 
 
@@ -41,6 +43,28 @@ class DataTable extends Component<PageProps> {
     selectedRows: [],
   };
 
+  /**
+   * 如果保存成功，就刷新数据，如果保存失败，就回调一下控件函数
+   * @param itemKey
+   * @param fieldName
+   * @param value
+   * @param callback
+   */
+  handleCellOnBlur:IHandleCellOnBlur=(itemKey,
+                                      fieldName,
+                                      value,
+                                      callback) => {
+    console.log(`itemKey:${itemKey} fieldName:${fieldName}  value:${value} `)
+    const { handleTableCellChange } = this.props;
+    if (handleTableCellChange) {
+      handleTableCellChange(
+        itemKey,
+        fieldName,
+        value,
+        callback,
+        );
+    }
+  }
 
   /**
    * 得到列的属性定义
@@ -51,6 +75,18 @@ class DataTable extends Component<PageProps> {
       {
         title: '排序',
         dataIndex: 'helpSort',
+        sorter: true,
+        render: (text, record) => (
+          <TableInputNumber
+            value={text}
+            itemKey={record.helpId}
+            fieldName="helpSort"
+            handleCellOnBlur={this.handleCellOnBlur}
+            min={0}
+            max={255}
+            precision={0}
+          />
+        ),
       },
       {
         title: '帮助名称',
