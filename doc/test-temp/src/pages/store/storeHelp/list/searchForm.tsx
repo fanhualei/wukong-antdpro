@@ -87,11 +87,11 @@ class SearchForm extends Component<PageProps> {
             <Col md={8} sm={24}>
               <FormItem label="帮助类型">
                 {getFieldDecorator('typeId')(
-                  <Select placeholder="请选择" allowClear>
+                  <Select placeholder="请选择" allowClear >
                     {this.getOptions(helpTypeList, 'typeId', 'typeName')}
                   </Select>,
-                )}
-              </FormItem>
+                 )}
+               </FormItem>
             </Col>
             <Col md={8} sm={24}>
               <span className={styles.submitButtons}>

@@ -6,9 +6,10 @@ export interface HelpItem {
   helpInfo?:string; // 帮助内容
   helpUrl?:string; // 跳转链接
   updateTime:date; // 更新时间
-  typeId:number; // 帮助类型
+  typeId:number|undefined; // 帮助类型
   pageShow?:number; // 页面类型:1为店铺,2为会员,默认为1
 }
+
 
 export interface Pagination {
   total: number;

@@ -254,3 +254,94 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 
 
+## 第三步、实现编辑页
+
+编辑页面可以从类似的页面复制一份，简单修改可以显示即可。（这一步的代码可以自动生成）
+
+有如下约定：
+
+* 单独建立一个目录
+* 有自己的model，model分散一点便于管理。
+
+
+
+
+
+
+
+## 第四步、定义路由
+
+由于编辑页面是单独的页面，并且没有菜单导航，所以需要定义路由。
+
+### ① 需求分析
+
+路由包含面包屑，例如下面的路由：`首页/店铺管理/店铺帮助/帮助内容`  。其中最后一级是Tab标签。
+
+这里有两个问题要解决：
+
+- 每个Tab标签要显示在路由上。
+- 新增或编辑页面，是弹出的页面，这时候也需要有面包屑：`首页/店铺管理/店铺帮助/帮助内容`
+
+
+
+![alt](imgs/example2-helplist-page-total.png)
+
+编辑页面，有标题，并且有返回页面。
+
+![alt](imgs/example2-helplist-page-edit.png)
+
+
+
+### ② 解决方案
+
+有下面的关键点：
+
+- 嵌套顺序
+  - 例如`list`与`type`是Tab标签页，所以要在一个标签嵌套下面。
+- 代码中的顺序
+  - `edit`是`list`的子功能，它的面包屑要与`list`一样，并且要单独显示一页。
+  - 所以`edit` 要放在最前边，不然会被提前匹配的。
+
+*面包屑与URL的路径有关系。*
+
+```typescript
+//编辑帮助信息
+{
+  hideInMenu: true,
+  path: '/store/storeHelp/list/edit',
+  component: './store/storeHelp/list/edit',
+},
+
+// 店铺帮助
+{
+  name: 'storeHelp',  //二级菜单
+  path: '/store/storeHelp',
+  component: './store/storeHelp',
+  hideChildrenInMenu: true, //隐藏三级菜单
+  routes: [
+    {
+      path: '/store/storeHelp',
+      redirect: '/store/storeHelp/list',
+    },
+    {
+      path: '/store/storeHelp/list',
+      name: 'list',
+      component: './store/storeHelp/list',
+    },
+    {
+      path: '/store/storeHelp/type',
+      name: 'type',
+      component: './store/storeHelp/type',
+    },
+  ],
+},
+```
+
+
+
+## 第五步、优化编辑页
+
+以上4步的代码都可以自动生成。由于编辑框设计的页面比较复杂，这里只能手工编辑了。
+
+
+

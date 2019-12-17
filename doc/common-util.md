@@ -27,7 +27,7 @@
 在实际项目中经常用到，经常用到 一个可以折叠的用来显示帮助的组件。[具体代码见](test-temp/src/components/Wk/PageHelp/index.tsx)
 
 ```typescript
-import { PageHelp } from '@/components/Wk/PageHelp';
+import { PageHelp } from '@/components/Wk';
 <PageHelp>帮助内容排序显示规则为排序小的在前，新增内容的在前</PageHelp>
 ```
 
@@ -51,7 +51,7 @@ import { PageHelp } from '@/components/Wk/PageHelp';
 
 ```typescript
 # 一定要加上括号
-import { SelectPro } from '@/components/Wk/SelectPro'
+import { SelectPro } from '@/components/Wk'
 
 # 在代码中这样引用
 <SelectPro nameField="typeName" dataSource={helpTypeList} idField="typeId"/>
@@ -108,7 +108,7 @@ export interface SelectProProps<T> {
 > 使用方法
 
 ``` typescript
-import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk/TableInputNumber'
+import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk'
 
 #定义一个回调函数
   handleCellOnBlur:IHandleCellOnBlur=(itemKey,
@@ -140,4 +140,39 @@ import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk/TableInputN
       },
 
 ```
+
+
+
+# 5 社区组件
+
+
+
+## 5.1 slate
+
+* [中文介绍](https://doodlewind.github.io/slate-doc-cn/)
+* [githua](https://github.com/ianstormtaylor/slate)
+
+国外的插件，雀语底层使用了这个组件。 在github上还比较受欢迎。
+
+
+
+## 5.2 braft
+
+国内出的，帮助文档还行，antd推荐的，听说使用有一定难度。 人气还不高。
+
+
+
+### 5.2.1 安装
+
+
+
+```shell
+yarn add braft-editor
+```
+
+
+
+### 5.2.2 表单中使用
+
+[参考文档](https://braft.margox.cn/demos/antd-form)
 

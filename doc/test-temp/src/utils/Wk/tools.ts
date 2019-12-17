@@ -1,5 +1,4 @@
 
-
 /**
  * 经常在table控件中使用，当一列做了筛选工作时，使用这个得到一个字符串
  * 例如：'open,run'
@@ -59,10 +58,30 @@ export const isInNumberArray = (values:string, id:number):boolean => {
     const array = values.split(',');
     const len = array.length;
     for (let i = 0; i < len; i += 1) {
-      if (id === Number(array[i])){
+      if (id === Number(array[i])) {
         return true;
       }
     }
   }
   return false;
+}
+/**
+ * 根据一个Id名称与值，找到是否在对象数组中。
+ * @param items 对象数组
+ * @param idField  Id名称
+ * @param idValue  Id值
+ */
+export const queryItemById = <T>(
+                items:T[],
+                idField:string,
+                idValue:number,
+              ):T|undefined => {
+  const len:number = items ? items.length : 0;
+  for (let j:number = 0; j < len; j += 1) {
+    const item:T = items[j];
+    if (item[idField] === idValue) {
+      return item
+    }
+  }
+  return undefined;
 }

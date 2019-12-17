@@ -3,6 +3,7 @@ import { Card, message } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { Action, Dispatch } from 'redux';
 import { connect } from 'dva';
+import { router } from 'umi';
 import { PageHelp, IHandleCellOnBlur } from '@/components/Wk';
 import { StateType as HelpListStateType } from './model';
 import { StateType as HelpTypeListStateType } from '../type/model';
@@ -177,7 +178,7 @@ class StoreHelpList extends Component<PageProps, PageState> {
    * @param id
    */
   handleTableGoEditPage=(id:number) => {
-    console.log(id)
+    router.push(`/store/storeHelp/list/edit?helpId=${id}`);
   }
 
 

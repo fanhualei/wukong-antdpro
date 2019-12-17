@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Select } from 'antd';
+import { queryItemById } from '@/utils/Wk/tools'
 
 const { Option } = Select
 
@@ -46,15 +47,20 @@ export function SelectPro<T>(props:SelectProProps<T>) {
    * @param currentValue
    */
   const handleCurrencyChange = (currentValue:number|string) => {
-    console.log(currentValue)
     if (onChange) {
       onChange(currentValue, value)
     }
   }
-
+  // initValue是提前判断一下，传入的数值，是否包含在这个数组中。
+  let initValue:number|undefined|string = value;
+  if (value && value.constructor === Number) {
+    if (undefined === queryItemById(dataSource, idField, Number(value))) {
+      initValue = undefined;
+    }
+  }
   return (
     <Fragment>
-      <Select placeholder={placeholder} onChange={handleCurrencyChange} value={value}>
+      <Select placeholder={placeholder} onChange={handleCurrencyChange} value={initValue}>
         {getOptions(dataSource, idField, nameField)}
       </Select>
     </Fragment>

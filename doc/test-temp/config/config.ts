@@ -121,30 +121,42 @@ export default {
                   name: 'store',
                   path: '/store/store/',
                   component: './store/store/list',
-                }, // 等级列表页面
+                },
+                // 等级列表页面
                 {
                   name: 'storeGrade',
                   path: '/store/storeGrade/',
                   component: './store/storeGrade/list',
-                }, // 编辑商品等级页面
+                },
+                // 编辑商品等级页面
                 {
                   hideInMenu: true,
                   path: '/store/storeGrade/edit',
                   component: './store/storeGrade/edit',
-                }, // 店铺帮助
+                },
+
+                //编辑帮助信息
                 {
-                  name: 'storeHelp',
-                  path: '/store/storeHelp/',
+                  hideInMenu: true,
+                  path: '/store/storeHelp/list/edit',
+                  component: './store/storeHelp/list/edit',
+                },
+
+                // 店铺帮助
+                {
+                  name: 'storeHelp',  //二级菜单
+                  path: '/store/storeHelp',
                   component: './store/storeHelp',
-                  hideChildrenInMenu: true,
+                  hideChildrenInMenu: true, //隐藏三级菜单
                   routes: [
                     {
-                      path: '/store/storeHelp/',
+                      path: '/store/storeHelp',
                       redirect: '/store/storeHelp/list',
                     },
                     {
                       path: '/store/storeHelp/list',
                       name: 'list',
+                      //exact: true, // 在路由上不配匹下一级菜单，例如新弹出的编辑菜单
                       component: './store/storeHelp/list',
                     },
                     {
@@ -154,6 +166,8 @@ export default {
                     },
                   ],
                 },
+
+
               ],
             },
             {
@@ -168,20 +182,16 @@ export default {
               path: '/listtablelist',
               component: './ListTableList',
             },
+            // 空白页面
             {
-              name: '成功页',
-              hideInMenu: true,
-              path: '/resultsuccess',
-              component: './result/resultSuccess',
-            },
-            {
-              name: '空白页面',
+              name: 'emptypage',
               icon: 'smile',
               path: '/emptypage',
               component: './EmptyPage',
             },
+            // 高级表单
             {
-              name: '高级表单',
+              name: 'advanced-form',
               icon: 'smile',
               path: '/formadvancedform',
               component: './FormAdvancedForm',

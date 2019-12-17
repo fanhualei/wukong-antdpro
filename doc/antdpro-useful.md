@@ -8,6 +8,12 @@
 
 
 
+# 0. 参考文档
+
+* [标准函数库](https://cloud.tencent.com/developer/article/1535216)
+
+
+
 
 
 从一个对象中获得属性
@@ -576,7 +582,7 @@ const s:string = values.sgFunction.join(',');
 
 
 
-### ③ 多个check的显示
+### ② 多个check的显示
 
 如果>3个，那么就3个一行。
 
@@ -755,4 +761,74 @@ dispatch({
 ```
 
 dispatch 方法从哪里来？被 connect 的 Component 会自动在 props 中拥有 dispatch 方法。
+
+
+
+## 5.2 路由
+
+
+
+### ① 案例分析
+
+路由包含面包屑，例如下面的路由：`首页/店铺管理/店铺帮助/帮助内容`  。其中最后一级是Tab标签。
+
+这里有两个问题要解决：
+
+* 每个Tab标签要显示在路由上。
+* 新增或编辑页面，是弹出的页面，这时候也需要有面包屑：`首页/店铺管理/店铺帮助/帮助内容`
+
+
+
+![alt](imgs/example2-helplist-page-total.png)
+
+编辑页面，有标题，并且有返回页面。
+
+![alt](imgs/example2-helplist-page-edit.png)
+
+
+
+### ② 解决方案
+
+有下面的关键点：
+
+* 嵌套顺序
+  * 例如`list`与`type`是Tab标签页，所以要在一个标签嵌套下面。
+* 代码中的顺序
+  * `edit`是`list`的子功能，它的面包屑要与`list`一样，并且要单独显示一页。
+  * 所以`edit` 要放在最前边，不然会被提前匹配的。
+
+*面包屑与URL的路径有关系。*
+
+```typescript
+//编辑帮助信息
+{
+  hideInMenu: true,
+  path: '/store/storeHelp/list/edit',
+  component: './store/storeHelp/list/edit',
+},
+
+// 店铺帮助
+{
+  name: 'storeHelp',  //二级菜单
+  path: '/store/storeHelp',
+  component: './store/storeHelp',
+  hideChildrenInMenu: true, //隐藏三级菜单
+  routes: [
+    {
+      path: '/store/storeHelp',
+      redirect: '/store/storeHelp/list',
+    },
+    {
+      path: '/store/storeHelp/list',
+      name: 'list',
+      component: './store/storeHelp/list',
+    },
+    {
+      path: '/store/storeHelp/type',
+      name: 'type',
+      component: './store/storeHelp/type',
+    },
+  ],
+},
+```
 
