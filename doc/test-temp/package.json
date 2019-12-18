@@ -66,6 +66,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
+    "react-router": "^4.3.1",
     "redux": "^4.0.1",
     "umi": "^2.8.7",
     "umi-plugin-antd-theme": "^1.0.1",

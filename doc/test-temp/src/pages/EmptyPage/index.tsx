@@ -2,7 +2,8 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
 import styles from './index.less';
-
+import TableBasic from './TableBasic';
+import FormAdvancedSearch from './FormAdvancedSearch';
 export default () => {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -20,6 +21,8 @@ export default () => {
       >
         <Spin spinning={loading} size="large"></Spin>
       </div>
+      <FormAdvancedSearch />
+      <TableBasic />
     </PageHeaderWrapper>
   );
 };

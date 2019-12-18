@@ -104,7 +104,7 @@ const Model: ModelType = {
      * @param call
      * @param put
      */
-    *queryHelpById({ payload }, { call, put }) {
+    *queryHelpById({ payload, callback }, { call, put }) {
       let newState:StateType;
       if (payload.helpId === 0) {
         newState = {
@@ -122,6 +122,9 @@ const Model: ModelType = {
         type: 'save',
         payload: newState,
       });
+      if (callback) {
+        callback();
+      }
     },
     /**
      * 保存数据，如果是helpId===0 那么服务器端自动判断，并且执行insert命令。

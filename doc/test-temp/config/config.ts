@@ -121,33 +121,29 @@ export default {
                   name: 'store',
                   path: '/store/store/',
                   component: './store/store/list',
-                },
-                // 等级列表页面
+                }, // 等级列表页面
                 {
                   name: 'storeGrade',
                   path: '/store/storeGrade/',
                   component: './store/storeGrade/list',
-                },
-                // 编辑商品等级页面
+                }, // 编辑商品等级页面
                 {
                   hideInMenu: true,
                   path: '/store/storeGrade/edit',
                   component: './store/storeGrade/edit',
-                },
-
-                //编辑帮助信息
+                }, //编辑帮助信息
                 {
                   hideInMenu: true,
                   path: '/store/storeHelp/list/edit',
                   component: './store/storeHelp/list/edit',
-                },
-
-                // 店铺帮助
+                }, // 店铺帮助
                 {
-                  name: 'storeHelp',  //二级菜单
+                  name: 'storeHelp',
+                  //二级菜单
                   path: '/store/storeHelp',
                   component: './store/storeHelp',
-                  hideChildrenInMenu: true, //隐藏三级菜单
+                  hideChildrenInMenu: true,
+                  //隐藏三级菜单
                   routes: [
                     {
                       path: '/store/storeHelp',
@@ -166,8 +162,6 @@ export default {
                     },
                   ],
                 },
-
-
               ],
             },
             {
@@ -181,20 +175,24 @@ export default {
               icon: 'smile',
               path: '/listtablelist',
               component: './ListTableList',
-            },
-            // 空白页面
+            }, // 空白页面
             {
               name: 'emptypage',
               icon: 'smile',
               path: '/emptypage',
               component: './EmptyPage',
-            },
-            // 高级表单
+            }, // 高级表单
             {
               name: 'advanced-form',
               icon: 'smile',
               path: '/formadvancedform',
               component: './FormAdvancedForm',
+            },
+            {
+              name: 'accountcenter',
+              icon: 'smile',
+              path: '/accountcenter',
+              component: './AccountCenter',
             },
             {
               component: './404',

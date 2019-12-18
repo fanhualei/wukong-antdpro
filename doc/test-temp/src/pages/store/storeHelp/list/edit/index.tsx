@@ -7,7 +7,7 @@ import {
   InputNumber,
   Result,
   Alert,
-  Spin,
+  Spin, Row, Col,
 } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
@@ -16,6 +16,7 @@ import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import BraftEditor from 'braft-editor';
 import styles from './style.less';
 import { StateType as editStateType } from './model';
 // 下面这行代码，为了得到下拉框帮助类型
@@ -23,7 +24,6 @@ import { StateType as HelpTypeListStateType } from '../../type/model';
 import { SelectPro } from '@/components/Wk'
 import { HelpTypeItem } from '@/pages/store/storeHelp/type/data';
 
-import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 
 const FormItem = Form.Item;
@@ -60,6 +60,7 @@ class EditHelp extends Component<EditHelpProps> {
     dispatch({
       type: 'HelpEdit/queryHelpById',
       payload: { helpId },
+      callback: this.queryHelpCallback,
     });
   }
 
@@ -73,7 +74,6 @@ class EditHelp extends Component<EditHelpProps> {
     });
   }
 
-
   /**
    * 点击提交按钮的事件
    * @param e
@@ -84,11 +84,11 @@ class EditHelp extends Component<EditHelpProps> {
     const { dispatch, form, HelpEdit: { currentItem } } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      console.log(values)
-      return ;
+      const helpInfo = values.content.toRAW();
       const payload = {
         ...currentItem,
         ...values,
+        helpInfo,
       }
       if (!err) {
         dispatch({
@@ -112,6 +112,20 @@ class EditHelp extends Component<EditHelpProps> {
   }
 
   /**
+   * 回调函数，给编辑框写入数据
+   */
+  queryHelpCallback =() => {
+    const {
+      form: { setFieldsValue }, HelpEdit: { currentItem } } = this.props;
+    if (currentItem && currentItem.helpInfo) {
+      const content = BraftEditor.createEditorState(currentItem.helpInfo);
+      setFieldsValue({
+        content,
+      })
+    }
+  }
+
+  /**
    * 显示页面title
    */
   renderTitle() {
@@ -128,121 +142,105 @@ class EditHelp extends Component<EditHelpProps> {
    */
   renderForm() {
     const { submitting, HelpEdit: { currentItem }, HelpTypeList } = this.props;
-    const controls = ['bold', 'italic', 'underline', 'text-color', 'separator', 'link', 'separator', 'media'];
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-        md: { span: 10 },
-      },
-    };
-
-    const submitFormLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
-    // @ts-ignore
     return (
       <Spin spinning={this.props.loading}>
         {this.renderTitle()}
         <PageHeaderWrapper title={this.getTitle()} backIcon={<Icon type="arrow-left" />} onBack={() => window.history.back()} >
-          <Card bordered={false}>
-            <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
+          <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
+            <GridContent>
+              <Row gutter={24}>
+                <Col lg={17} md={24}>
+                  <Card bordered={false}>
+                    <FormItem>
+                      {getFieldDecorator('content', {
+                        validateTrigger: 'onBlur',
+                        rules: [{
+                          validator: (_, value, callback) => {
+                            if (value.isEmpty()) {
+                              callback('请输入正文内容')
+                            } else {
+                              callback()
+                            }
+                          },
+                        }],
+                      })(
+                        <BraftEditor
+                          className={styles.myEditor}
+                          placeholder="请输入正文内容"
+                        />,
+                       )}
+                     </FormItem>
+                  </Card>
+                </Col>
+                <Col lg={7} md={24}>
+                  <Card bordered={false}>
+                      <FormItem label="帮助标题" >
+                        {getFieldDecorator('helpTitle', {
+                          initialValue: currentItem.helpTitle,
+                          rules: [
+                            {
+                              required: true,
+                              message: '帮助标题必须输入',
+                            },
+                          ],
+                        })(<Input placeholder="请输入帮助标题" />)}
+                      </FormItem>
 
-              <FormItem {...formItemLayout} label="帮助标题" >
-                {getFieldDecorator('helpTitle', {
-                  initialValue: currentItem.helpTitle,
-                  rules: [
-                    {
-                      required: true,
-                      message: '帮助标题必须输入',
-                    },
-                  ],
-                })(<Input placeholder="请输入帮助标题" />)}
-              </FormItem>
-
-              <FormItem {...formItemLayout} label="帮助类型" >
-                {getFieldDecorator('typeId', {
-                  initialValue: currentItem.typeId,
-                  rules: [
-                    {
-                      required: true,
-                      message: '帮助类型必须输入',
-                    },
-                  ],
-                })(
-                  <SelectPro<HelpTypeItem> nameField="typeName" dataSource={HelpTypeList.list} idField="typeId"/>,
-                )}
-              </FormItem>
+                      <FormItem label="帮助类型" >
+                        {getFieldDecorator('typeId', {
+                          initialValue: currentItem.typeId,
+                          rules: [
+                            {
+                              required: true,
+                              message: '帮助类型必须输入',
+                            },
+                          ],
+                        })(
+                          <SelectPro<HelpTypeItem> nameField="typeName" dataSource={HelpTypeList.list} idField="typeId"/>,
+                        )}
+                      </FormItem>
 
 
-              <FormItem {...formItemLayout} label="排序">
-                {getFieldDecorator('helpSort', { initialValue: currentItem.helpSort })(
-                  <InputNumber
-                    style={{ width: 110 }}
-                    min={0}
-                    max={100}
-                    precision={0}
-                  />,
-                )}
-                <span className={styles.inputHelp}>数字范围为0~255，数字越小越靠前</span>
-              </FormItem>
+                      <FormItem label="排序" extra="数字范围为0~255，数字越小越靠前">
+                        {getFieldDecorator('helpSort', { initialValue: currentItem.helpSort })(
+                          <InputNumber
+                            style={{ width: 110 }}
+                            min={0}
+                            max={100}
+                            precision={0}
+                          />,
+                        )}
+                      </FormItem>
 
-              <FormItem {...formItemLayout} label="链接地址" extra="填写后点击标题将直接跳转至链接地址 链接格式请以http://开头">
-                {getFieldDecorator('helpUrl', {
-                  initialValue: currentItem.helpUrl,
-                  rules: [
-                    {
-                      type: 'url',
-                      message: '输入的链接地址不符合URL规范',
-                    },
-                  ],
-                })(<Input placeholder="填写后点击标题将直接跳转至链接地址" />)}
-              </FormItem>
-
-              <FormItem {...formItemLayout} label="帮助内容">
-                {getFieldDecorator('content', {
-                  validateTrigger: 'onBlur',
-                  rules: [{
-                    required: true,
-                    validator: (_, value, callback) => {
-                      if (value.isEmpty()) {
-                        callback('请输入正文内容')
-                      } else {
-                        callback()
-                      }
-                    },
-                  }],
-                })(
-                  <BraftEditor
-                    className={styles.myEditor}
-                    controls={controls}
-                    placeholder="请输入正文内容"
-                  />,
-                )}
-              </FormItem>
-
-              <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-                <Button type="primary" htmlType="submit" loading={submitting}>
-                  提交
-                </Button>
-                <Button style={{ marginLeft: 8 }}
-                        onClick={() => window.history.back()}
-                        disabled={submitting}>
-                  取消并返回
-                </Button>
-              </FormItem>
-            </Form>
-          </Card>
+                      <FormItem label="链接地址" extra="填写后点击标题将直接跳转至链接地址 链接格式请以http://开头">
+                        {getFieldDecorator('helpUrl', {
+                          initialValue: currentItem.helpUrl,
+                          rules: [
+                            {
+                              type: 'url',
+                              message: '输入的链接地址不符合URL规范',
+                            },
+                          ],
+                        })(<Input placeholder="填写后点击标题将直接跳转至链接地址" />)}
+                      </FormItem>
+                      <FormItem style={{ marginTop: 32 }}>
+                        <Button type="primary" htmlType="submit" loading={submitting}>
+                          提交
+                        </Button>
+                        <Button style={{ marginLeft: 8 }}
+                                onClick={() => window.history.back()}
+                                disabled={submitting}>
+                          取消并返回
+                        </Button>
+                      </FormItem>
+                  </Card>
+                </Col>
+              </Row>
+            </GridContent>
+          </Form>
         </PageHeaderWrapper>
       </Spin>
     );

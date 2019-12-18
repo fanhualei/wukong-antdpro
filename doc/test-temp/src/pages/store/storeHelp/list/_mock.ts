@@ -14,7 +14,7 @@ for (let i = 1; i < 30; i += 1) {
     helpId: i,
     helpSort: i,
     helpTitle,
-    helpInfo: '',
+    helpInfo: `这个是正文的内容${i}`,
     updateTime: new Date(`2017-07-${Math.floor(i / 2) + 1} 8:10:10`),
     // updateTime: new Date(),
     pageShow: 1,

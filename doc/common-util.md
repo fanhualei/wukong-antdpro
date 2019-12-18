@@ -160,6 +160,10 @@ import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk'
 
 国内出的，帮助文档还行，antd推荐的，听说使用有一定难度。 人气还不高。
 
+![alt](imgs/example2-edit.png)
+
+
+
 
 
 ### 5.2.1 安装
@@ -175,4 +179,122 @@ yarn add braft-editor
 ### 5.2.2 表单中使用
 
 [参考文档](https://braft.margox.cn/demos/antd-form)
+
+常见问题：
+
+| 问题描述           | 说明                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| 不显示边框         | 要添加一个样式                                               |
+| 在from中不显示数据 | 要做一个state,[参考网址](https://github.com/margox/braft-editor/issues/341) |
+|                    |                                                              |
+|                    |                                                              |
+|                    |                                                              |
+
+#### ① 边框问题
+
+设置css
+
+```css
+.myEditor {
+  height: 60px;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+}
+```
+
+引用css
+
+```typescript
+import styles from './style.less';
+
+<FormItem>
+  {getFieldDecorator('content')(
+    <BraftEditor
+      className={styles.myEditor}
+      placeholder="请输入正文内容"
+    />,
+   )}
+ </FormItem>
+```
+
+
+
+#### ② 在from中不显示数据
+
+> 有两种解决方案
+
+* 放在from中
+  * 在`componentDidMount`中，使用setFieldsValue来设置初始值
+  * 不放在`componentDidMount`，会出现死循环的错误。
+
+* 不放在from
+  * 通过state来保存编辑的数据。
+  * 当焦点离开编辑框时，就将数据保存到state中。
+  * 当点击按钮时，就从state中获取数据。
+
+我才用了第一种方案，因为braft的开发者这么说的。
+
+```typescript
+// 做了一个回调函数
+  componentDidMount() {
+    const { dispatch, location } = this.props;
+    const helpId:number = location.query && Number(location.query.helpId)
+    dispatch({
+      type: 'HelpEdit/queryHelpById',
+      payload: { helpId },
+      callback: this.queryHelpCallback,
+    });
+  }
+
+// 回调函数中设置数值
+  queryHelpCallback =() => {
+    const {
+      form: { setFieldsValue }, HelpEdit: { currentItem } } = this.props;
+    if (currentItem && currentItem.helpInfo) {
+      const content = BraftEditor.createEditorState(currentItem.helpInfo);
+      setFieldsValue({
+        content,
+      })
+    }
+  }
+  
+// 在from中引用这个数值
+<FormItem>
+  {getFieldDecorator('content')(
+    <BraftEditor
+      className={styles.myEditor}
+      placeholder="请输入正文内容"
+    />,
+   )}
+ </FormItem>
+
+
+// 点击按钮事件
+  handleSubmit = (e: React.FormEvent) => {
+    // 得到currentItem,也就是最原始的数据,这里有只取到主键与更新的字段。
+    const { dispatch, form, HelpEdit: { currentItem } } = this.props;
+    e.preventDefault();
+    form.validateFieldsAndScroll((err, values) => {
+      const helpInfo = values.content.toRAW();
+      const payload = {
+        ...currentItem,
+        ...values,
+        helpInfo,
+      }
+      if (!err) {
+        dispatch({
+          type: 'HelpEdit/updateHelp',
+          payload,
+        });
+      }
+    });
+  };
+
+```
+
+
+
+
+
+
 

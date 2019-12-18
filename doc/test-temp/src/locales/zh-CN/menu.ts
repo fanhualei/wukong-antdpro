@@ -50,6 +50,7 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.advanced-form': '高级表单',
   'menu.emptypage': '空白页面',
+  'menu.accountcenter': '个人中心',
 
 
 
