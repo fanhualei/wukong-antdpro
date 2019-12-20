@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { HelpTypeItem } from './data.d';
+import { isInNumberArray } from '@/utils/Wk/tools';
 
-const helpTypeListDataSource: HelpTypeItem[] = [];
+let helpTypeListDataSource: HelpTypeItem[] = [];
 
 for (let i = 1; i < 15; i += 1) {
   const typeName:string = `帮助类型-${i}`;
@@ -23,20 +24,22 @@ function queryHelptypeById(req: Request, res: Response) {
 
 function updateHelpType(req: Request, res: Response) {
   const newItem:HelpTypeItem = <HelpTypeItem>req.body;
-  const dataSource = helpTypeListDataSource;
   if (!newItem.typeId || newItem.typeId === 0) {
-    let maxSgId:number = 0;
-    dataSource.forEach(v => {
-      if (v.typeId > maxSgId) {
-        maxSgId = v.typeId;
+    let maxId:number = 0;
+    helpTypeListDataSource.forEach(v => {
+      if (v.typeId > maxId) {
+        maxId = v.typeId;
       }
     });
-    newItem.typeId = maxSgId + 1;
-    dataSource.push(newItem);
+    newItem.typeId = maxId + 1;
+    helpTypeListDataSource.push(newItem);
   } else {
-    for (let i:number = 0; i < dataSource.length; i += 1) {
-      if (dataSource[i].typeId === newItem.typeId) {
-        dataSource[i] = newItem;
+    for (let i:number = 0; i < helpTypeListDataSource.length; i += 1) {
+      if (helpTypeListDataSource[i].typeId === newItem.typeId) {
+        helpTypeListDataSource[i] = {
+          ...helpTypeListDataSource[i],
+          ...newItem,
+        };
         break;
       }
     }
@@ -59,36 +62,38 @@ function updateHelpType(req: Request, res: Response) {
   return res.json(newItem.typeId);
 }
 
-
+/**
+ * 查询帮助类型
+ * @param req
+ * @param res
+ */
 function queryHelpType(req: Request, res: Response) {
-  const dataSource = helpTypeListDataSource;
+  let dataSource = helpTypeListDataSource.concat();
+  dataSource = dataSource.sort((prev, next) => prev.typeSort - next.typeSort);
   const result = {
     list: dataSource,
   };
   return res.json(result);
 }
 
-function deleteHelpType(req: Request, res: Response) {
-  const { typeId, typeIds } = req.body;
-  let dataSource = helpTypeListDataSource;
-  if (typeId) {
-    dataSource = dataSource.filter(item => typeId !== item.typeId);
-  } else {
-    const array = typeIds.split(',')
-    dataSource = dataSource.filter(item => array.indexOf(item.typeId) === -1);
-  }
-  const result = {
-    list: dataSource,
-    pagination: {
-      total: dataSource.length,
-    },
-  };
-  return res.json(result);
+function deleteOneHelpType(req: Request, res: Response) {
+  const { typeId } = req.body;
+  helpTypeListDataSource = helpTypeListDataSource.filter(item => typeId !== item.typeId);
+  return res.json(1);
+}
+
+function deleteManyHelpType(req: Request, res: Response) {
+  const { typeIds } = req.body;
+  helpTypeListDataSource = helpTypeListDataSource.filter(
+    item => !isInNumberArray(typeIds, item.typeId),
+  );
+  return res.json(1);
 }
 
 export default {
   'GET /api/shop/help/queryHelptypeById': queryHelptypeById,
   'GET /api/shop/help/queryHelpType': queryHelpType,
-  'POST /api/shop/help/deleteHelpType': deleteHelpType,
+  'POST /api/shop/help/deleteOneHelpType': deleteOneHelpType,
+  'POST /api/shop/help/deleteManyHelpType': deleteManyHelpType,
   'POST /api/shop/help/updateHelpType': updateHelpType,
 };

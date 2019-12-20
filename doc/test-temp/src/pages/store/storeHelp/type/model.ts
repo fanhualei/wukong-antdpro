@@ -1,6 +1,9 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryHelpType, deleteHelpType } from './service';
+import { queryHelpType,
+  deleteManyHelpType,
+  deleteOneHelpType,
+  updateHelpType } from './service';
 
 import { HelpTypeItem, Pagination } from './data.d';
 
@@ -19,7 +22,9 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    remove: Effect;
+    deleteOne: Effect;
+    deleteMany: Effect;
+    update: Effect;
   };
   reducers: {
     save: Reducer<StateType>;
@@ -41,13 +46,24 @@ const ListModel: ModelType = {
         payload: response,
       });
     },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(deleteHelpType, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    *deleteMany({ payload, callback }, { call, put }) {
+      const response = yield call(deleteManyHelpType, payload);
+      if (callback) callback(response);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    *deleteOne({ payload, callback }, { call, put }) {
+      const response = yield call(deleteOneHelpType, payload);
+      if (callback) callback(response);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    *update({ payload, callback }, { call, put }) {
+      console.log(payload)
+      const response = yield call(updateHelpType, payload);
+      if (response.status && response.status !== 200) {
+        if (callback) callback(0, { ...response });
+      }
+      if (callback) callback(response);
     },
   },
 

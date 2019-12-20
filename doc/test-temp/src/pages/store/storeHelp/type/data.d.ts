@@ -1,7 +1,7 @@
 export interface HelpTypeItem {
   typeId: number; // 帮助ID
   typeName:string; // 类型名称
-  typeSort?:number // 排序
+  typeSort:number // 排序
   helpCode?:string // 调用编号(auto的可删除)
   helpShow?:number // 是否显示,0为否,1为是,默认为1
   pageShow?:number; // 页面类型:1为店铺,2为会员,默认为1
@@ -22,9 +22,4 @@ export interface HelpTypeListParams {
   sorter: string;
   pageSize: number;
   currentPage: number;
-}
-
-export interface HelpTypeDelParams {
-  typeIds: string;
-  typeId: number;
 }

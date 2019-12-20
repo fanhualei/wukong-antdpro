@@ -1,32 +1,18 @@
 import request from '@/utils/request';
-import { HelpListParams, HelpItem, HelpTypeItem, HelpDelParams, HelpTypeDelParams } from './data';
+import { HelpTypeItem } from './data.d';
 
-export async function queryHelpById(helpId: number) {
-  return request(`/api/shop/help/queryHelpById?helpId=${helpId}`);
+
+export async function queryHelpTypeById(typeId: number) {
+  return request(`/api/shop/help/queryHelpTypeById?typeId=${typeId}`);
 }
 
-export async function queryHelpTypeById(helpTypeId: number) {
-  return request(`/api/shop/help/queryHelpTypeById?helpTypeId=${helpTypeId}`);
-}
-export async function queryHelp(params: HelpListParams) {
-  return request('/api/shop/help/queryHelp', {
-    params,
-  });
-}
 export async function queryHelpType() {
   return request('/api/shop/help/queryHelpType');
 }
 
-export async function deleteHelp(params: HelpDelParams) {
-  return request('/api/shop/help/deleteHelp', {
-    method: 'POST',
-    data: {
-      ...params,
-    },
-  });
-}
-export async function deleteHelpType(params: HelpTypeDelParams) {
-  return request('/api/shop/help/deleteHelpType', {
+
+export async function deleteOneHelpType(params: {typeId:number}) {
+  return request('/api/shop/help/deleteOneHelpType', {
     method: 'POST',
     data: {
       ...params,
@@ -34,8 +20,8 @@ export async function deleteHelpType(params: HelpTypeDelParams) {
   });
 }
 
-export async function updateHelp(params: HelpItem) {
-  return request('/api/shop/help/updateHelp', {
+export async function deleteManyHelpType(params: {typeIds:string}) {
+  return request('/api/shop/help/deleteManyHelpType', {
     method: 'POST',
     data: {
       ...params,

@@ -119,6 +119,7 @@ class EditHelp extends Component<EditHelpProps> {
       form: { setFieldsValue }, HelpEdit: { currentItem } } = this.props;
     if (currentItem && currentItem.helpInfo) {
       const content = BraftEditor.createEditorState(currentItem.helpInfo);
+      console.log(currentItem.helpInfo)
       setFieldsValue({
         content,
       })
@@ -168,10 +169,9 @@ class EditHelp extends Component<EditHelpProps> {
                         }],
                       })(
                         <BraftEditor
-                          className={styles.myEditor}
+                          // className={styles.myEditor}
                           placeholder="请输入正文内容"
-                        />,
-                       )}
+                        />)}
                      </FormItem>
                   </Card>
                 </Col>

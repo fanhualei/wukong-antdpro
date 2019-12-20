@@ -1,3 +1,5 @@
+
+
 # 工具代码
 
 
@@ -145,20 +147,38 @@ import { TableInputNumber, IHandleCellOnBlur } from '@/components/Wk'
 
 # 5 社区组件
 
+常见的富文本组件
+
+* slate
+  * [re-editor](https://github.com/wowlusitong/re-editor)
+* draft-js
+  * braft
+
+
+
+
+
 
 
 ## 5.1 slate
 
 * [中文介绍](https://doodlewind.github.io/slate-doc-cn/)
 * [githua](https://github.com/ianstormtaylor/slate)
+* [一个很棒的全屏应用](https://ory-editor.aeneas.io/)
 
 国外的插件，雀语底层使用了这个组件。 在github上还比较受欢迎。
+
+
+
+
 
 
 
 ## 5.2 braft
 
 国内出的，帮助文档还行，antd推荐的，听说使用有一定难度。 人气还不高。
+
+这个控件是基于draft-js开发的。
 
 ![alt](imgs/example2-edit.png)
 
@@ -294,7 +314,51 @@ import styles from './style.less';
 
 
 
+#### ③  定制工具栏
 
+
+
+
+
+#### ④ 单一图片上传
+
+官方默认的是将文件转变格式后，将文件的内容一起保存。这样会大量占用数据库资源。所以建议使用两外的方法。
+
+集成antDesign的文件上传。
+
+
+
+
+
+
+
+#### ⑤ 定义媒体中心
+
+参考微信的设置
+
+![alt](imgs/weixin-imgs.png)
+
+
+
+# 6 mock
+
+
+
+## 6.1 模拟测试数据
+
+http://mockjs.com/  这个网址有相关的用法。
+
+可以模拟数字、文字、日期、图片、网址、地址等等
+
+
+
+
+
+
+
+## 6.2 模拟文件上传
+
+[文件上传的两种情况及mock时对应处理办法](https://blog.csdn.net/zccst/article/details/84631488)
 
 
 

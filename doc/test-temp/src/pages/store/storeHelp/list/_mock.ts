@@ -66,7 +66,6 @@ function updateHelp(req: Request, res: Response) {
         }
     }
   }
-
   return res.json(newItem.helpId);
 }
 
@@ -78,7 +77,7 @@ function queryHelp(req: Request, res: Response, u: string) {
     url = req.url;
   }
 
-  let dataSource = helpListDataSource;
+  let dataSource = helpListDataSource.concat();
   const params = (parse(url, true).query as unknown) as HelpListParams;
   if (!params.sorter) {
     params.sorter = 'helpSort_aescend'
