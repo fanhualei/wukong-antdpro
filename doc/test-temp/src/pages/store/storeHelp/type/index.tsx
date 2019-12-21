@@ -75,16 +75,6 @@ class StoreHelpTypeList extends Component <PageProps, PageState> {
   }
 
   /**
-   * 编辑框是否显示
-   * @param flag
-   */
-  handleModalVisible = (flag?: boolean) => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
-  /**
    * 刷新列表框
    */
   refreshData=() => {
@@ -192,13 +182,16 @@ class StoreHelpTypeList extends Component <PageProps, PageState> {
     })
   }
 
-  handleFromEdit=(save:boolean, values?:Partial<HelpTypeItem>, callback?:any) => {
-    if (!save) {
+  handleFromEdit=(clickClose:boolean, values?:Partial<HelpTypeItem>, callbackFromEdit?:any) => {
+    // 点击关闭按钮
+    if (clickClose || clickClose === undefined) {
       this.setState({
         modalVisible: false,
       })
       return;
     }
+    console.log(clickClose)
+
     // 将boolean类型转换成整型
     const helpShow:number = (values && values.helpShow) ? 1 : 0;
     const newValues = {
@@ -206,16 +199,19 @@ class StoreHelpTypeList extends Component <PageProps, PageState> {
       helpShow,
     }
     const { dispatch } = this.props;
-    // console.log(newValues)
+    // 保存信息
     dispatch({
       type: 'HelpTypeList/update',
       payload: newValues,
       callback: (resultNum:number, errorMessage?:{}) => {
-        if (callback) {
-          callback(resultNum, errorMessage)
-        }
         if (resultNum > 0) {
+          this.setState({
+            modalVisible: false,
+          })
           this.refreshData();
+        }
+        if (callbackFromEdit) {
+          callbackFromEdit(resultNum, errorMessage)
         }
       },
     });

@@ -25,6 +25,7 @@ function queryHelptypeById(req: Request, res: Response) {
 function updateHelpType(req: Request, res: Response) {
   const newItem:HelpTypeItem = <HelpTypeItem>req.body;
 
+  console.log(newItem.typeId)
   if (newItem.typeId === 3) {
     return res.status(500).json({
       status: 500,
@@ -40,7 +41,7 @@ function updateHelpType(req: Request, res: Response) {
       timestamp: '2018-05-31T09:41:16.461+0000',
     });
   }
-
+  console.log(`------------${newItem.typeId}`)
   if (!newItem.typeId || newItem.typeId === 0) {
     let maxId:number = 0;
     helpTypeListDataSource.forEach(v => {
