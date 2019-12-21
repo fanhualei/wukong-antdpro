@@ -1,27 +1,7 @@
-import { AnyAction, Reducer } from 'redux';
-import { EffectsCommandMap } from 'dva';
+import { Reducer } from 'redux';
 import { HelpItem } from '../data.d';
-import { queryHelpById, updateHelp } from '../service';
-
-/**
- * 这个好像是通用的，那个model都有
- */
-export type Effect = (
-  action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
-) => void;
-
-/**
- * 定义了编辑界面返回的数据结构
- */
-export interface EditResultType {
-  // 是否点击了提交按钮
-  isCommit?:boolean;
-  // 是否保存成功
-  isSuccess?:boolean;
-  // 服务器返回的错误信息
-  errMessage?:string;
-}
+import { queryHelpById, updateHelp, defaultHelpItem } from '../service';
+import { EditResultType, defaultEditResult, Effect } from '@/utils/Wk/types';
 
 /**
  * 定义了编辑页面的state结构
@@ -31,25 +11,6 @@ export interface StateType {
   editResult?:EditResultType;
   // 从数据库检索出来的数据结构
   currentItem:HelpItem;
-}
-
-
-const defaultHelpItem:HelpItem = {
-  helpId: 0, // 帮助ID
-  helpSort: 0, // 排序
-  helpTitle: '', // 标题
-  updateTime: new Date(), // 更新时间
-  typeId: undefined, // 帮助类型
-  pageShow: 1, // 页面类型:1为店铺,2为会员,默认为1
-}
-
-/**
- * 默认的状态值
- */
-const defaultEditResult:EditResultType = {
-  isCommit: false,
-  isSuccess: true,
-  errMessage: '',
 }
 
 /**
@@ -75,8 +36,8 @@ const Model: ModelType = {
   namespace: 'HelpEdit',
 
   state: {
-    currentItem: defaultHelpItem,
-    editResult: defaultEditResult,
+    currentItem: { ...defaultHelpItem },
+    editResult: { ...defaultEditResult },
   },
 
   effects: {
@@ -99,7 +60,7 @@ const Model: ModelType = {
       });
     },
     /**
-     * 从数据库查询函数，如果helpId===0，那么就给一个默认值。
+     * 从数据库查询函数，如果Id===0，那么就给一个默认值。
      * @param payload
      * @param call
      * @param put

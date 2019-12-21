@@ -65,7 +65,7 @@ class EditHelp extends Component<EditHelpProps> {
   }
 
   /**
-   * 点击返回按钮
+   * 点击返回按钮,清空保存状态
    */
   componentWillUnmount() {
     const { dispatch } = this.props;
@@ -112,7 +112,7 @@ class EditHelp extends Component<EditHelpProps> {
   }
 
   /**
-   * 回调函数，给编辑框写入数据
+   * 回调函数，给富文本编辑框写入数据
    */
   queryHelpCallback =() => {
     const {

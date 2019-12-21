@@ -164,7 +164,7 @@ import { StateType as listStateType } from '../list/model';
 
 # 3. 案例二
 
-
+[详细说明](antdpro-example-02.md)
 
 ![alt](imgs/example2-list.png)
 
@@ -179,7 +179,8 @@ import { StateType as listStateType } from '../list/model';
 * table中可以编辑
 * 可以弹出层，进行编辑。
 * 富文本编辑框
-* 上传文件组件
+
+  
 
 
 

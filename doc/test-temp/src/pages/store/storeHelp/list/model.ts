@@ -43,18 +43,15 @@ const Model: ModelType = {
         payload: response,
       });
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *deleteOne({ payload, callback }, { call, put }) {
+    *deleteOne({ payload, callback }, { call }) {
       const response = yield call(deleteOneHelp, payload);
       if (callback) callback(response);
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *deleteMany({ payload, callback }, { call, put }) {
+    *deleteMany({ payload, callback }, { call }) {
       const response = yield call(deleteManyHelp, payload);
       if (callback) callback(response);
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *update({ payload, callback }, { call, put }) {
+    *update({ payload, callback }, { call }) {
       const response = yield call(updateHelp, payload);
       if (response.status && response.status !== 200) {
         if (callback) callback(0, { ...response });

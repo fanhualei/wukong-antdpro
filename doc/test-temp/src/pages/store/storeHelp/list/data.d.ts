@@ -10,7 +10,6 @@ export interface HelpItem {
   pageShow?:number; // 页面类型:1为店铺,2为会员,默认为1
 }
 
-
 export interface Pagination {
   total: number;
   pageSize: number;

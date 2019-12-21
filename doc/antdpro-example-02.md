@@ -82,7 +82,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 
 
-# 2. 写帮助内容模块
+# 2. 帮助内容-列表页
 
 ![alt](imgs/example2-list.png)
 
@@ -151,7 +151,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 | 定义State接口       |                                             |
 | 定义Effect接口      | 所有的model 都一样                          |
 | 定义Model接口       | 定义model的整体结构                         |
-| 实现Model-namespace | 这个要唯一                                  |
+| 实现Model-namespace | **这个要唯一**                              |
 | 实现Model-state     | 初始化值                                    |
 | 实现Model-effects   | 有两个函数：fetch  、 deleteOne、deleteMany |
 | 实现Model-reducers  | 主要是更新List                              |
@@ -254,7 +254,7 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 
 
-## 第三步、实现编辑页
+# 3. 帮助内容-编辑页
 
 编辑页面可以从类似的页面复制一份，简单修改可以显示即可。（这一步的代码可以自动生成）
 
@@ -265,11 +265,13 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 
 
+## 第一步、生成简单页面
+
+在当前目录下，建立一个`edit`文件夹，放相关的代码
 
 
 
-
-## 第四步、定义路由
+## 第二步、从列表页跳转
 
 由于编辑页面是单独的页面，并且没有菜单导航，所以需要定义路由。
 
@@ -339,9 +341,71 @@ list与type目录是点击tab后的业务页面，当前先简单输出一个hel
 
 
 
-## 第五步、优化编辑页
+## 第三步、撰写model文件 
 
-以上4步的代码都可以自动生成。由于编辑框设计的页面比较复杂，这里只能手工编辑了。
+[model.ts](test-temp/src/pages/store/storeHelp/list/edit/model.ts)
+
+| 名称                | 说明                                               |
+| ------------------- | -------------------------------------------------- |
+| 定义State接口       |                                                    |
+| 定义Model接口       | 定义model的整体结构                                |
+| 实现Model-namespace | **这个要唯一**                                     |
+| 实现Model-state     | 初始化值                                           |
+| 实现Model-effects   | 函数：cleanCommitState、 queryHelpById、updateHelp |
+| 实现Model-reducers  | 主要是更新编辑页面                                 |
+|                     |                                                    |
+
+由于单页编辑页面中，要显示编辑后的结果，这里涉及到出现错误时的处理。
+
+
+
+## 第四步、细化编辑页
+
+
+
+### ① 定义页面props
+
+```typescript
+/**
+ * 定义了页面props的数据结构
+ */
+interface EditHelpProps extends FormComponentProps {
+  // 定义了数据加载的状态
+  loading: boolean;
+  // 定义了提交数据加载的状态
+  submitting: boolean;
+  // 定义了分发的函数
+  dispatch: Dispatch<any>;
+  // 从model类中得到的类型
+  HelpEdit: editStateType;
+  HelpTypeList:HelpTypeListStateType;
+  // 从url中需要得到的类型
+  location: {
+    query: {
+      helpId: number;
+    };
+  };
+}
+```
+
+ 
+
+### ② 撰写class
+
+
+
+| 函数名               | 说明                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| componentDidMount    | 第一次加载，从数据库查询数据出来。 由于使用了富文本编辑框，这里要初始化富文本编辑框的数据 |
+| componentWillUnmount | 点击返回按钮,清空保存状态                                    |
+| handleSubmit         | 点击提交按钮的事件                                           |
+| getTitle             | 根据id得到页面的title,新增或者编辑                           |
+| queryHelpCallback    | 回调函数，给富文本编辑框写入数据                             |
+| renderTitle          | 显示页面title                                                |
+| renderForm           | 显示form输入框                                               |
+| renderResult         | 显示提交结果                                                 |
+| render               | 整个页面的显示逻辑                                           |
+| connect              | 加载form与connect                                            |
 
 
 
