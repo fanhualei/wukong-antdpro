@@ -51,8 +51,8 @@ class DataTable extends Component<PageProps> {
                                       fieldName,
                                       value,
                                       rollbackValue) => {
-    console.log(`itemKey:${itemKey} fieldName:${fieldName}  value:${value} `)
-    console.log(typeof value)
+    // console.log(`itemKey:${itemKey} fieldName:${fieldName}  value:${value} `)
+    // console.log(typeof value)
     value = Number(value)
     const { handleTableCellChange } = this.props;
     if (handleTableCellChange) {
@@ -74,17 +74,19 @@ class DataTable extends Component<PageProps> {
       {
         title: '排序',
         dataIndex: 'typeSort',
-        render: (text, record) => (
-          <TableInputNumber
-            value={text}
-            itemKey={record.typeId}
-            fieldName="typeSort"
-            handleCellOnBlur={this.handleCellOnBlur}
-            min={0}
-            max={255}
-            precision={0}
-          />
-        ),
+        render: (text, record) => {
+          return (
+            <TableInputNumber
+              value={text}
+              itemKey={record.typeId}
+              fieldName="typeSort"
+              handleCellOnBlur={this.handleCellOnBlur}
+              min={0}
+              max={255}
+              precision={0}
+            />
+          )
+        },
       },
       {
         title: '类型名称',
@@ -243,6 +245,7 @@ class DataTable extends Component<PageProps> {
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
     };
+    // console.log(helpTypeList)
 
     const paginationProps = pagination
       ? {

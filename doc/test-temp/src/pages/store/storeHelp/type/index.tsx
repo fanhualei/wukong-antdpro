@@ -206,7 +206,7 @@ class StoreHelpTypeList extends Component <PageProps, PageState> {
       helpShow,
     }
     const { dispatch } = this.props;
-    console.log(newValues)
+    // console.log(newValues)
     dispatch({
       type: 'HelpTypeList/update',
       payload: newValues,
@@ -226,7 +226,7 @@ class StoreHelpTypeList extends Component <PageProps, PageState> {
     const { HelpTypeList } = this.props
     const { modalVisible, currentItem } = this.state
     const helpTypeList = HelpTypeList.list
-
+    // console.log(helpTypeList)
     return (
       <Fragment>
         <EditHelpType modalVisible={modalVisible}

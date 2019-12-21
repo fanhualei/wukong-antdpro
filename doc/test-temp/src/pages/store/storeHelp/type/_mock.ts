@@ -24,6 +24,23 @@ function queryHelptypeById(req: Request, res: Response) {
 
 function updateHelpType(req: Request, res: Response) {
   const newItem:HelpTypeItem = <HelpTypeItem>req.body;
+
+  if (newItem.typeId === 3) {
+    return res.status(500).json({
+      status: 500,
+      error: 'Bad Request',
+      message: '参数无效',
+      code: 30101,
+      path: '/result/exception',
+      exception: 'com.wukong.core.exceptions.BusinessException',
+      errors: {
+        name: '长度需要在6和50之间',
+        email: '不是一个合法的电子邮件地址',
+      },
+      timestamp: '2018-05-31T09:41:16.461+0000',
+    });
+  }
+
   if (!newItem.typeId || newItem.typeId === 0) {
     let maxId:number = 0;
     helpTypeListDataSource.forEach(v => {
@@ -44,21 +61,7 @@ function updateHelpType(req: Request, res: Response) {
       }
     }
   }
-  if (newItem.typeId === 3) {
-    return res.status(500).json({
-      status: 500,
-      error: 'Bad Request',
-      message: '参数无效',
-      code: 30101,
-      path: '/result/exception',
-      exception: 'com.wukong.core.exceptions.BusinessException',
-      errors: {
-        name: '长度需要在6和50之间',
-        email: '不是一个合法的电子邮件地址',
-      },
-      timestamp: '2018-05-31T09:41:16.461+0000',
-    });
-  }
+
   return res.json(newItem.typeId);
 }
 
@@ -75,6 +78,7 @@ function queryHelpType(req: Request, res: Response) {
   };
   return res.json(result);
 }
+
 
 function deleteOneHelpType(req: Request, res: Response) {
   const { typeId } = req.body;

@@ -59,6 +59,20 @@ export class TableInputNumber extends Component<TableInputNumberProps, pageState
     }
   }
 
+  /**
+   * 调用了这个属性，修改了不能及时刷新的情况
+   * 这个控件不是太完美，尽量不用
+   */
+  componentWillReceiveProps() {
+    const { value } = this.props;
+    if (value !== this.state.value) {
+      this.state = {
+        value,
+        oldValue: value,
+      }
+    }
+  }
+
   rollbackValue = (success:boolean) => {
     console.log('被外层调用，返回上一个数值')
     const { oldValue, value } = this.state;

@@ -58,7 +58,7 @@ const ListModel: ModelType = {
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     *update({ payload, callback }, { call, put }) {
-      console.log(payload)
+      // console.log(payload)
       const response = yield call(updateHelpType, payload);
       if (response.status && response.status !== 200) {
         if (callback) callback(0, { ...response });

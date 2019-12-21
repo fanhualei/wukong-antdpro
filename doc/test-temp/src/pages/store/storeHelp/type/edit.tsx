@@ -25,8 +25,8 @@ const EditHelpType: React.FC<EditHelpTypeProps> = props => {
    * @param errorMessage
    */
   const callback = (resultNum:number, errorMessage?:{}) => {
-    console.log('---------------------------------------------------------')
-    console.log(resultNum)
+    // console.log('---------------------------------------------------------')
+    // console.log(resultNum)
     if (!resultNum || resultNum <= 0) {
       message.error('修改数据错误，数据回滚', 3)
     } else {
@@ -70,7 +70,7 @@ const EditHelpType: React.FC<EditHelpTypeProps> = props => {
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="是否显示">
         {form.getFieldDecorator('helpShow', {
           valuePropName: 'checked',
-          initialValue: currentItem.helpShow,
+          initialValue: currentItem.helpShow === 1,
           })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
       </FormItem>
 

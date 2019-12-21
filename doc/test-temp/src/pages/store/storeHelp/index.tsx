@@ -21,6 +21,7 @@ class StoreHelpList extends Component<StoreHelpListProps> {
   handleTabChange = (key: string) => {
     const { match } = this.props;
     const url = match.url === '/' ? '' : match.url;
+    console.log(`key:${key}   url:${url}`)
     switch (key) {
       case 'list':
         router.push(`${url}/list`);
@@ -38,6 +39,10 @@ class StoreHelpList extends Component<StoreHelpListProps> {
     const url = match.path === '/' ? '' : match.path;
     const tabKey = location.pathname.replace(`${url}`, '');
     if (tabKey && tabKey !== '/') {
+      // 修改配置路由时，有些人没有加上斜杠的错误
+      if (tabKey[0] === '/') {
+        return tabKey.substr(1);
+      }
       return tabKey;
     }
     return 'list';
@@ -56,7 +61,7 @@ class StoreHelpList extends Component<StoreHelpListProps> {
     ];
 
     const { children } = this.props;
-
+    console.log(this.getTabKey())
     return (
       <PageHeaderWrapper
         tabList={tabList}
