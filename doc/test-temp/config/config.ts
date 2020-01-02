@@ -194,6 +194,21 @@ export default {
               path: '/accountcenter',
               component: './AccountCenter',
             },
+
+            {
+              name: 'accountcenter',
+              icon: 'smile',
+              path: '/activity',
+              component: './activity',
+            },
+            {
+              name: 'accountcenter',
+              icon: 'smile',
+              path: '/test',
+              component: './test',
+            },
+
+
             {
               component: './404',
             },

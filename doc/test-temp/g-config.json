@@ -1,0 +1,21 @@
+{
+  "public": {
+    "apiBasePath": "/api/shop/"
+  },
+  "db": {
+    "host": "192.168.1.179",
+    "user": "root",
+    "password": "rootmysql",
+    "database": "phoenix",
+    "port": 3306,
+    "tablePrefix": "as_"
+  },
+  "mock": {
+    "tableReg": "",
+    "tables": ["activity" ]
+  },
+  "service": {
+    "tableReg": "",
+    "tables": ["activity" ]
+  }
+}
