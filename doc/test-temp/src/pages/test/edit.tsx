@@ -39,6 +39,7 @@ class EditActivity extends Component<EditActivityProps> {
         visible={modalVisible}
         onOk={this.okHandle}
         onCancel={this.handleClose}
+        destroyOnClose
       >
         {currentItem.title}
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="类型名称">
