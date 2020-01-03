@@ -1,7 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import {
   Table,
-  Button, Divider, Alert, Popconfirm,
+  Button,
+  Divider,
+  Alert,
+  Popconfirm,
 } from 'antd';
 import { ColumnProps, TableProps, TableRowSelection } from 'antd/es/table';
 import { ActivityItem, Pagination, ActivityListParams } from '@/services/activity.d';

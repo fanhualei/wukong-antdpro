@@ -1,9 +1,11 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryActivity,
+import {
+  queryActivity,
   deleteManyActivity,
   deleteOneActivity,
-  updateActivity } from '@/services/activityService';
+  updateActivity,
+} from '@/services/activityService';
 
 import { ActivityItem, Pagination } from '@/services/activity.d';
 
@@ -34,12 +36,12 @@ export interface ModelType {
 const ListModel: ModelType = {
   namespace: 'ActivityList',
   state: {
-      list: [],
-      pagination: {},
+    list: [],
+    pagination: {},
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {
+    * fetch({ payload }, { call, put }) {
       const response = yield call(queryActivity, payload);
       yield put({
         type: 'save',
@@ -47,17 +49,17 @@ const ListModel: ModelType = {
       });
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *deleteMany({ payload, callback }, { call, put }) {
+    * deleteMany({ payload, callback }, { call, put }) {
       const response = yield call(deleteManyActivity, payload);
       if (callback) callback(response);
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *deleteOne({ payload, callback }, { call, put }) {
+    * deleteOne({ payload, callback }, { call, put }) {
       const response = yield call(deleteOneActivity, payload);
       if (callback) callback(response);
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    *update({ payload, callback }, { call, put }) {
+    * update({ payload, callback }, { call, put }) {
       const response = yield call(updateActivity, payload);
       if (response.status && response.status !== 200) {
         if (callback) callback(0, { ...response });
