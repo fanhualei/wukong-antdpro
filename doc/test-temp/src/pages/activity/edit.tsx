@@ -100,6 +100,7 @@ class EditActivity extends Component<EditActivityProps, PageState> {
         visible={modalVisible}
         onOk={this.okHandle}
         onCancel={this.handleClose}
+        destroyOnClose
       >
         {currentItem.activityTitle}
         {this.showError()}
