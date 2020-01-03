@@ -91,18 +91,14 @@ class EditActivity extends Component<EditActivityProps, PageState> {
 
   render() {
     const { form, modalVisible, currentItem } = this.props;
-    console.log('-----------------------')
-    console.log(currentItem)
     return (
       <Modal
-        // maskClosable={true}
         title={this.getTitle(currentItem.activityId)}
         visible={modalVisible}
         onOk={this.okHandle}
         onCancel={this.handleClose}
         destroyOnClose
       >
-        {currentItem.activityTitle}
         {this.showError()}
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="类型名称">
           {form.getFieldDecorator('activityTitle', {
