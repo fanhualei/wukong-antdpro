@@ -17,8 +17,6 @@ interface EditActivityProps extends FormComponentProps {
 
 
 class EditActivity extends Component<EditActivityProps> {
-
-
   okHandle = () => {
     const { handleFromEdit } = this.props;
     handleFromEdit(true);
