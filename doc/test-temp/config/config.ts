@@ -207,7 +207,12 @@ export default {
               path: '/test',
               component: './test',
             },
-
+            {
+              name: 'goodsBrowse',
+              icon: 'smile',
+              path: '/goodsBrowse',
+              component: './goodsBrowse',
+            },
 
             {
               component: './404',

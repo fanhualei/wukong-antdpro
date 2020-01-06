@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { ActivityItem, ActivityListParams } from '../src/services/activity.d';
-import { isInNumberArray } from '@/utils/Wk/tools'
+import { isInNumberArray } from '../src/utils/Wk/tools'
 
 let activityListDataSource: ActivityItem[] = [];
 

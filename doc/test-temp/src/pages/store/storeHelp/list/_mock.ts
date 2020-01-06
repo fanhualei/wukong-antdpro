@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { HelpItem, HelpListParams } from './data.d';
-import { getRandomNumber, isInNumberArray } from '@/utils/Wk/tools'
+import { getRandomNumber, isInNumberArray } from '../../../../utils/Wk/tools'
 
 let helpListDataSource: HelpItem[] = [];
 

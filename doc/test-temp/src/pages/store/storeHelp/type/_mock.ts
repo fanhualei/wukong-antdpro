@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { HelpTypeItem } from './data.d';
-import { isInNumberArray } from '@/utils/Wk/tools';
+import { isInNumberArray } from '../../../../utils/Wk/tools';
 
 let helpTypeListDataSource: HelpTypeItem[] = [];
 
