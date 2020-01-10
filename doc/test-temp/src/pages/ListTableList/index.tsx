@@ -375,7 +375,7 @@ class TableList extends Component<TableListProps, TableListState> {
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="更新日期">
+            <FormItem label="更新日期新新">
               {getFieldDecorator('date')(
                 <DatePicker style={{ width: '100%' }} placeholder="请输入更新日期" />,
               )}

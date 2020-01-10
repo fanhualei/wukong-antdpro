@@ -48,6 +48,7 @@
   ],
   "dependencies": {
     "@ant-design/pro-layout": "^4.8.3",
+    "@ant-design/pro-table": "^1.0.22",
     "@antv/data-set": "^0.10.2",
     "@types/lodash.isequal": "^4.5.5",
     "antd": "^3.23.6",

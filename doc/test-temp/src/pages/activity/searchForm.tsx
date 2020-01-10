@@ -1,25 +1,17 @@
 import React, { Component } from 'react';
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Row,
-} from 'antd';
+import { Button, Col, Form, Input, Row, InputNumber } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import styles from '@/utils/Wk/searchForm.less';
 
 const FormItem = Form.Item;
 
-
-interface handleFormSearchType{
-  (values:{}):void
+interface handleFormSearchType {
+  (values: {}): void;
 }
 
-export interface PageProps extends FormComponentProps{
-  handleFormSearch:handleFormSearchType;
+export interface PageProps extends FormComponentProps {
+  handleFormSearch: handleFormSearchType;
 }
-
 
 class SearchForm extends Component<PageProps> {
   /**
@@ -28,7 +20,7 @@ class SearchForm extends Component<PageProps> {
   handleFormReset = () => {
     const { form, handleFormSearch } = this.props;
     form.resetFields();
-    handleFormSearch({})
+    handleFormSearch({});
   };
 
   /**
@@ -43,10 +35,9 @@ class SearchForm extends Component<PageProps> {
       const values = {
         ...fieldsValue,
       };
-      handleFormSearch(values)
+      handleFormSearch(values);
     });
   };
-
 
   render() {
     const { form } = this.props;
@@ -56,21 +47,48 @@ class SearchForm extends Component<PageProps> {
         <Form onSubmit={this.handleSearch} layout="inline">
           <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
             <Col md={8} sm={24}>
-              <FormItem label="标题">
-                {getFieldDecorator('activityTitle')(<Input placeholder="请输入" allowClear />)}
+              <FormItem label="activityTitle">
+                {getFieldDecorator('activityTitle')(
+                  <Input placeholder="请输入" allowClear />,
+                )}
               </FormItem>
             </Col>
+
             <Col md={8} sm={24}>
-              <FormItem label="排序">
-                {getFieldDecorator('activityBanner')(<Input placeholder="请输入" allowClear />)}
+              <FormItem label="activityType">
+                {getFieldDecorator('activityType')(
+                  <InputNumber style={{ width: '100%' }} allowClear />,
+                )}
               </FormItem>
             </Col>
+
+            <Col md={8} sm={24}>
+              <FormItem label="activityBanner">
+                {getFieldDecorator('activityBanner')(
+                  <Input placeholder="请输入" allowClear />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={8} sm={24}>
+              <FormItem label="activitySort">
+                {getFieldDecorator('activitySort')(
+                  <InputNumber style={{ width: '100%' }} allowClear />,
+                )}
+              </FormItem>
+            </Col>
+
             <Col md={8} sm={24}>
               <span className={styles.submitButtons}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                <Button
+                  style={{ marginLeft: 8 }}
+                  onClick={this.handleFormReset}
+                >
                   重置
                 </Button>
               </span>
@@ -78,7 +96,7 @@ class SearchForm extends Component<PageProps> {
           </Row>
         </Form>
       </div>
-    )
+    );
   }
 }
 

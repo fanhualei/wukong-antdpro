@@ -1,38 +1,35 @@
 import React, { Component, Fragment } from 'react';
-import {
-  Table,
-  Button,
-  Divider,
-  Alert,
-  Popconfirm,
-} from 'antd';
+import { Table, Button, Divider, Alert, Popconfirm } from 'antd';
+import moment from 'moment';
 import { ColumnProps, TableProps, TableRowSelection } from 'antd/es/table';
-import { ActivityItem, Pagination, ActivityListParams } from '@/services/activity.d';
+import {
+  ActivityItem,
+  Pagination,
+  ActivityListParams,
+} from '@/services/activity.d';
 
-import { getValue } from '@/utils/Wk/tools'
+import { getValue } from '@/utils/Wk/tools';
 import styles from './style.less';
 
 export interface PageProps {
-  activityList:ActivityItem[];
+  activityList: ActivityItem[];
   pagination?: Partial<Pagination>;
-  loading:boolean;
+  loading: boolean;
 
-  handleTableRefresh?: (params:Partial<ActivityListParams>) => void;
-  handleTableDelOne?: (id:number) => void;
-  handleTableDelMany?: (ids:string) => void;
-  handleTableGoEditPage?: (id:number) => void;
+  handleTableRefresh?: (params: Partial<ActivityListParams>) => void;
+  handleTableDelOne?: (id: number) => void;
+  handleTableDelMany?: (ids: string) => void;
+  handleTableGoEditPage?: (id: number) => void;
 }
-
 
 /**
  * 其实只用selectedRowKeys，就可以了，selectedRowKeys负责显示那些被选中的。
  * 但是为了今后，如果用户想看到底选中了那些数据，可以通过selectedRows来查看。
  */
 interface PageState {
-  selectedRowKeys: string[]|number[];
+  selectedRowKeys: string[] | number[];
   selectedRows: ActivityItem[];
 }
-
 
 class DataTable extends Component<PageProps> {
   state: PageState = {
@@ -44,23 +41,67 @@ class DataTable extends Component<PageProps> {
    * 得到列的属性定义
    * @param activityList
    */
-  getColumns=() => {
+
+  getColumns = () => {
     const columns: ColumnProps<ActivityItem>[] = [
       {
-        title: '排序',
-        dataIndex: 'activitySort',
-      },
-      {
-        title: '标题',
+        title: 'activityTitle',
         dataIndex: 'activityTitle',
       },
+
+      {
+        title: 'activityType',
+        dataIndex: 'activityType',
+        align: 'right',
+      },
+
+      {
+        title: 'activityBanner',
+        dataIndex: 'activityBanner',
+      },
+
+      {
+        title: 'activityStyle',
+        dataIndex: 'activityStyle',
+      },
+
+      {
+        title: 'activityDesc',
+        dataIndex: 'activityDesc',
+      },
+
+      {
+        title: 'activityStartDate',
+        dataIndex: 'activityStartDate',
+        render: (val: string) => (
+          <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
+        ),
+      },
+
+      {
+        title: 'activityEndDate',
+        dataIndex: 'activityEndDate',
+        render: (val: string) => (
+          <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
+        ),
+      },
+
+      {
+        title: 'activitySort',
+        dataIndex: 'activitySort',
+        align: 'right',
+      },
+
       {
         title: '操作',
         render: (text, record) => (
           <Fragment>
             <a onClick={() => this.goEditPage(record.activityId)}>编辑</a>
             <Divider type="vertical" />
-            <Popconfirm title="是否要删除此记录？" onConfirm={() => this.delOne(record.activityId)}>
+            <Popconfirm
+              title="是否要删除此记录？"
+              onConfirm={() => this.delOne(record.activityId)}
+            >
               <a>删除</a>
             </Popconfirm>
           </Fragment>
@@ -68,41 +109,41 @@ class DataTable extends Component<PageProps> {
       },
     ];
     return columns;
-  }
+  };
 
   /**
    * 跳转到编辑页面
    * @param id
    */
-  goEditPage=(id:number = 0) => {
-    const { handleTableGoEditPage } = this.props
+  goEditPage = (id: number = 0) => {
+    const { handleTableGoEditPage } = this.props;
     if (handleTableGoEditPage) {
       handleTableGoEditPage(id);
     }
-  }
+  };
 
   /**
    * 删除一个记录
    * @param id
    */
-  delOne=(id:number) => {
-    const { handleTableDelOne } = this.props
+  delOne = (id: number) => {
+    const { handleTableDelOne } = this.props;
     if (handleTableDelOne) {
       handleTableDelOne(id);
     }
-  }
+  };
 
   /**
    * 删除多个记录
    */
-  delMany=() => {
-    const { handleTableDelMany } = this.props
-    const { selectedRowKeys } = this.state
+  delMany = () => {
+    const { handleTableDelMany } = this.props;
+    const { selectedRowKeys } = this.state;
     if (handleTableDelMany) {
       handleTableDelMany(selectedRowKeys.join(','));
     }
     this.cleanSelectedKeys();
-  }
+  };
 
   /**
    * 点击行选择框的事件
@@ -116,7 +157,7 @@ class DataTable extends Component<PageProps> {
     this.setState({
       selectedRows,
       selectedRowKeys,
-    })
+    });
   };
 
   /**
@@ -150,7 +191,7 @@ class DataTable extends Component<PageProps> {
     }
     const { handleTableRefresh } = this.props;
     if (handleTableRefresh) {
-      handleTableRefresh(params)
+      handleTableRefresh(params);
     }
   };
 
@@ -173,7 +214,8 @@ class DataTable extends Component<PageProps> {
         <Alert
           message={
             <Fragment>
-              已选择 <a style={{ fontWeight: 600 }}>{selectedRows.length}</a> 项&nbsp;&nbsp;
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRows.length}</a>{' '}
+              项&nbsp;&nbsp;
               <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
                 清空
               </a>
@@ -183,7 +225,7 @@ class DataTable extends Component<PageProps> {
           showIcon
         />
       </div>
-    )
+    );
   }
 
   /**
@@ -200,23 +242,26 @@ class DataTable extends Component<PageProps> {
 
     const paginationProps = pagination
       ? {
-        showSizeChanger: true,
-        showQuickJumper: true,
-        showTotal: (total: number) => `共有 ${total} 记录`,
-        ...pagination,
-      }
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total: number) => `共有 ${total} 记录`,
+          ...pagination,
+        }
       : false;
 
     return (
       <>
         <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.goEditPage()}>
-                新建
-              </Button>
+          <Button icon="plus" type="primary" onClick={() => this.goEditPage()}>
+            新建
+          </Button>
           {selectedRowKeys.length > 0 && (
             <span>
-              <Popconfirm title="是否要批量删除选中的记录？" onConfirm={() => this.delMany()}>
-                  <Button>批量删除</Button>
+              <Popconfirm
+                title="是否要批量删除选中的记录？"
+                onConfirm={() => this.delMany()}
+              >
+                <Button>批量删除</Button>
               </Popconfirm>
             </span>
           )}
@@ -232,7 +277,7 @@ class DataTable extends Component<PageProps> {
           onChange={this.handleTableChange}
         />
       </>
-    )
+    );
   }
 }
 

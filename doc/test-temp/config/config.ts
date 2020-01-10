@@ -171,6 +171,12 @@ export default {
               component: './ListBasicList',
             },
             {
+              name: '查询表格',
+              icon: 'smile',
+              path: '/listtablelisttwo',
+              component: './ListTableListTwo',
+            },
+            {
               name: 'list.table-list',
               icon: 'smile',
               path: '/listtablelist',
@@ -194,26 +200,12 @@ export default {
               path: '/accountcenter',
               component: './AccountCenter',
             },
-
             {
-              name: 'accountcenter',
+              name: 'activity',
               icon: 'smile',
               path: '/activity',
               component: './activity',
             },
-            {
-              name: 'accountcenter',
-              icon: 'smile',
-              path: '/test',
-              component: './test',
-            },
-            {
-              name: 'goodsBrowse',
-              icon: 'smile',
-              path: '/goodsBrowse',
-              component: './goodsBrowse',
-            },
-
             {
               component: './404',
             },

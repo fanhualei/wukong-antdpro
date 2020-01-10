@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { ActivityItem, ActivityListParams } from '../src/services/activity.d';
-import { isInNumberArray } from '../src/utils/Wk/tools'
+import { isInNumberArray } from '../src/utils/Wk/tools';
 
 let activityListDataSource: ActivityItem[] = [];
 
@@ -17,22 +17,22 @@ for (let i = 1; i < 30; i += 1) {
     activityEndDate: new Date(),
     activitySort: 255,
     activityState: 1,
-
   });
   activityListDataSource[i - 1].activityId = i;
 }
 
 function queryActivityById(req: Request, res: Response) {
-  const activityId:number = Number(req.query.activityId)
-  const result:ActivityItem = activityListDataSource.filter(
-    item => item.activityId === activityId)[0];
+  const activityId: number = Number(req.query.activityId);
+  const result: ActivityItem = activityListDataSource.filter(
+    item => item.activityId === activityId,
+  )[0];
   setTimeout(() => res.json(result), 1000);
 }
 
 function updateActivity(req: Request, res: Response) {
-  const newItem:ActivityItem = <ActivityItem>req.body;
+  const newItem: ActivityItem = <ActivityItem>req.body;
   if (!newItem.activityId || newItem.activityId === 0) {
-    let maxSgId:number = 0;
+    let maxSgId: number = 0;
     activityListDataSource.forEach(v => {
       if (v.activityId > maxSgId) {
         maxSgId = v.activityId;
@@ -56,7 +56,7 @@ function updateActivity(req: Request, res: Response) {
         timestamp: '2018-05-31T09:41:16.461+0000',
       });
     }
-    for (let i:number = 0; i < activityListDataSource.length; i += 1) {
+    for (let i: number = 0; i < activityListDataSource.length; i += 1) {
       if (activityListDataSource[i].activityId === newItem.activityId) {
         activityListDataSource[i] = {
           ...activityListDataSource[i],
@@ -68,7 +68,6 @@ function updateActivity(req: Request, res: Response) {
   }
   return res.json(newItem.activityId);
 }
-
 
 function queryActivity(req: Request, res: Response, u: string) {
   let url = u;
@@ -90,13 +89,36 @@ function queryActivity(req: Request, res: Response, u: string) {
     });
   }
 
-  const whereKeyArr = ['activityId', 'activityTitle', 'activityType', 'activityBanner', 'activityStyle', 'activityDesc', 'activityStartDate', 'activityEndDate', 'activitySort', 'activityState'];
+  const whereKeyArr = [
+    'activityId',
+    'activityTitle',
+    'activityType',
+    'activityBanner',
+    'activityStyle',
+    'activityDesc',
+    'activityStartDate',
+    'activityEndDate',
+    'activitySort',
+    'activityState',
+  ];
+
   const paramsKeyArr = Object.keys(params);
+  // console.log(params)
   for (let i = 0; i < paramsKeyArr.length; i += 1) {
     const key = paramsKeyArr[i];
     if (whereKeyArr.indexOf(key) !== -1) {
-      dataSource = dataSource
-        .filter(data => data[key].indexOf(params[key]) > -1);
+      dataSource = dataSource.filter((data: any) => {
+        if (typeof data[key] === 'number') {
+          if (typeof params[key] === 'string' && params[key] === '') {
+            return true;
+          }
+          return data[key] === Number(params[key]);
+        }
+        if (typeof data[key] === 'string') {
+          return data[key].indexOf(params[key]) > -1;
+        }
+        return false;
+      });
     }
   }
 
@@ -116,20 +138,21 @@ function queryActivity(req: Request, res: Response, u: string) {
   return res.json(result);
 }
 
-
 function deleteOneActivity(req: Request, res: Response) {
   const { activityId } = req.body;
-  activityListDataSource = activityListDataSource.filter(item => activityId !== item.activityId);
+  activityListDataSource = activityListDataSource.filter(
+    item => activityId !== item.activityId,
+  );
   return res.json(1);
 }
 
 function deleteManyActivity(req: Request, res: Response) {
   const { activityIds } = req.body;
   activityListDataSource = activityListDataSource.filter(
-    item => !isInNumberArray(activityIds, item.activityId));
+    item => !isInNumberArray(activityIds, item.activityId),
+  );
   return res.json(1);
 }
-
 
 export default {
   'GET /api/shop/activity/queryActivityById': queryActivityById,
